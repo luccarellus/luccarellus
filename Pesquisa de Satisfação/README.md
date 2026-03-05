@@ -1,50 +1,88 @@
-📊 NPS – Mytia Tecnologia
+📊 Sistema de NPS – Mytia Tecnologia
+📝 Descrição
 
-Projeto de NPS (Net Promoter Score) da Mytia Tecnologia para medir a satisfação dos clientes com nossos produtos e serviços.
+Esta funcionalidade consiste em um sistema de coleta e análise de NPS (Net Promoter Score) para medir o nível de satisfação dos clientes da Mytia Tecnologia.
 
-📌 Sobre
+O objetivo é coletar feedback dos usuários de forma simples e estruturada, permitindo identificar pontos de melhoria nos produtos e serviços oferecidos pela empresa.
 
-O sistema coleta avaliações dos clientes através da pergunta:
+🎯 Objetivo da Funcionalidade
+
+Implementar um sistema que permita:
+
+Avaliar a satisfação dos clientes
+
+Identificar clientes promotores, neutros e detratores
+
+Coletar feedbacks que auxiliem na melhoria dos serviços
+
+Acompanhar métricas de satisfação ao longo do tempo
+
+⚙️ Funcionalidades Principais
+1. ⭐ Coleta de Avaliação
+
+Os clientes responderão à seguinte pergunta padrão de NPS:
 
 "De 0 a 10, o quanto você recomendaria a Mytia Tecnologia para um amigo ou colega?"
 
-Com base nas respostas, os clientes são classificados em:
+O usuário seleciona uma nota entre 0 e 10 para registrar sua avaliação.
 
-Promotores (9–10) → Clientes satisfeitos que recomendam a empresa
+2. 📊 Classificação das Respostas
 
-Neutros (7–8) → Clientes satisfeitos, mas sem grande entusiasmo
+As respostas serão classificadas automaticamente conforme a metodologia NPS:
 
-Detratores (0–6) → Clientes insatisfeitos
+Promotores (9–10)
+Clientes muito satisfeitos que recomendam a empresa.
 
-O cálculo do NPS é feito com a fórmula:
+Neutros (7–8)
+Clientes satisfeitos, porém sem forte tendência de recomendação.
+
+Detratores (0–6)
+Clientes insatisfeitos que podem impactar negativamente a reputação.
+
+3. 🧮 Cálculo do NPS
+
+O sistema calcula automaticamente o índice NPS utilizando a fórmula:
 
 NPS = % Promotores - % Detratores
 
-O resultado varia de -100 a 100.
+O resultado final pode variar de -100 a +100.
 
-⚙️ Funcionalidades
+4. 💬 Coleta de Feedback (Opcional)
 
-Coleta de avaliações dos clientes
+Após a avaliação, o cliente poderá deixar um comentário explicando o motivo da nota atribuída.
 
-Armazenamento das respostas
+Esses comentários ajudam a equipe a:
 
-Cálculo automático do NPS
+Identificar problemas
 
-Visualização das métricas
+Entender necessidades dos clientes
 
-🚀 Como executar
+Melhorar continuamente os serviços
 
-Clone o projeto:
+📊 Benefícios
 
-git clone <repositorio>
+✔ Monitoramento da satisfação dos clientes
 
-Instale as dependências:
+✔ Identificação rápida de problemas
 
-npm install
+✔ Feedback direto dos usuários
 
-Execute o projeto:
+✔ Apoio na tomada de decisões estratégicas
 
-npm run dev
-📄 Licença
+✔ Melhoria contínua dos produtos e serviços
 
-Projeto interno da Mytia Tecnologia.
+🧪 Critérios de Aceitação
+
+O cliente consegue registrar uma nota de 0 a 10
+
+O sistema classifica corretamente Promotores, Neutros e Detratores
+
+O cálculo do NPS é realizado automaticamente
+
+Os feedbacks ficam registrados para análise
+
+As métricas podem ser consultadas pela equipe
+
+🚀 Resultado Esperado
+
+Com a implementação do sistema de NPS, a Mytia Tecnologia poderá acompanhar de forma clara o nível de satisfação dos seus clientes, identificar oportunidades de melhoria e fortalecer o relacionamento com sua base de usuários.
