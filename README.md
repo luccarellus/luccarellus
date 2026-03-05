@@ -5,11 +5,11 @@
 Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhâo. Sou afixionado por tecnologia e compartilho meu conhecimento por aqui. Fique a vontade para entrar e explorar".
 
 <p align="left">
-    <a href="">
+    <a href="www.linkedin.com/in/lucas-barbosa5864">
         <img 
-            alt="" 
-            title="" 
-            src=""
+            alt="Linkedin" 
+            title="Me siga também no Linkedin" 
+            src="www.linkedin.com/in/lucas-barbosa5864"
         />
     </a>
     <a href="">
@@ -76,23 +76,5 @@ Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhâo. Sou afixionado
 
 <br/>
 <br/>
-
-### 📊 Estatísticas
-
-<p>
-  <img 
-    align="left" 
-    alt="GitHub Stats" 
-    height="200" 
-    style="padding-right: 10px;" 
-    src="https://github-readme-stats.vercel.app/api?username=luccarellus&show_icons=true&theme=tokyonight&include_all_commits=true&locale=pt-br" 
-  />
-
-<img 
-      align="left" 
-      alt="GitHub Stats" 
-      height="200" 
-      src="https://github-readme-stats.vercel.app/api/top-langs/?username=luccarellus&theme=tokyonight&layout=compact&custom_title=Tecnologias&langs_count=9" 
-  />
 
 </p>
