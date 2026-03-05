@@ -4,32 +4,6 @@
 
 Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhâo. Sou afixionado por tecnologia e compartilho meu conhecimento por aqui. Fique a vontade para entrar e explorar".
 
-<p align="left">
-    <a href="www.linkedin.com/in/lucas-barbosa5864">
-        <img 
-            alt="Linkedin" 
-            title="Me siga também no Linkedin" 
-            src="www.linkedin.com/in/lucas-barbosa5864"
-        />
-    </a>
-    <a href="">
-        <img 
-            alt="" 
-            title="" 
-            src=
-        />
-    </a> 
-    <a href="https://github.com/luccarellus/luccarellus">
-        <img 
-            alt="Total de estrelas" 
-            title="Total de estrelas GitHub" 
-            src="https://custom-icon-badges.demolab.com/github/stars/Larissakich?color=55960c&style=for-the-badge&labelColor=488207&logo=star&label=estrelas"
-        />
-    </a>
-    </p>
-
----
-
 ### 🤖 Linguagens e Tecnologias
 
 <img 
@@ -77,4 +51,3 @@ Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhâo. Sou afixionado
 <br/>
 <br/>
 
-</p>
