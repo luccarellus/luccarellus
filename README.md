@@ -47,11 +47,11 @@ Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhâo. Sou afixionado
     style="padding-right: 10px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" 
 />
+
+<br/>
+<br/>
 <div>
 <a href="https://github.com/seu-usuário-aqui">
 <img loading="lazy" height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=luccarellus&layout=compact&langs_count=7&theme=dracula"/>
 <img loading="lazy" height="180em" src="https://github-readme-stats.vercel.app/api?username=luccarellus&show_icons=true&theme=dracula&include_all_commits=true&count_private=true"/>
 </div>
-<br/>
-<br/>
-
