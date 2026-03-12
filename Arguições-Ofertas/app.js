@@ -195,7 +195,7 @@ function renderProfCards() {
       <div class="prof-avatar" style="background:${p.color}">${p.avatar}</div>
       <h4>${p.name}</h4>
       <p>${p.subject}</p>
-      <div class="meet-link"><i class="fa-solid fa-video"></i> Link exclusivo disponível</div>
+      <div class="meet-link"><i class="fa-solid fa-video"></i> Link exclusivo do professsor</div>
     `;
     el.onclick = () => selectProf(p);
     container.appendChild(el);
@@ -331,7 +331,7 @@ function renderAppointments() {
   }
   container.innerHTML = '';
   appointments.forEach(a => {
-    const statusLabel = { confirmed: '✔ Confirmado', pending: '⏳ Aguardando', cancelled: '✕ Cancelado' };
+    const statusLabel = { confirmed: '✔ Confirmado', pending: '<i class="fa-solid fa-hourglass"></i> Aguardando', cancelled: '✕ Cancelado' };
     const el = document.createElement('div');
     el.className = 'appt-card fade-in';
     el.innerHTML = `

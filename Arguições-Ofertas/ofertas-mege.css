@@ -11,7 +11,7 @@
 }
 .sec-hdr a{
   font-size:13px;
-  color:var(--accent);
+  color: var(--blue-light);
   text-decoration:none;
   font-weight:700;
 }
@@ -97,7 +97,7 @@
 
 .offer-thumb{
   background:var(--blue);
-  color:white;
+  color:rgb(255, 255, 255);
   padding:18px;
   font-weight:800;
 }
@@ -126,13 +126,14 @@
 .btn-offer{
   width:100%;
   padding:10px;
-  background:var(--accent);
+  background:var(--blue);
   color:white;
   border:none;
   border-radius:8px;
   font-weight:800;
   cursor:pointer;
 }
+/* ADICIONAR ao final */
 .btn-offer:hover{
-  background:var(--accent-hover);
+  background: var(--blue-light);
 }
