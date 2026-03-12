@@ -1,0 +1,138 @@
+/* ===== HEADER SEC ===== */
+.sec-hdr{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:28px 0 16px;
+}
+.sec-hdr h2{
+  font-size:18px;
+  font-weight:800;
+}
+.sec-hdr a{
+  font-size:13px;
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:700;
+}
+
+/* ===== COUNTDOWN ===== */
+.cd-wrap{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 22px;
+  margin-bottom:20px;
+}
+.cd-boxes{
+  display:flex;
+  gap:10px;
+}
+.cd-box{
+  background:var(--blue);
+  color:white;
+  padding:10px 14px;
+  border-radius:8px;
+  text-align:center;
+}
+.cd-box .n{
+  font-size:18px;
+  font-weight:800;
+}
+.cd-box .u{
+  font-size:10px;
+  opacity:.8;
+}
+
+/* ===== PROMO STRIP ===== */
+.promo-strip{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:linear-gradient(90deg,var(--blue),var(--blue-light));
+  color:white;
+  padding:20px;
+  border-radius:14px;
+  margin-bottom:28px;
+}
+.ps-tag{
+  background:#ffffff30;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+}
+.ps-price{
+  text-align:right;
+}
+.ps-price .old{
+  text-decoration:line-through;
+  opacity:.7;
+  font-size:13px;
+}
+.ps-price .novo{
+  font-size:18px;
+  font-weight:800;
+}
+
+/* ===== GRID ===== */
+.offer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+/* ===== CARD ===== */
+.offer-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.offer-thumb{
+  background:var(--blue);
+  color:white;
+  padding:18px;
+  font-weight:800;
+}
+
+.offer-body{
+  padding:16px;
+}
+
+.offer-name{
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.offer-date{
+  font-size:12px;
+  color:var(--text-muted);
+  margin-bottom:10px;
+}
+
+.offer-price{
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.btn-offer{
+  width:100%;
+  padding:10px;
+  background:var(--accent);
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn-offer:hover{
+  background:var(--accent-hover);
+}
