@@ -2,7 +2,7 @@
 
 **`Desenvolvedor Front-end`**
 
-Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhão. Sou apaixonado por música e por tecnologia. Por aqui, compartilho um pouco do meu conhecimento em algumas linguagens. Fique a vontade para explorar 
+Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhão. Sou apaixonado por música e por tecnologia. Por aqui, compartilho um pouco do meu conhecimento em algumas linguagens. Fique a vontade para explorar e colaborar !
 
 <p align="left">
     <a href="https://github.com/LucasBarbosa?tab=repositories&sort=stargazers">
