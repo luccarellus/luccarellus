@@ -75,7 +75,7 @@ Me chamo Lucas Barbosa, tenho 30 anos e sou natural do Maranhão. Sou apaixonado
     alt="GitHub Stats" 
     height="200" 
     style="padding-right: 08px;" 
-    src="https://github-readme-stats.vercel.app/api?username=LucasBarbosa&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&locale=pt-br" 
+    src="https://github-readme-stats.vercel.app/api?username=luccarellus&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&locale=pt-br" 
   />
   <img 
     align="left" 
