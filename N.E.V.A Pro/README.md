@@ -1,9 +1,3 @@
-Com certeza\! Integrei as novas informações (Lógica de Funcionamento, Padrões do Sistema e Autor) e refinei as seções de Execução e Troubleshooting para ficarem ainda mais completas e diretas.
-
-Aqui está o `README.md` atualizado:
-
------
-
 # 🎮 ENEM Gamification
 
 Plataforma web de estudos para o ENEM com foco em gamificação, prática com questões reais e simulados completos por dia de prova.
