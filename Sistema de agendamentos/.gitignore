@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Database
+*.db
+agendamentos.db
+database.db
+
+# Secrets & Credentials
+credentials.json
+token.pickle
+.env
+
+# Vercel
+.vercel/
+
+.vercel
+.env*.local
