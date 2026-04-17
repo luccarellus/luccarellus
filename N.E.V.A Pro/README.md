@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # ENEM Gamification
 
 Plataforma web de estudos para ENEM com gamificacao, pratica de questoes reais e simulados por dia de prova.
@@ -183,6 +184,9 @@ node backend/data/expand.js
 - Parte dos modulos (`auth`, `users`, `notifications`, `materials`) esta em estagio inicial de backend.
 - O fluxo principal funcional hoje esta em `questions`, `simulados`, `ranking` e `gamification`.
 - O projeto ja esta preparado para continuar evoluindo para autenticacao real, persistencia completa de ranking e notificacoes.
+=======
+
+>>>>>>> 023b1b30432d60cd90a345881429af5c9fc7cba8
 =======
 
 >>>>>>> 023b1b30432d60cd90a345881429af5c9fc7cba8
