@@ -1,239 +1,137 @@
+Com certeza\! Integrei as novas informações (Lógica de Funcionamento, Padrões do Sistema e Autor) e refinei as seções de Execução e Troubleshooting para ficarem ainda mais completas e diretas.
+
+Aqui está o `README.md` atualizado:
+
+-----
+
 # 🎮 ENEM Gamification
 
-Este documento define a estrutura, funcionamento e organização da plataforma **ENEM Gamification**, com foco em prática com questões reais, simulados e sistema de gamificação.
+Plataforma web de estudos para o ENEM com foco em gamificação, prática com questões reais e simulados completos por dia de prova.
 
----
+## 📚 Visão Geral
 
-## 📌 Objetivo
+O projeto é dividido em duas partes principais:
 
-- Facilitar o estudo para o ENEM com prática real
-- Aplicar gamificação para aumentar engajamento
-- Simular o ambiente real de prova (Dia 1 e Dia 2)
-- Oferecer ranking e acompanhamento de desempenho
+  * **Frontend:** Interface do usuário construída com tecnologias web padrão.
+  * **Backend:** API robusta em NestJS para gerenciamento de lógica, usuários e dados.
 
----
+## 🔁 Lógica de Funcionamento
 
-## 🧠 Visão Geral do Sistema
+### Fluxo do Usuário
 
-A plataforma é dividida em duas partes principais:
+1.  **Escolha:** O usuário seleciona o ano do exame e a disciplina desejada.
+2.  **Prática:** Resolve questões reais de edições anteriores.
+3.  **Interação:** Envia as respostas para validação imediata.
+4.  **Recompensa:** Recebe XP (Experiência) por cada atividade concluída.
+5.  **Competição:** Participa do ranking global baseado na pontuação acumulada.
+6.  **Simulação:** Realiza simulados cronometrados seguindo a estrutura oficial.
 
-### 🖥 Frontend
+### 📌 Padrões do Sistema
 
-Responsável pela interface do usuário:
+  * Toda resposta correta ou atividade gera XP para o usuário.
+  * Os simulados seguem rigorosamente a estrutura de disciplinas e tempo do ENEM oficial.
+  * O sistema possui um mecanismo de **fallback obrigatório** para garantir que as questões carreguem mesmo se a API externa falhar.
 
-- Dashboard
-- Questões
-- Simulados
-- Ranking
+-----
 
-### ⚙️ Backend
+## 🛠️ Tecnologias
 
-Responsável pela lógica da aplicação:
+| Camada | Tecnologias |
+| :--- | :--- |
+| **Frontend** | HTML5, CSS3, JavaScript (Vanilla), `serve` |
+| **Backend** | NestJS (Node.js + TypeScript) |
+| **Banco de Dados** | PostgreSQL com Prisma ORM |
+| **Cache/Dados** | Redis (opcional), JSON local para fallback |
+| **API Externa** | [enem.dev](https://api.enem.dev/v1) |
 
-- Consumo de API externa (questões reais)
-- Cálculo de XP
-- Geração de simulados
-- Ranking de usuários
-
----
-
-## 🏗 Estrutura do Projeto
-
-
-.
-├── frontend/
-│ ├── index.html
-│ ├── questoes.html
-│ ├── simulado.html
-│ ├── ranking.html
-│ └── js/
-├── backend/
-│ ├── src/
-│ ├── prisma/
-│ └── data/
-└── package.json
-
-
----
-
-## 🛠 Tecnologias Utilizadas
-
-### Frontend
-
-- HTML
-- CSS
-- JavaScript (Vanilla)
-
-### Backend
-
-- NestJS (Node.js + TypeScript)
-
-### Banco de Dados
-
-- PostgreSQL
-- Prisma ORM
-
-### Integrações
-
-- API externa: https://api.enem.dev/v1
-
----
-
-## 📘 Funcionalidades Principais
-
-### 📚 Prática de Questões
-
-- Seleção por ano e disciplina
-- Questões reais do ENEM
-- Correção automática
-- Envio de respostas para cálculo de XP
-
----
-
-### 🧪 Simulados
-
-Simulam o formato oficial do ENEM:
-
-- Separação por **Dia 1** e **Dia 2**
-- Tempo controlado
-- Quantidade de questões por disciplina
-- Finalização com envio de resultado
-
----
-
-### 🏆 Ranking
-
-- Exibição de usuários com maior pontuação
-- Baseado em XP acumulado
-- Versão atual utiliza dados em memória
-
----
-
-### 🎯 Gamificação
-
-Sistema responsável por:
-
-- Cálculo de XP
-- Regras de pontuação
-- Progressão do usuário
-
----
-
-## 🔌 Endpoints Principais
-
-### 📘 Questões
-
-- `GET /api/v1/questions/exams`
-- `GET /api/v1/questions/external`
-- `POST /api/v1/questions/external/answer`
-
----
-
-### 🧪 Simulados
-
-- `POST /api/v1/simulados/start`
-- `POST /api/v1/simulados/finish`
-
----
-
-### 🏆 Ranking
-
-- `GET /api/v1/ranking`
-- `GET /api/v1/ranking/all`
-
----
-
-### 🎯 Gamificação
-
-- `POST /api/v1/gamification/answer`
-- `GET /api/v1/gamification/xp-rules`
-
----
-
-## ⚙️ Configurações do Sistema
-
-### Backend
-
-- Prefixo global: `/api/v1`
-- Porta padrão: `3333`
-- Swagger: `/docs`
-
----
+-----
 
 ## 🚀 Execução do Projeto
 
-### 1. Instalar dependências
+### 1\. Instalar dependências
+
+Na raiz do projeto:
 
 ```bash
 npm install
 npm run install-all
-2. Configurar ambiente
+```
 
-Arquivo: backend/.env
+### 2\. Configurar Ambiente (`backend/.env`)
 
-DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/DB_NAME
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/DB_NAME"
 PORT=3333
-3. Configurar banco (Prisma)
+```
+
+### 3\. Configurar Banco de Dados (Prisma)
+
+```bash
 cd backend
 npm run prisma:generate
 npm run prisma:push
-4. Rodar aplicação
+```
+
+### 4\. Rodar Aplicação
+
+Na raiz do projeto:
+
+```bash
 npm run dev
-🌐 Acesso
-Frontend: http://localhost:3000
-Backend: http://localhost:3333/api/v1
-Swagger: http://localhost:3333/docs
-📊 Fonte de Dados
+```
 
-O sistema utiliza dados reais do ENEM via API externa.
+-----
 
-Estratégia de fallback
+## 🌐 Acesso e URLs
 
-Caso a API esteja indisponível:
+  * **Frontend:** [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000)
+  * **Backend:** [http://localhost:3333/api/v1](https://www.google.com/search?q=http://localhost:3333/api/v1)
+  * **Swagger (Docs):** [http://localhost:3333/docs](https://www.google.com/search?q=http://localhost:3333/docs)
 
-Utiliza cache local em:
-backend/data/questions-data.json
-Scripts auxiliares
-node backend/data/fetch-real-enem.js
-node backend/data/expand.js
-fetch-real-enem.js → coleta questões reais
-expand.js → completa dados para desenvolvimento
-🔁 Lógica de Funcionamento
-Fluxo do usuário
-Escolhe ano/disciplina
-Resolve questões
-Envia respostas
-Recebe XP
-Participa do ranking
-Realiza simulados
-🛠 Troubleshooting
-Problemas comuns
-Questões não carregam
-Verificar backend ativo
-Testar /questions/exams
-Simulado não inicia
-Testar /simulados/start
-Ranking vazio
-Atualmente usa dados mockados
-Erro no Prisma
-Verificar DATABASE_URL
-Rodar comandos de migração
-⚠️ Status do Projeto
-✅ Funcional
-questions
-simulados
-ranking
-gamification
-🚧 Em desenvolvimento
-auth
-users
-notifications
-materials
-📌 Padrões do Sistema
-Toda resposta gera XP
-Simulados seguem estrutura oficial do ENEM
-Ranking baseado em pontuação acumulada
-Fallback de dados obrigatório para estabilidade
-👨‍💻 Autor
+-----
 
-Projeto desenvolvido para estudo e prática com foco em preparação para o ENEM.
+## 📊 Fonte de Dados e Estratégia de Fallback
+
+O sistema prioriza dados reais do ENEM via API externa. Caso a API esteja indisponível, o sistema ativa automaticamente o **Cache Local**:
+
+  * **Arquivo de Cache:** `backend/data/questions-data.json`
+
+**Scripts Auxiliares:**
+
+  * `node backend/data/fetch-real-enem.js` → Coleta e atualiza as questões reais.
+  * `node backend/data/expand.js` → Completa e organiza os dados para o ambiente de desenvolvimento.
+
+-----
+
+## 🛠️ Troubleshooting (Resolução de Problemas)
+
+| Problema | O que verificar |
+| :--- | :--- |
+| **Questões não carregam** | Certifique-se de que o backend está ativo e teste o endpoint `/questions/exams`. |
+| **Simulado não inicia** | Verifique a resposta do endpoint `/simulados/start`. |
+| **Ranking vazio** | Atualmente, o sistema pode estar utilizando dados mockados para exibição. |
+| **Erro no Prisma** | Valide a `DATABASE_URL` e execute `prisma:push` novamente. |
+
+-----
+
+## ⚠️ Status do Projeto
+
+### ✅ Funcional
+
+  * **Questions:** Sistema de busca e entrega de questões.
+  * **Simulados:** Lógica de tempo e estrutura de prova.
+  * **Ranking:** Contagem de pontos e posicionamento.
+  * **Gamification:** Atribuição de XP e regras de progresso.
+
+### 🚧 Em Desenvolvimento
+
+  * **Auth:** Sistema de login e persistência de sessão.
+  * **Users:** Perfil detalhado do estudante.
+  * **Notifications:** Alertas de desempenho e lembretes.
+  * **Materials:** Biblioteca de apoio e estudos.
+
+-----
+
+## 👨‍💻 Autor
+
+Projeto desenvolvido para estudo e prática, com foco em metodologias de aprendizado ativo e preparação para o ENEM.
