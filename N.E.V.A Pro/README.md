@@ -4,127 +4,162 @@ Plataforma web de estudos para o ENEM com foco em gamificação, prática com qu
 
 ## 📚 Visão Geral
 
-O projeto é dividido em duas partes principais:
+O **ENEM Gamification** transforma a rotina de estudos para o Exame Nacional do Ensino Médio em uma experiência interativa e competitiva. Dividido entre um frontend dinâmico e uma API robusta, o projeto motiva o aluno através de recompensas, progressão de nível e desafios baseados em edições reais do exame.
 
-  * **Frontend:** Interface do usuário construída com tecnologias web padrão.
-  * **Backend:** API robusta em NestJS para gerenciamento de lógica, usuários e dados.
+> **💡 O diferencial:** Caso a API externa de questões sofra instabilidades, o sistema possui um robusto esquema de cache e fallback local, garantindo que o estudante nunca pare de estudar.
 
-## 🔁 Lógica de Funcionamento
+---
 
-### Fluxo do Usuário
+## 🎯 Regras de Negócio e Lógica
 
-1.  **Escolha:** O usuário seleciona o ano do exame e a disciplina desejada.
-2.  **Prática:** Resolve questões reais de edições anteriores.
-3.  **Interação:** Envia as respostas para validação imediata.
-4.  **Recompensa:** Recebe XP (Experiência) por cada atividade concluída.
-5.  **Competição:** Participa do ranking global baseado na pontuação acumulada.
-6.  **Simulação:** Realiza simulados cronometrados seguindo a estrutura oficial.
+### 🏆 Gamificação (Sistema de XP)
+O engajamento do usuário é mantido por meio de pontos de experiência (XP):
+* **Questão Avulsa Correta:** +10 XP.
+* **Questão de Simulado Correta:** +20 XP (peso maior por estar contra o tempo).
+* **Ofensiva (Dias seguidos estudando):** Multiplicador de bônus nas recompensas.
+* **Ranking:** Os usuários são classificados com base no XP total acumulado, incentivando a consistência nos estudos.
 
-### 📌 Padrões do Sistema
+### ⏱️ Simulados Oficiais
+Os simulados replicam a estrutura exata do ENEM, divididos por dias:
+* **Dia 1:** Linguagens e Códigos, Redação e Ciências Humanas (Tempo limite: 5h30).
+* **Dia 2:** Ciências da Natureza e Matemática (Tempo limite: 5h).
+* O usuário não sabe a resposta correta até finalizar o simulado ou o tempo expirar.
 
-  * Toda resposta correta ou atividade gera XP para o usuário.
-  * Os simulados seguem rigorosamente a estrutura de disciplinas e tempo do ENEM oficial.
-  * O sistema possui um mecanismo de **fallback obrigatório** para garantir que as questões carreguem mesmo se a API externa falhar.
+---
 
------
+## 🛠️ Stack de Tecnologias
 
-## 🛠️ Tecnologias
-
-| Camada | Tecnologias |
+| Camada | Tecnologias Utilizadas |
 | :--- | :--- |
 | **Frontend** | HTML5, CSS3, JavaScript (Vanilla), `serve` |
-| **Backend** | NestJS (Node.js + TypeScript) |
-| **Banco de Dados** | PostgreSQL com Prisma ORM |
-| **Cache/Dados** | Redis (opcional), JSON local para fallback |
-| **API Externa** | [enem.dev](https://api.enem.dev/v1) |
+| **Backend** | NestJS, TypeScript, Node.js |
+| **Banco de Dados** | PostgreSQL, Prisma ORM |
+| **Integrações** | API Externa [enem.dev](https://api.enem.dev/v1) |
+| **Ferramentas** | Swagger (Documentação API), Git |
 
------
+---
 
 ## 🚀 Execução do Projeto
 
-### 1\. Instalar dependências
+### 0. Pré-requisitos
+Antes de começar, certifique-se de ter instalado em sua máquina:
+* **Node.js** (v18 ou superior)
+* **PostgreSQL** (rodando localmente ou via Docker)
+* **Git**
 
-Na raiz do projeto:
-
+### 1. Clonar e Instalar
 ```bash
+# Clone o repositório
+git clone https://github.com/SEU-USUARIO/enem-gamification.git
+cd enem-gamification
+
+# Instale as dependências da raiz (e dos subprojetos)
 npm install
 npm run install-all
 ```
 
-### 2\. Configurar Ambiente (`backend/.env`)
-
+### 2. Variáveis de Ambiente
+Crie um arquivo `.env` dentro da pasta `backend/` seguindo o modelo:
 ```env
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/DB_NAME"
+# Configurações do Banco de Dados
+DATABASE_URL="postgresql://USUARIO:SENHA@localhost:5432/NOME_DO_BANCO?schema=public"
+
+# Configurações do Servidor
 PORT=3333
+
+# (Opcional) Redis para Cache
+REDIS_HOST="localhost"
+REDIS_PORT=6379
 ```
 
-### 3\. Configurar Banco de Dados (Prisma)
-
+### 3. Configurar o Banco de Dados (Prisma)
+Acesse a pasta do backend e prepare as tabelas:
 ```bash
 cd backend
-npm run prisma:generate
-npm run prisma:push
+npm run prisma:generate  # Gera o client do Prisma
+npm run prisma:push      # Sincroniza o schema com o PostgreSQL
 ```
 
-### 4\. Rodar Aplicação
-
-Na raiz do projeto:
-
+### 4. Rodar a Aplicação
+Volte para a raiz do projeto e inicie os serviços do frontend e backend:
 ```bash
 npm run dev
 ```
 
------
+---
 
-## 🌐 Acesso e URLs
+## 🌐 Endpoints e Acessos
 
-  * **Frontend:** [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000)
-  * **Backend:** [http://localhost:3333/api/v1](https://www.google.com/search?q=http://localhost:3333/api/v1)
-  * **Swagger (Docs):** [http://localhost:3333/docs](https://www.google.com/search?q=http://localhost:3333/docs)
-
------
-
-## 📊 Fonte de Dados e Estratégia de Fallback
-
-O sistema prioriza dados reais do ENEM via API externa. Caso a API esteja indisponível, o sistema ativa automaticamente o **Cache Local**:
-
-  * **Arquivo de Cache:** `backend/data/questions-data.json`
-
-**Scripts Auxiliares:**
-
-  * `node backend/data/fetch-real-enem.js` → Coleta e atualiza as questões reais.
-  * `node backend/data/expand.js` → Completa e organiza os dados para o ambiente de desenvolvimento.
-
------
-
-## 🛠️ Troubleshooting (Resolução de Problemas)
-
-| Problema | O que verificar |
+| Serviço | URL de Acesso |
 | :--- | :--- |
-| **Questões não carregam** | Certifique-se de que o backend está ativo e teste o endpoint `/questions/exams`. |
-| **Simulado não inicia** | Verifique a resposta do endpoint `/simulados/start`. |
-| **Ranking vazio** | Atualmente, o sistema pode estar utilizando dados mockados para exibição. |
-| **Erro no Prisma** | Valide a `DATABASE_URL` e execute `prisma:push` novamente. |
+| **Frontend (Aplicação)** | http://localhost:3000 |
+| **Backend (API Base)** | http://localhost:3333/api/v1 |
+| **Swagger (Docs da API)** | http://localhost:3333/docs |
 
------
+---
 
-## ⚠️ Status do Projeto
+## 📊 Estratégia de Dados e Fallback
 
-### ✅ Funcional
+O sistema é resiliente. Ele busca as questões na API oficial em tempo real, mas caso haja indisponibilidade (timeout ou erro 500), ele automaticamente lê do arquivo JSON local (`backend/data/questions-data.json`).
 
-  * **Questions:** Sistema de busca e entrega de questões.
-  * **Simulados:** Lógica de tempo e estrutura de prova.
-  * **Ranking:** Contagem de pontos e posicionamento.
-  * **Gamification:** Atribuição de XP e regras de progresso.
+**Scripts úteis para manutenção dos dados locais:**
+```bash
+# Para atualizar o banco local com questões recentes da API:
+node backend/data/fetch-real-enem.js
 
-### 🚧 Em Desenvolvimento
+# Para preencher lacunas de disciplinas no ambiente de dev:
+node backend/data/expand.js
+```
 
-  * **Auth:** Sistema de login e persistência de sessão.
-  * **Users:** Perfil detalhado do estudante.
-  * **Notifications:** Alertas de desempenho e lembretes.
-  * **Materials:** Biblioteca de apoio e estudos.
+---
 
------
+## 📂 Arquitetura de Diretórios
+
+```text
+enem-gamification/
+├── frontend/                 # UI da Aplicação
+│   ├── css/                  # Estilos globais e modulares
+│   ├── js/                   # Lógica de consumo da API (Vanilla)
+│   ├── *.html                # Telas (index, questoes, simulado, ranking)
+│
+├── backend/                  # API NestJS
+│   ├── src/
+│   │   ├── modules/          # Módulos (Questions, Simulados, Gamification)
+│   │   ├── main.ts           # Ponto de entrada do Nest
+│   ├── prisma/
+│   │   └── schema.prisma     # Modelagem do banco de dados
+│   ├── data/                 # Scripts de cache e dados JSON de fallback
+│   └── .env                  # Variáveis de ambiente
+│
+└── package.json              # Scripts globais
+```
+
+---
+
+## 🛠️ Troubleshooting (Solução de Problemas)
+
+| Sintoma | Possível Causa / Solução |
+| :--- | :--- |
+| **API não responde (CORS / 404)** | Verifique se a porta no `.env` do backend bate com as chamadas no frontend (padrão: `3333`). |
+| **Questões não carregam** | Certifique-se de que o backend está ativo. Teste o endpoint `GET /questions/exams`. |
+| **Erro ao salvar resposta/XP** | O banco de dados pode estar desatualizado. Rode `npm run prisma:push` na pasta do backend. |
+| **Simulado trava em "Carregando"** | Teste o endpoint `POST /simulados/start` via Swagger. Pode haver falta de questões no Cache/API para o ano selecionado. |
+| **Ranking vazio** | Atualmente usa dados mockados. Teste acessando `GET /ranking`. |
+
+---
+
+## ⚠️ Status e Roadmap
+
+- [x] Módulo de Questões e Cache Local
+- [x] Lógica de Simulados e Cronômetro
+- [x] Atribuição de XP (Gamificação)
+- [x] Ranking de Usuários
+- [ ] Autenticação e JWT (Sessões)
+- [ ] Perfil de Usuário (Histórico de desempenho)
+- [ ] Notificações e Lembretes de Estudo
+- [ ] Módulo de Materiais de Apoio
+
+---
 
 ## 👨‍💻 Autor
 
