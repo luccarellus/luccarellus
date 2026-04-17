@@ -1,0 +1,14 @@
+# Node deps and build
+node_modules/
+dist/
+coverage/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
