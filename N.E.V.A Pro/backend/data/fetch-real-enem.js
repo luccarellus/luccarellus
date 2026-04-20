@@ -4,7 +4,7 @@ const https = require('https');
 
 const dataPath = path.join(__dirname, 'questions-data.json');
 
-const yearsToFetch = [2023, 2022, 2021];
+const yearsToFetch = Array.from({ length: 2023 - 2009 + 1 }, (_, index) => 2023 - index);
 const targetDisciplines = ['ciencias-humanas', 'ciencias-natureza', 'linguagens', 'matematica'];
 const TARGET_COUNT = 20;
 
@@ -45,7 +45,7 @@ async function rebuildData() {
 
             console.log(`Fetch questions for ${year}...`);
             let allQuestions = [];
-            for (let offset = 0; offset < 200; offset += 50) {
+            for (let offset = 0; offset <= 400; offset += 50) {
                 const url = `https://api.enem.dev/v1/exams/${year}/questions?limit=50&offset=${offset}`;
                 try {
                     const response = await fetchJson(url);

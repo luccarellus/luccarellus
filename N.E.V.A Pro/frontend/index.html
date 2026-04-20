@@ -28,7 +28,7 @@
                                 style="font-size: 1.875rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem;">
                                 Bem-vindo, Estudante! 👋
                             </h2>
-                            <p style="color: var(--text-secondary);">Você está a 45 dias do ENEM. Mantenha o foco!</p>
+                            <p id="enem-countdown" style="color: var(--text-secondary);">Carregando contagem regressiva do ENEM...</p>
                         </div>
                         <div class="card"
                             style="padding: 0.5rem 1rem; display: flex; align-items: center; border-radius: 12px;">
@@ -84,11 +84,12 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                                 <h3 class="font-bold">Progresso Semanal</h3>
-                                <a href="#" class="text-sm text-blue font-bold" style="text-decoration: none;">Ver
+                                <a href="#" id="weekly-details-link" class="text-sm text-blue font-bold" style="text-decoration: none;">Ver
                                     detalhes <i data-lucide="arrow-up-right"
                                         style="width: 14px; vertical-align: middle;"></i></a>
                             </div>
                             <div
+                                id="weekly-chart"
                                 style="height: 200px; display: flex; align-items: flex-end; gap: 12px; padding: 0 10px;">
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">

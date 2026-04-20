@@ -6,6 +6,8 @@ import * as path from 'path';
 export class EnemApiService {
   private readonly baseUrl = 'https://api.enem.dev/v1';
   private readonly localDataPath = path.join(process.cwd(), 'data', 'questions-data.json');
+  private readonly timeoutMs = 12000;
+  private readonly maxRetries = 2;
 
   private getLocalData() {
     try {
@@ -16,73 +18,126 @@ export class EnemApiService {
     }
   }
 
+  private async fetchWithRetry(url: string, timeoutMs = this.timeoutMs) {
+    let lastError: any = null;
+
+    for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          signal: AbortSignal.timeout(timeoutMs),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        return response;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw lastError || new Error('External API request failed');
+  }
+
+  private toLocalPayload(year: number, questions: any[], limit: number, offset: number) {
+    const safeLimit = Math.max(1, Number(limit || 20));
+    const safeOffset = Math.max(0, Number(offset || 0));
+    const paged = questions.slice(safeOffset, safeOffset + safeLimit);
+
+    return {
+      metadata: {
+        limit: safeLimit,
+        offset: safeOffset,
+        total: questions.length,
+        hasMore: safeOffset + safeLimit < questions.length,
+      },
+      questions: paged.map((question) => ({
+        ...question,
+        year: question.year || year,
+      })),
+    };
+  }
+
   async getExams() {
     try {
-      const response = await fetch(`${this.baseUrl}/exams`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(3000) // 3s timeout
-      });
-      if (!response.ok) throw new Error();
+      const response = await this.fetchWithRetry(`${this.baseUrl}/exams`);
       return await response.json();
     } catch (error) {
-      console.warn('API Externa falhou, usando cache local para Exames.');
+      console.warn('API externa falhou, usando cache local para exames.');
       const local = this.getLocalData();
-      // Flatten all exams, ordered from newest to oldest
-      const allExams = [];
+      const allExams: any[] = [];
+
       Object.keys(local)
         .map(Number)
         .sort((a, b) => b - a)
-        .forEach(year => {
+        .forEach((year) => {
           if (local[year]?.exams) allExams.push(...local[year].exams);
         });
+
       return allExams;
     }
   }
 
   async getQuestions(year: number, limit: number = 20, offset: number = 0) {
     try {
-      const response = await fetch(`${this.baseUrl}/exams/${year}/questions?limit=${limit}&offset=${offset}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(5000) // 5s timeout
-      });
-      if (!response.ok) throw new Error();
+      const response = await this.fetchWithRetry(`${this.baseUrl}/exams/${year}/questions?limit=${limit}&offset=${offset}`);
       return await response.json();
     } catch (error) {
-      console.warn(`API Externa falhou para questões de ${year}, usando cache local.`);
+      console.warn(`API externa falhou para questoes de ${year}, usando cache local.`);
       const local = this.getLocalData();
-      // Return exact year if available, otherwise fall back to nearest available year
-      if (local[year]) return local[year];
-      const availableYears = Object.keys(local).map(Number).sort((a, b) => Math.abs(a - year) - Math.abs(b - year));
-      if (availableYears.length > 0) {
-        console.warn(`Ano ${year} não encontrado localmente. Usando ${availableYears[0]} como substituto.`);
-        return local[availableYears[0]];
+
+      if (local[year]?.questions) {
+        return this.toLocalPayload(year, local[year].questions, limit, offset);
       }
-      return { questions: [] };
+
+      const allLocalQuestions = Object.keys(local)
+        .map(Number)
+        .sort((a, b) => b - a)
+        .flatMap((localYear) =>
+          (local[localYear]?.questions || []).map((question: any) => ({
+            ...question,
+            year: question.year || localYear,
+          })),
+        );
+
+      if (allLocalQuestions.length > 0) {
+        console.warn(`Ano ${year} nao encontrado localmente. Usando cache combinado (${allLocalQuestions.length} questoes).`);
+        return this.toLocalPayload(year, allLocalQuestions, limit, offset);
+      }
+
+      return { metadata: { limit, offset, total: 0, hasMore: false }, questions: [] };
     }
   }
 
   async getQuestionByIndex(year: number, index: number) {
     try {
-      const response = await fetch(`${this.baseUrl}/exams/${year}/questions/${index}`, {
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        signal: AbortSignal.timeout(3000)
-      });
-      if (!response.ok) throw new Error();
+      const response = await this.fetchWithRetry(`${this.baseUrl}/exams/${year}/questions/${index}`);
       return await response.json();
     } catch (error) {
       const local = this.getLocalData();
-      const question = local[year]?.questions?.find(q => q.index === index);
-      if (question) return question;
-      throw new HttpException('Questão não encontrada', HttpStatus.NOT_FOUND);
+
+      const exactYearQuestion = local[year]?.questions?.find((q: any) => q.index === index);
+      if (exactYearQuestion) return exactYearQuestion;
+
+      const nearestQuestion = Object.keys(local)
+        .map(Number)
+        .sort((a, b) => Math.abs(a - year) - Math.abs(b - year))
+        .flatMap((localYear) => local[localYear]?.questions || [])
+        .find((q: any) => q.index === index);
+
+      if (nearestQuestion) return nearestQuestion;
+      throw new HttpException('Questao nao encontrada', HttpStatus.NOT_FOUND);
     }
   }
 
   async verifyAnswer(year: number, questionIndex: number, selectedLetter: string): Promise<boolean> {
     try {
-        const question = await this.getQuestionByIndex(year, questionIndex);
-        return question.correctAlternative === selectedLetter;
+      const question = await this.getQuestionByIndex(year, questionIndex);
+      return question.correctAlternative === selectedLetter;
     } catch (error) {
-        return false;
+      return false;
     }
   }
 }

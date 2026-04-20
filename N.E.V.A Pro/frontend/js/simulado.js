@@ -141,10 +141,11 @@ function renderQuestion() {
                 ${(q.alternatives || []).map((alt, i) => {
                     const letter = alt.letter || String.fromCharCode(65 + i);
                     const isSelected = userAnswers[currentIndex] === letter;
+                    const fileUrl = normalizeAssetUrl(alt.file);
                     return `
-                        <button class="alternative-btn ${isSelected ? 'selected' : ''}" onclick="selectAlternative('${letter}')">
+                        <button class="alternative-btn ${isSelected ? 'selected' : ''}" data-letter="${letter}" onclick="selectAlternative('${letter}')">
                             <div class="letter-pill">${letter}</div>
-                            <div style="flex: 1; text-align: left;">${alt.text ? formatQuestionText(alt.text) : (alt.file ? `<img src="${alt.file}" style="max-height: 100px;">` : '')}</div>
+                            <div style="flex: 1; text-align: left;">${alt.text ? formatQuestionText(alt.text) : (fileUrl ? `<span class="img-wrap"><img src="${fileUrl}" style="max-height: 120px;" loading="lazy" onerror="this.parentElement.classList.add('img-failed'); this.remove();"></span>` : '')}</div>
                         </button>
                     `;
                 }).join('')}
@@ -157,14 +158,41 @@ function renderQuestion() {
 
 function formatQuestionText(text) {
     if (!text) return '';
-    let output = text.replace(/!\[.*?\]\((.*?)\)/g, '<img src="$1" style="max-width: 100%; border-radius: 8px; margin: 15px 0;">');
+    let output = text.replace(/!\[.*?\]\((.*?)\)/g, (match, url) => {
+        const finalUrl = normalizeAssetUrl(url);
+        if (!finalUrl) return '';
+        if (String(finalUrl).includes('enem.dev/broken-image.svg')) {
+            return '<span class="img-wrap img-failed"></span>';
+        }
+        return `<span class="img-wrap"><img src="${finalUrl}" loading="lazy" onerror="this.parentElement.classList.add('img-failed'); this.remove();" alt="Imagem da questão"></span>`;
+    });
     output = output.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     return output;
 }
 
+function normalizeAssetUrl(url) {
+    if (!url) return '';
+    const trimmed = String(url).trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('//')) return `https:${trimmed}`;
+    return trimmed;
+}
+
 function selectAlternative(letter) {
     userAnswers[currentIndex] = letter;
-    renderQuestion();
+
+    // Avoid full re-render to prevent screen "blink" on tap/click.
+    const container = document.getElementById('question-container');
+    if (!container) return;
+
+    container.querySelectorAll('.alternative-btn').forEach((btn) => {
+        const btnLetter = btn.getAttribute('data-letter');
+        if (btnLetter === letter) {
+            btn.classList.add('selected');
+        } else {
+            btn.classList.remove('selected');
+        }
+    });
 }
 
 function nextQuestion() {
