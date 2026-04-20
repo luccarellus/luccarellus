@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3333/api/v1';
+    const API_BASE_URL = window.APP_CONFIG?.API_BASE_URL || 'http://localhost:3333/api/v1';
     const QUESTION_TARGET = 20;
     const PAGE_SIZE = 100;
     const MAX_OFFSET = 600;
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="animate-fade" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 4rem 2rem;">
                     <h2 class="font-bold" style="margin-bottom: 1rem;">Nao foi possivel carregar as 20 questoes reais</h2>
                     <p class="text-muted" style="margin-bottom: 1.5rem;">Verifique se o backend esta ativo e tente novamente.</p>
-                    <p class="text-sm text-muted" style="margin-bottom: 2rem;">Backend esperado: http://localhost:3333/api/v1</p>
+                    <p class="text-sm text-muted" style="margin-bottom: 2rem;">Backend esperado: ${API_BASE_URL}</p>
                     <button id="retry-load" class="btn btn-primary">Tentar Novamente</button>
                 </div>
             `;

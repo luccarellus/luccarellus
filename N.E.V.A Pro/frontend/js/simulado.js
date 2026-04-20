@@ -7,7 +7,7 @@ let currentYear = 2023;
 let currentDay = 1;
 let currentQuestionTotal = 0;
 
-const API_BASE_URL = 'http://localhost:3333/api/v1';
+const API_BASE_URL = window.APP_CONFIG?.API_BASE_URL || 'http://localhost:3333/api/v1';
 const QUESTIONS_PER_DISCIPLINE = 20;
 
 document.addEventListener('DOMContentLoaded', () => {

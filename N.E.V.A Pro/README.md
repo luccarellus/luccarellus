@@ -61,16 +61,22 @@ npm run install-all
 ### 2. Variáveis de Ambiente
 Crie um arquivo `.env` dentro da pasta `backend/` seguindo o modelo:
 ```env
-# Configurações do Banco de Dados
-DATABASE_URL="postgresql://USUARIO:SENHA@localhost:5432/NOME_DO_BANCO?schema=public"
+# Pooler do Supabase (ideal para runtime em produção/serverless)
+DATABASE_URL="postgresql://postgres:SUA_SENHA@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1&sslmode=require"
+
+# Conexão direta (usada por migrações/prisma)
+DIRECT_URL="postgresql://postgres:SUA_SENHA@db.<PROJECT_REF>.supabase.co:5432/postgres?sslmode=require"
 
 # Configurações do Servidor
 PORT=3333
+NODE_ENV=production
 
-# (Opcional) Redis para Cache
-REDIS_HOST="localhost"
-REDIS_PORT=6379
+# (Opcional) Chaves do Supabase para futuras integrações de Auth/Storage
+SUPABASE_URL="https://<PROJECT_REF>.supabase.co"
+SUPABASE_ANON_KEY="SUA_ANON_KEY"
 ```
+
+> Dica: você pode copiar `backend/.env.example` e preencher os valores reais.
 
 ### 3. Configurar o Banco de Dados (Prisma)
 Acesse a pasta do backend e prepare as tabelas:
@@ -78,6 +84,21 @@ Acesse a pasta do backend e prepare as tabelas:
 cd backend
 npm run prisma:generate  # Gera o client do Prisma
 npm run prisma:push      # Sincroniza o schema com o PostgreSQL
+```
+
+### 3.1 Configurar URL da API no Frontend (deploy)
+No frontend estático, a URL da API é lida do arquivo `frontend/js/config.js`.
+
+Para produção, copie o exemplo e ajuste:
+```bash
+cp frontend/js/config.example.js frontend/js/config.js
+```
+
+Depois edite para algo como:
+```js
+window.APP_CONFIG = {
+  API_BASE_URL: 'https://SEU_BACKEND.onrender.com/api/v1',
+};
 ```
 
 ### 4. Rodar a Aplicação
@@ -95,6 +116,37 @@ npm run dev
 | **Frontend (Aplicação)** | http://localhost:3000 |
 | **Backend (API Base)** | http://localhost:3333/api/v1 |
 | **Swagger (Docs da API)** | http://localhost:3333/docs |
+
+---
+
+## ☁️ Deploy com Supabase + Render + Vercel
+
+Guia rapido e completo: `DEPLOY_SUPABASE.md`
+
+### 1) Banco no Supabase
+- Crie um projeto no Supabase.
+- Pegue `DATABASE_URL` (pooler) e `DIRECT_URL` (direct) em `Settings > Database`.
+- No backend, configure essas variáveis e rode:
+
+```bash
+cd backend
+npm run prisma:generate
+npm run prisma:push
+```
+
+### 2) Backend NestJS no Render
+- Crie um `Web Service` apontando para a pasta `backend`.
+- Build command: `npm install && npm run build`
+- Start command: `npm run start`
+- Environment variables: `DATABASE_URL`, `DIRECT_URL`, `PORT`, `NODE_ENV`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
+
+### 3) Frontend no Vercel
+- Publique a pasta `frontend` como projeto estático.
+- Antes do deploy, ajuste `frontend/js/config.js` com a URL pública do backend.
+
+### 4) Validação rápida
+- Abra `https://SEU_BACKEND/docs`.
+- No frontend publicado, valide telas de `Questões`, `Simulado` e `Ranking`.
 
 ---
 
