@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RankingModule } from './modules/ranking/ranking.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './modules/users/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { QuestionModule } from './modules/questions/questions.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
 import { NotificationModule } from './modules/notifications/notifications.module';
@@ -31,7 +31,7 @@ import { BullModule } from '@nestjs/bullmq';
     }),
     */
     AuthModule,
-    UserModule,
+    UsersModule,
     QuestionModule,
     RankingModule,
     GamificationModule,

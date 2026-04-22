@@ -1,9 +1,9 @@
 /**
- * ENEM Pro — Gamification Engine
+ * N.E.V.A Pro — Gamification Engine
  * Manages XP, levels, streaks and achievements via localStorage.
  */
 
-const STORAGE_KEY = 'enemPro_user';
+const STORAGE_KEY = 'nevaPro_user';
 const XP_PER_LEVEL = 1000;
 
 const DEFAULT_USER = {
@@ -181,7 +181,7 @@ export function showLevelUpModal(newLevel) {
             <div class="level-up-icon">🏆</div>
             <h2 class="level-up-title">SUBIU DE NÍVEL!</h2>
             <div class="level-up-badge">Nível ${newLevel}</div>
-            <p class="level-up-sub">Continue assim! Você está no caminho certo para o ENEM.</p>
+            <p class="level-up-sub">Continue assim! Você está no caminho certo para o sucesso.</p>
             <button class="btn-primary level-up-btn" onclick="document.getElementById('level-up-modal').remove()">
                 Continuar estudando ⚡
             </button>

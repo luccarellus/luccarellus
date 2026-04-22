@@ -1,37 +1,486 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM Pro | Calendário</title>
+    <title>N.E.V.A Pro | Calendário</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .calendar-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: start;
+            padding: 10px;
+            border-radius: 24px;
+            background: radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(0, 168, 163, 0.05), transparent 50%);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.04);
+        }
+
+        .calendar-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .calendar-page-header > div:first-child {
+            min-width: 0;
+        }
+
+        .calendar-page-title {
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .calendar-page-cta {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            white-space: nowrap;
+            box-shadow: 0 12px 24px rgba(47, 155, 152, 0.18);
+        }
+
+        .calendar-page-cta i {
+            width: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .calendar-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--purple));
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+            line-height: 1;
+            padding: 0;
+        }
+
+        .nav-btn.nav-btn-text {
+            width: auto;
+            min-width: 72px;
+            padding: 0 16px;
+            height: 38px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: rgba(0, 207, 200, 0.06);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            margin-top: 0;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .current-month {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .day-label {
+            background: rgba(0, 207, 200, 0.03);
+            padding: 12px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 0.05em;
+        }
+
+        .day-cell {
+            background: var(--bg-card);
+            min-height: 96px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: background 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .day-cell:hover {
+            background: rgba(0, 207, 200, 0.02);
+        }
+
+        .day-cell.other-month {
+            background: rgba(15, 23, 42, 0.02);
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .day-cell.today {
+            background: #e0fdfc;
+            box-shadow: inset 0 0 0 1px rgba(0, 207, 200, 0.12);
+        }
+
+        .day-cell.today .day-number {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-number {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .event-tag {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+        }
+
+        .event-simulado { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-left: 3px solid var(--danger); }
+        .event-revisao { background: rgba(245, 158, 11, 0.1); color: var(--accent); border-left: 3px solid var(--accent); }
+        .event-redacao { background: rgba(16, 185, 129, 0.1); color: var(--success); border-left: 3px solid var(--success); }
+        .event-mentoria { background: rgba(139, 92, 246, 0.1); color: var(--purple); border-left: 3px solid var(--purple); }
+
+        .upcoming-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .event-item {
+            display: flex;
+            gap: 16px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-item:hover {
+            transform: translateX(4px);
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-md);
+        }
+
+        .event-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--purple));
+            opacity: 0.9;
+        }
+
+        .event-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 207, 200, 0.05);
+            border: 1px solid rgba(0, 207, 200, 0.1);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .event-date .day { font-weight: 800; font-size: 1.1rem; color: var(--text-primary); }
+        .event-date .month { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+
+        .event-info h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; color: var(--text-primary); }
+        .event-info p { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
+
+        @media (max-width: 1200px) {
+            .calendar-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calendar-layout {
+                padding: 0;
+                gap: 18px;
+            }
+
+            .calendar-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 18px;
+            }
+
+            .calendar-nav {
+                width: 100%;
+            }
+
+            .calendar-page-header {
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .calendar-page-cta {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            .nav-btn {
+                height: 40px;
+            }
+
+            .nav-btn.nav-btn-text {
+                flex: 1;
+                min-width: 0;
+                height: 40px;
+            }
+
+            .day-cell {
+                min-height: 84px;
+                padding: 8px;
+                gap: 4px;
+            }
+
+            .day-number {
+                margin-bottom: 2px;
+            }
+
+            .event-tag {
+                font-size: 0.65rem;
+                padding: 4px 6px;
+            }
+
+            .event-item {
+                padding: 14px;
+            }
+
+            .event-date {
+                width: 46px;
+                height: 46px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="app-container">
+        <!-- Sidebar Container (Injected by main.js) -->
         <div id="sidebar-container"></div>
 
         <div class="main-wrapper">
+            <!-- Navbar Container (Injected by main.js) -->
             <div id="navbar-container"></div>
 
             <main class="content">
                 <section class="animate-fade">
-                    <div class="page-header">
-                        <h2>Calendário</h2>
-                        <p>Planeje sua semana e acompanhe metas e revisões.</p>
+                    <div class="page-header calendar-page-header">
+                        <div>
+                            <h2 class="calendar-page-title">Cronograma de Estudos 📅</h2>
+                            <p>Organize sua rotina e não perca prazos importantes.</p>
+                        </div>
+                        <button class="btn btn-primary calendar-page-cta"><i data-lucide="plus"></i> Novo Evento</button>
                     </div>
 
-                    <div class="card" style="padding: 2rem; display: flex; align-items: flex-start; gap: 16px;">
-                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(100,116,139,0.14); color: #64748b; display: flex; align-items: center; justify-content: center; flex: 0 0 auto;">
-                            <i data-lucide="construction" style="width: 22px;"></i>
+                    <div class="calendar-layout">
+                        <!-- Main Calendar -->
+                        <div class="calendar-card">
+                            <div class="calendar-header">
+                                <div class="current-month">Abril 2026</div>
+                                <div class="calendar-nav">
+                                    <button class="nav-btn"><i data-lucide="chevron-left"></i></button>
+                                    <button class="nav-btn nav-btn-text">Hoje</button>
+                                    <button class="nav-btn"><i data-lucide="chevron-right"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="calendar-grid">
+                                <!-- Day Labels -->
+                                <div class="day-label">Dom</div>
+                                <div class="day-label">Seg</div>
+                                <div class="day-label">Ter</div>
+                                <div class="day-label">Qua</div>
+                                <div class="day-label">Qui</div>
+                                <div class="day-label">Sex</div>
+                                <div class="day-label">Sáb</div>
+
+                                <!-- Calendar Days (Simulated for April 2026) -->
+                                <!-- Row 1 -->
+                                <div class="day-cell other-month"><span class="day-number">29</span></div>
+                                <div class="day-cell other-month"><span class="day-number">30</span></div>
+                                <div class="day-cell other-month"><span class="day-number">31</span></div>
+                                <div class="day-cell"><span class="day-number">1</span></div>
+                                <div class="day-cell"><span class="day-number">2</span><span class="event-tag event-revisao">Revisão Bio</span></div>
+                                <div class="day-cell"><span class="day-number">3</span></div>
+                                <div class="day-cell"><span class="day-number">4</span></div>
+
+                                <!-- Row 2 -->
+                                <div class="day-cell"><span class="day-number">5</span></div>
+                                <div class="day-cell"><span class="day-number">6</span></div>
+                                <div class="day-cell"><span class="day-number">7</span><span class="event-tag event-simulado">Simulado #04</span></div>
+                                <div class="day-cell"><span class="day-number">8</span></div>
+                                <div class="day-cell"><span class="day-number">9</span><span class="event-tag event-redacao">Redação</span></div>
+                                <div class="day-cell"><span class="day-number">10</span></div>
+                                <div class="day-cell"><span class="day-number">11</span></div>
+
+                                <!-- Row 3 -->
+                                <div class="day-cell"><span class="day-number">12</span></div>
+                                <div class="day-cell"><span class="day-number">13</span></div>
+                                <div class="day-cell"><span class="day-number">14</span></div>
+                                <div class="day-cell"><span class="day-number">15</span><span class="event-tag event-mentoria">Mentoria Live</span></div>
+                                <div class="day-cell"><span class="day-number">16</span></div>
+                                <div class="day-cell"><span class="day-number">17</span></div>
+                                <div class="day-cell"><span class="day-number">18</span></div>
+
+                                <!-- Row 4 -->
+                                <div class="day-cell"><span class="day-number">19</span></div>
+                                <div class="day-cell"><span class="day-number">20</span><span class="event-tag event-revisao">Rev. História</span></div>
+                                <div class="day-cell"><span class="day-number">21</span></div>
+                                <div class="day-cell today"><span class="day-number">22</span><span class="event-tag event-simulado">Simulado ENEM</span></div>
+                                <div class="day-cell"><span class="day-number">23</span></div>
+                                <div class="day-cell"><span class="day-number">24</span></div>
+                                <div class="day-cell"><span class="day-number">25</span></div>
+
+                                <!-- Row 5 -->
+                                <div class="day-cell"><span class="day-number">26</span></div>
+                                <div class="day-cell"><span class="day-number">27</span></div>
+                                <div class="day-cell"><span class="day-number">28</span></div>
+                                <div class="day-cell"><span class="day-number">29</span><span class="event-tag event-redacao">Redação #08</span></div>
+                                <div class="day-cell"><span class="day-number">30</span></div>
+                                <div class="day-cell other-month"><span class="day-number">1</span></div>
+                                <div class="day-cell other-month"><span class="day-number">2</span></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-bold" style="margin-bottom: 6px;">Tela indisponível no momento</h3>
-                            <p class="text-muted" style="line-height: 1.6; margin-bottom: 14px;">
-                                Estamos construindo o calendário de estudos para organizar sua rotina, revisões e simulados.
-                                Em breve esta tela será implementada e disponibilizada ao público.
-                            </p>
-                            <a href="index.html" class="btn btn-primary">Voltar ao Dashboard</a>
+
+                        <!-- Sidebar: Upcoming -->
+                        <div class="upcoming-panel">
+                            <h3 class="font-bold" style="font-size: 1.1rem; margin-bottom: 4px;">Próximos Eventos</h3>
+                            <p class="text-sm text-muted" style="margin-bottom: 20px;">Você tem 4 eventos nesta semana.</p>
+
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="day">22</span>
+                                    <span class="month">Abr</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Simulado Global ENEM</h4>
+                                    <p><i data-lucide="clock" style="width: 12px; vertical-align: middle;"></i> 13:00 - 18:30</p>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-date" style="background: #ede9fe; color: #7c3aed;">
+                                    <span class="day">25</span>
+                                    <span class="month">Abr</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Mentoria Estratégica</h4>
+                                    <p><i data-lucide="video" style="width: 12px; vertical-align: middle;"></i> Meet Online</p>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="day">29</span>
+                                    <span class="month">Abr</span>
+                                </div>
+                                <div class="event-info">
+                                    <h4>Entrega de Redação</h4>
+                                    <p><i data-lucide="file-text" style="width: 12px; vertical-align: middle;"></i> Eixo Temático: Social</p>
+                                </div>
+                            </div>
+
+                            <div class="card" style="margin-top: auto; background: #f8fafc;">
+                                <h4 class="font-bold" style="font-size: 0.9rem; margin-bottom: 8px;">Dica do Dia 💡</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">A revisão intercalada aumenta a retenção de conteúdo em até 60%. Use as tags amarelas para planejar suas revisões!</p>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -40,6 +489,9 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
-</html>
 
+</html>

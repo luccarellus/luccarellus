@@ -1,6 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check for session
+    const sessionRaw = localStorage.getItem('nevapro_session');
+    if (!sessionRaw && !window.location.pathname.includes('login.html')) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    if (sessionRaw) {
+        window.USER_SESSION = JSON.parse(sessionRaw);
+    }
+
     // 1. Initialize Components (Sidebar/Navbar)
-    initLayout();
+    await initLayout();
     
     // 2. Initialize Icons
     if (window.lucide) {
@@ -9,9 +20,61 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 3. Dashboard Data Simulation
     initDashboard();
+
+    // Refresh profile data in the background so navigation doesn't block first paint.
+    if (sessionRaw) {
+        fetchUserProfile()
+            .then(async () => {
+                const settings = await loadSettings();
+                applySettingsToUI(settings);
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            })
+            .catch(() => {});
+    }
 });
 
-const SETTINGS_STORAGE_KEY = 'enempro_settings_v1';
+const SETTINGS_STORAGE_KEY = 'nevapro_settings_v1';
+const API_BASE_URL =
+  window.APP_CONFIG?.API_BASE_URL ||
+  (['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3333/api/v1'
+    : '/api/v1');
+
+async function fetchUserProfile() {
+    const sessionRaw = localStorage.getItem('nevapro_session');
+    if (!sessionRaw) return null;
+    const session = JSON.parse(sessionRaw);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+            headers: {
+                'Authorization': `Bearer ${session.access_token}`
+            }
+        });
+
+        if (response.ok) {
+            const userData = await response.json();
+            // Update session with fresh data
+            session.user = userData;
+            localStorage.setItem('nevapro_session', JSON.stringify(session));
+            window.USER_SESSION = session;
+            return userData;
+        } else if (response.status === 401) {
+            // Token expired or invalid
+            handleLogout();
+        }
+    } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+    }
+    return session.user;
+}
+
+function handleLogout() {
+    localStorage.removeItem('nevapro_session');
+    window.location.href = 'login.html';
+}
 
 function getDefaultSettings() {
     return {
@@ -27,24 +90,65 @@ function getDefaultSettings() {
     };
 }
 
-function loadSettings() {
+async function loadSettings() {
     try {
         const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
-        if (!raw) return getDefaultSettings();
-        const parsed = JSON.parse(raw);
-        return { ...getDefaultSettings(), ...parsed };
+        // We ensure we have the latest session data
+        const session = window.USER_SESSION || (localStorage.getItem('nevapro_session') ? JSON.parse(localStorage.getItem('nevapro_session')) : null);
+        let settings = getDefaultSettings();
+        
+        if (raw) {
+            settings = { ...settings, ...JSON.parse(raw) };
+        }
+        
+        // Overwrite/Fallback with session data
+        if (session?.user) {
+            settings.displayName = session.user.name || settings.displayName;
+            settings.email = session.user.email || settings.email;
+        }
+        
+        return settings;
     } catch (e) {
         return getDefaultSettings();
     }
 }
 
-function saveSettings(settings) {
+async function saveSettings(settings) {
     localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    
+    // Also update on backend if session exists
+    const session = window.USER_SESSION;
+    if (session?.access_token) {
+        try {
+            await fetch(`${API_BASE_URL}/users/me`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({
+                    name: settings.displayName
+                })
+            });
+            // Refresh profile after update
+            await fetchUserProfile();
+        } catch (error) {
+            console.error('Failed to update profile on server:', error);
+        }
+    }
 }
 
 function applySettingsToUI(settings) {
     const nameEl = document.getElementById('nav-username');
-    if (nameEl) nameEl.textContent = settings.displayName || 'User Name';
+    const levelEl = document.querySelector('.user-profile .text-muted');
+    const session = window.USER_SESSION;
+
+    if (nameEl) {
+        nameEl.textContent = session?.user?.name || settings.displayName || 'Estudante';
+    }
+    if (levelEl && session?.user) {
+        levelEl.textContent = `Nível ${session.user.level || 1}`;
+    }
 
     const root = document.documentElement;
     if (settings.theme === 'light' || settings.theme === 'dark') {
@@ -60,36 +164,36 @@ function applySettingsToUI(settings) {
     }
 }
 
-function initLayout() {
+async function initLayout() {
     const sidebarContainer = document.getElementById('sidebar-container');
     const navbarContainer = document.getElementById('navbar-container');
-    const settings = loadSettings();
+    const settings = await loadSettings();
 
     if (sidebarContainer) {
         sidebarContainer.innerHTML = `
             <div class="sidebar">
                 <div class="sidebar-header">
-                    <div class="logo-icon">E</div>
-                    <h1 class="font-bold text-xl text-blue">ENEM<span style="color: var(--text-primary)">Pro</span></h1>
+                    <img src="assets/logo.png" alt="N.E.V.A Pro Logo" class="logo-img" style="width: 45px; height: 45px; margin-right: 12px;">
+                    <h1 class="font-bold text-xl text-brand">N.E.V.A<span style="color: var(--text-primary)"> Pro</span></h1>
                 </div>
                 <nav class="sidebar-nav">
                     <a href="index.html" class="nav-item ${window.location.pathname.includes('index.html') || window.location.pathname === '/' ? 'active' : ''}" data-route="dashboard">
-                        <i data-lucide="layout-dashboard" class="text-blue"></i> Dashboard
+                        <i data-lucide="layout-dashboard" style="color: #2f9b98;"></i> Dashboard
                     </a>
                     <a href="questoes.html" class="nav-item ${window.location.pathname.includes('questoes.html') ? 'active' : ''}">
-                        <i data-lucide="book-open" style="color: #8b5cf6"></i> Questões
+                        <i data-lucide="book-open" style="color: #2563eb"></i> Questões
                     </a>
                     <a href="simulado.html" class="nav-item ${window.location.pathname.includes('simulado.html') ? 'active' : ''}">
-                        <i data-lucide="file-text" style="color: #db2777"></i> Simulados
+                        <i data-lucide="file-text" style="color: #0284c7"></i> Simulados
                     </a>
                     <a href="ranking.html" class="nav-item ${window.location.pathname.includes('ranking.html') ? 'active' : ''}">
-                        <i data-lucide="trophy" style="color: #ea580c"></i> Ranking
+                        <i data-lucide="trophy" style="color: #d97706"></i> Ranking
                     </a>
                     <a href="materiais.html" class="nav-item ${window.location.pathname.includes('materiais.html') ? 'active' : ''}">
-                        <i data-lucide="files" style="color: #10b981"></i> Materiais
+                        <i data-lucide="files" style="color: #059669"></i> Materiais
                     </a>
                     <a href="mural.html" class="nav-item ${window.location.pathname.includes('mural.html') ? 'active' : ''}">
-                        <i data-lucide="message-square" style="color: #3b82f6"></i> Mural
+                        <i data-lucide="message-square" style="color: #8b5cf6"></i> Mural
                     </a>
                     <a href="calendario.html" class="nav-item ${window.location.pathname.includes('calendario.html') ? 'active' : ''}">
                         <i data-lucide="calendar" style="color: #64748b"></i> Calendário
@@ -97,7 +201,11 @@ function initLayout() {
                 </nav>
                 <div class="sidebar-footer">
                     <a href="#" class="nav-item" id="btn-settings"><i data-lucide="settings"></i> Configurações</a>
-                    <a href="login.html" class="nav-item text-red" style="color: #ef4444"><i data-lucide="log-out"></i> Sair</a>
+                    <a href="login.html" class="nav-item text-red" style="color: #ef4444" id="btn-logout"><i data-lucide="log-out"></i> Sair</a>
+                </div>
+                <div class="footer-sidebar">
+                    <p>Instituto Olhar Jovem</p>
+                    <p>Copyright © Todos os direitos reservados.</p>
                 </div>
             </div>
         `;
@@ -125,7 +233,7 @@ function initLayout() {
                             </div>
                             <div class="notification-list">
                                 <div class="notification-item unread">
-                                    <div class="notification-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="arrow-upCircle" style="width: 20px;"></i></div>
+                                    <div class="notification-icon" style="background: rgba(0, 207, 200, 0.1); color: var(--primary);"><i data-lucide="arrow-upCircle" style="width: 20px;"></i></div>
                                     <div class="notification-content">
                                         <p><strong>+500 XP!</strong> Você finalizou o simulado de Linguagens #4.</p>
                                         <span class="notification-time">1h atrás</span>
@@ -153,7 +261,7 @@ function initLayout() {
                             <p class="font-bold text-sm" id="nav-username">User Name</p>
                             <p class="text-muted" style="font-size: 0.7rem;">Nível 15</p>
                         </div>
-                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(to top right, #2563eb, #38bdf8); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(to top right, #006d69, #00cfc8); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0, 207, 200, 0.3);">
                             <i data-lucide="user" style="width: 20px;"></i>
                         </div>
                     </div>
@@ -335,10 +443,18 @@ function setupInteractiveFeatures() {
         });
     }
 
+    // Logout Logic
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+            localStorage.removeItem('nevapro_session');
+        });
+    }
+
     initSettingsModal();
 }
 
-function initSettingsModal() {
+async function initSettingsModal() {
     const modal = document.getElementById('settings-modal');
     if (!modal) return;
 
@@ -347,7 +463,7 @@ function initSettingsModal() {
     const tabButtons = Array.from(modal.querySelectorAll('.modal-nav-item[data-tab]'));
     const panels = Array.from(modal.querySelectorAll('[data-settings-panel]'));
 
-    const current = loadSettings();
+    const current = await loadSettings();
 
     function setStatus(text) {
         if (!statusEl) return;
@@ -425,9 +541,9 @@ function initSettingsModal() {
 
     const saveBtn = document.getElementById('settings-save');
     if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
+        saveBtn.addEventListener('click', async () => {
             const next = readForm();
-            saveSettings(next);
+            await saveSettings(next);
             applySettingsToUI(next);
             setStatus('Configurações salvas.');
         });
@@ -435,9 +551,9 @@ function initSettingsModal() {
 
     const resetBtn = document.getElementById('settings-reset');
     if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
+        resetBtn.addEventListener('click', async () => {
             const defaults = getDefaultSettings();
-            saveSettings(defaults);
+            await saveSettings(defaults);
             populateForm(defaults);
             applySettingsToUI(defaults);
             setStatus('Padrões restaurados.');
@@ -450,6 +566,28 @@ function initSettingsModal() {
 }
 
 function initDashboard() {
+    const session = window.USER_SESSION;
+    
+    // Welcome message
+    const welcomeEl = document.getElementById('dashboard-welcome-title');
+    if (welcomeEl && session?.user) {
+        welcomeEl.textContent = `Bem-vindo, ${session.user.name.split(' ')[0]}! 👋`;
+    }
+
+    // Stats Grid updates
+    const streakEl = document.getElementById('dashboard-streak');
+    const levelEl = document.getElementById('dashboard-level');
+    const xpEl = document.getElementById('dashboard-xp');
+    const questionsEl = document.getElementById('dashboard-questions');
+
+    if (session?.user) {
+        if (streakEl) streakEl.textContent = `${session.user.current_streak || 0} Dias de Streak`;
+        if (levelEl) levelEl.textContent = session.user.level || 1;
+        if (xpEl) xpEl.textContent = (session.user.total_xp || 0).toLocaleString('pt-BR');
+        // Questions solved might need a separate API call later, but for now we can use a mock or add it to user model
+        if (questionsEl) questionsEl.textContent = session.user.questions_resolved || 0;
+    }
+
     // ENEM countdown (updates automatically by year; 2026 is explicitly defined)
     const countdownEl = document.getElementById('enem-countdown');
     if (countdownEl) {
@@ -460,11 +598,11 @@ function initDashboard() {
         const dateLabel = formatDatePtBr(schedule.nextDate);
 
         if (days === 0) {
-            countdownEl.textContent = `Hoje é o ENEM (${dayLabel})! Boa prova.`;
+            countdownEl.textContent = `Hoje é a Prova (${dayLabel})! Boa sorte.`;
         } else if (days === 1) {
-            countdownEl.textContent = `Você está a 1 dia do ENEM (${dayLabel} - ${dateLabel}). Mantenha o foco!`;
+            countdownEl.textContent = `Você está a 1 dia da Prova (${dayLabel} - ${dateLabel}). Mantenha o foco!`;
         } else {
-            countdownEl.textContent = `Você está a ${days} dias do ENEM (${dayLabel} - ${dateLabel}). Mantenha o foco!`;
+            countdownEl.textContent = `Você está a ${days} dias da Prova (${dayLabel} - ${dateLabel}). Mantenha o foco!`;
         }
     }
 
@@ -545,7 +683,7 @@ function openWeeklyDetailsModal(data) {
                     <div class="modal-body" style="padding: 1.75rem;">
                         <div class="weekly-modal-top">
                             <div>
-                                <div class="badge badge-blue" style="margin-bottom: 10px;"><i data-lucide="bar-chart-3" style="width: 14px;"></i> Semana</div>
+                                <div class="badge badge-brand" style="margin-bottom: 10px;"><i data-lucide="bar-chart-3" style="width: 14px;"></i> Semana</div>
                                 <h3 class="font-bold text-lg" style="margin-bottom: 4px;">Detalhes do Progresso Semanal</h3>
                                 <div class="text-muted" style="font-size: 0.85rem;">Entenda seu ritmo e ajuste a sua meta.</div>
                             </div>

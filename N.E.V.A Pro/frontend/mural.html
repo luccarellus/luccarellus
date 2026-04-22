@@ -1,37 +1,472 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM Pro | Mural</title>
+    <title>N.E.V.A Pro | Mural</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .mural-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            align-items: start;
+            padding: 10px;
+            border-radius: 24px;
+            background: radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(0, 168, 163, 0.05), transparent 50%);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.04);
+        }
+
+        .mural-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .mural-page-header > div:first-child {
+            min-width: 0;
+        }
+
+        .mural-page-title {
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .mural-page-cta {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            white-space: nowrap;
+            box-shadow: 0 12px 24px rgba(47, 155, 152, 0.18);
+        }
+
+        .mural-page-cta i {
+            width: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .mural-filters {
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .filter-item:hover {
+            background: rgba(0, 207, 200, 0.05);
+            color: var(--primary);
+            transform: translateX(2px);
+        }
+
+        .filter-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 24px rgba(0, 207, 200, 0.25);
+        }
+
+        .mural-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .mural-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 22px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mural-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+
+        .mural-card.featured {
+            background:
+                radial-gradient(circle at top right, rgba(0, 207, 200, 0.06), transparent 34%),
+                linear-gradient(to bottom right, var(--bg-card), rgba(0, 207, 200, 0.02));
+        }
+
+        .mural-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--purple));
+        }
+
+        .mural-card.featured::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 207, 200, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .author-details h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .author-details span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-info { background: rgba(0, 207, 200, 0.1); color: var(--primary); border: 1px solid rgba(0, 207, 200, 0.2); }
+        .badge-warning { background: rgba(245, 158, 11, 0.1); color: var(--accent); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+
+        .card-content h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .card-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .card-footer.actions-between {
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .footer-action:hover {
+            color: var(--primary);
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 12px;
+        }
+
+        .challenge-box h5 {
+            color: #38bdf8;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .button-row .btn {
+            min-height: 42px;
+            padding-inline: 1rem;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .sidebar-cta {
+            margin-top: 4px;
+        }
+
+        @media (max-width: 992px) {
+            .mural-grid {
+                grid-template-columns: 1fr;
+            }
+            .mural-filters {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mural-grid {
+                padding: 0;
+                gap: 18px;
+            }
+
+            .mural-page-header {
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .mural-page-cta {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            .mural-feed {
+                gap: 16px;
+            }
+
+            .mural-card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .card-header {
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            .button-row {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                margin-bottom: 12px;
+            }
+
+            .button-row .btn {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            .card-footer {
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .card-footer.actions-between {
+                align-items: stretch;
+            }
+
+            .card-footer.actions-between .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="app-container">
+        <!-- Sidebar Container (Injected by main.js) -->
         <div id="sidebar-container"></div>
 
         <div class="main-wrapper">
+            <!-- Navbar Container (Injected by main.js) -->
             <div id="navbar-container"></div>
 
             <main class="content">
                 <section class="animate-fade">
-                    <div class="page-header">
-                        <h2>Mural</h2>
-                        <p>Avisos, conquistas e comunicados para a comunidade.</p>
+                    <div class="page-header mural-page-header">
+                        <div>
+                            <h2 class="mural-page-title">Mural da Comunidade 📢</h2>
+                            <p>Fique por dentro das novidades, avisos oficiais e desafios da semana.</p>
+                        </div>
+                        <button class="btn btn-primary mural-page-cta"><i data-lucide="megaphone"></i> Nova Publicação</button>
                     </div>
 
-                    <div class="card" style="padding: 2rem; display: flex; align-items: flex-start; gap: 16px;">
-                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(59,130,246,0.12); color: #3b82f6; display: flex; align-items: center; justify-content: center; flex: 0 0 auto;">
-                            <i data-lucide="construction" style="width: 22px;"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold" style="margin-bottom: 6px;">Tela indisponível no momento</h3>
-                            <p class="text-muted" style="line-height: 1.6; margin-bottom: 14px;">
-                                O mural será usado para mensagens, desafios semanais e novidades do projeto.
-                                Em breve ele estará implementado e disponível ao público.
-                            </p>
-                            <a href="index.html" class="btn btn-primary">Voltar ao Dashboard</a>
+                    <div class="mural-grid">
+                        <!-- Filters Sidebar -->
+                        <aside class="mural-filters">
+                            <div class="card" style="padding: 16px;">
+                                <h4 class="font-bold" style="margin-bottom: 16px; font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted);">Categorias</h4>
+                                <ul class="filter-list">
+                                    <li class="filter-item active"><i data-lucide="layers" style="width: 18px;"></i> Tudo</li>
+                                    <li class="filter-item"><i data-lucide="megaphone" style="width: 18px;"></i> Avisos Oficiais</li>
+                                    <li class="filter-item"><i data-lucide="zap" style="width: 18px;"></i> Desafios</li>
+                                    <li class="filter-item"><i data-lucide="award" style="width: 18px;"></i> Conquistas</li>
+                                    <li class="filter-item"><i data-lucide="message-circle" style="width: 18px;"></i> Discussões</li>
+                                </ul>
+                            </div>
+
+                            <div class="card" style="padding: 16px; margin-top: 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none;">
+                                <h4 class="font-bold" style="margin-bottom: 8px;">Destaque-se!</h4>
+                                <p style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 16px;">Complete os desafios semanais para aparecer no topo do mural.</p>
+                                <button class="btn btn-primary sidebar-cta" style="background: white; color: var(--primary); width: 100%; border: none;">Ver Ranking</button>
+                            </div>
+                        </aside>
+
+                        <!-- Main Feed -->
+                        <div class="mural-feed">
+                            <!-- Post 1: Announcement -->
+                            <article class="mural-card featured">
+                                <div class="card-header">
+                                    <div class="author-info">
+                                        <div class="author-avatar" style="background: var(--primary); color: white;">N</div>
+                                        <div class="author-details">
+                                            <h4>Equipe N.E.V.A Pro</h4>
+                                            <span>Há 2 horas • Oficial</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-info">Aviso</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Novo Simulado Nacional: Pré-ENEM 2026</h3>
+                                    <p>Estão abertas as inscrições para o nosso maior simulado do semestre. Teste seus conhecimentos em condições reais de prova e receba um relatório detalhado de desempenho.</p>
+                                    <div class="button-row">
+                                        <button class="btn btn-primary btn-sm">Inscrever-se</button>
+                                        <button class="btn btn-secondary btn-sm">Ver Edital</button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-action"><i data-lucide="heart" style="width: 16px;"></i> 124</div>
+                                    <div class="footer-action"><i data-lucide="message-square" style="width: 16px;"></i> 18 comentários</div>
+                                    <div class="footer-action" style="margin-left: auto;"><i data-lucide="share-2" style="width: 16px;"></i></div>
+                                </div>
+                            </article>
+
+                            <!-- Post 2: Challenge -->
+                            <article class="mural-card">
+                                <div class="card-header">
+                                    <div class="author-info">
+                                        <div class="author-avatar" style="background: #f59e0b; color: white;"><i data-lucide="zap" style="width: 18px;"></i></div>
+                                        <div class="author-details">
+                                            <h4>Desafio da Semana</h4>
+                                            <span>Expira em 3 dias</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-warning">Desafio</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Mestre da Matemática</h3>
+                                    <p>Resolva 50 questões de Matemática com pelo menos 90% de acerto para ganhar um emblema exclusivo e 2.000 XP extras.</p>
+                                    <div class="challenge-box">
+                                        <h5>Progresso Atual</h5>
+                                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 8px; overflow: hidden;">
+                                            <div style="width: 64%; height: 100%; background: #38bdf8;"></div>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                                            <span>32 / 50 questões</span>
+                                            <span>64%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer actions-between">
+                                    <div class="footer-action"><i data-lucide="users" style="width: 16px;"></i> 1.2k participando</div>
+                                    <button class="btn btn-sm" style="border: 1px solid var(--border);">Continuar</button>
+                                </div>
+                            </article>
+
+                            <!-- Post 3: Achievement -->
+                            <article class="mural-card">
+                                <div class="card-header">
+                                    <div class="author-info">
+                                        <div class="author-avatar">B</div>
+                                        <div class="author-details">
+                                            <h4>Bruno Luccarelli</h4>
+                                            <span>Há 5 horas</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-success">Conquista</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Nova Conquista: Inabalável! 🏆</h3>
+                                    <p>Acabo de completar meu 30º dia consecutivo de estudos no N.E.V.A Pro. Foco total para o ENEM!</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-action"><i data-lucide="thumbs-up" style="width: 16px;"></i> 45</div>
+                                    <div class="footer-action"><i data-lucide="award" style="width: 16px;"></i> Parabenizar</div>
+                                </div>
+                            </article>
                         </div>
                     </div>
                 </section>
@@ -40,6 +475,9 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
-</html>
 
+</html>

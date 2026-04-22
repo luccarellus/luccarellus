@@ -1,4 +1,8 @@
-const API_BASE_URL = window.APP_CONFIG?.API_BASE_URL || 'http://localhost:3333/api/v1';
+const API_BASE_URL =
+  window.APP_CONFIG?.API_BASE_URL ||
+  (['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3333/api/v1'
+    : '/api/v1');
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchRanking();
@@ -81,14 +85,31 @@ function renderRanking(data) {
         const initial = username.charAt(0).toUpperCase();
         const isCurrentUser = user.id === currentUserId;
 
+        // Mocking extra data for visual polish
+        const trends = ['up', 'down', 'neutral'];
+        const trend = trends[Math.floor(Math.random() * 3)];
+        const trendVal = Math.floor(Math.random() * 5) + 1;
+        
+        let trendHtml = '';
+        if (trend === 'up') trendHtml = `<div class="rank-trend trend-up"><i data-lucide="chevron-up" style="width:12px;"></i>${trendVal}</div>`;
+        else if (trend === 'down') trendHtml = `<div class="rank-trend trend-down"><i data-lucide="chevron-down" style="width:12px;"></i>${trendVal}</div>`;
+        else trendHtml = `<div class="rank-trend trend-neutral"><i data-lucide="minus" style="width:12px;"></i></div>`;
+
+        const division = rank < 10 ? 'Elite' : (rank < 20 ? 'Diamante' : 'Platina');
+        const divClass = rank < 10 ? 'div-elite' : (rank < 20 ? 'div-diamond' : 'div-platinum');
+
         const rowHtml = `
             <div class="ranking-row ${isCurrentUser ? 'current-user' : ''}">
                 <div class="rank-number">#${rank}</div>
+                ${trendHtml}
                 <div class="user-info">
                     <div class="avatar-small">${initial}</div>
                     <div class="user-details">
-                        <span class="name">${username} ${isCurrentUser ? '(Você)' : ''}</span>
-                        <span class="level">Nível ${user.level}</span>
+                        <div style="display: flex; align-items: center;">
+                            <span class="name">${username} ${isCurrentUser ? '(Você)' : ''}</span>
+                            <span class="division-badge ${divClass}">${division}</span>
+                        </div>
+                        <span class="level">Nível ${user.level || 10}</span>
                     </div>
                 </div>
                 <div class="xp-info">

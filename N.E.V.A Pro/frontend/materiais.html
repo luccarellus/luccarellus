@@ -1,12 +1,265 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM Pro | Materiais</title>
+    <title>N.E.V.A Pro | Materiais</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .materials-shell {
+            padding: 10px;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.08), transparent 30%);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.04);
+        }
+
+        .materials-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .materials-page-header > div:first-child {
+            min-width: 0;
+        }
+
+        .materials-page-title {
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .materials-page-cta {
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            white-space: nowrap;
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.16);
+        }
+
+        .materials-page-cta i {
+            width: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .materials-hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            padding: 30px;
+            background:
+                linear-gradient(135deg, rgba(37, 99, 235, 0.96), rgba(15, 23, 42, 0.96)),
+                var(--bg-card);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.18);
+        }
+
+        .materials-hero::before,
+        .materials-hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+        }
+
+        .materials-hero::before {
+            width: 180px;
+            height: 180px;
+            top: -40px;
+            right: -50px;
+        }
+
+        .materials-hero::after {
+            width: 120px;
+            height: 120px;
+            bottom: -50px;
+            left: 24px;
+        }
+
+        .materials-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 18px;
+        }
+
+        .materials-hero h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 12px;
+        }
+
+        .materials-hero p {
+            max-width: 640px;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.82);
+            margin-bottom: 22px;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .mini-card {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .mini-card strong {
+            display: block;
+            font-size: 1.05rem;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .mini-card span {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .materials-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .materials-actions .btn {
+            min-height: 44px;
+        }
+
+        .materials-card {
+            margin-top: 18px;
+            padding: 18px 20px;
+            border-radius: 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .materials-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.14);
+        }
+
+        .materials-card h3 {
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .materials-card p {
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 14px;
+        }
+
+        .materials-notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .materials-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .materials-page-header {
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .materials-page-cta {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            .materials-shell {
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: none;
+            }
+
+            .materials-hero {
+                padding: 22px;
+                border-radius: 20px;
+            }
+
+            .materials-actions {
+                width: 100%;
+            }
+
+            .materials-actions .btn {
+                width: 100%;
+            }
+
+            .materials-card {
+                padding: 16px;
+                border-radius: 16px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <div class="app-container">
         <div id="sidebar-container"></div>
@@ -16,22 +269,67 @@
 
             <main class="content">
                 <section class="animate-fade">
-                    <div class="page-header">
-                        <h2>Materiais</h2>
-                        <p>Resumos, PDFs e trilhas de estudo organizadas por assunto.</p>
+                    <div class="page-header materials-page-header">
+                        <div>
+                            <h2 class="materials-page-title">Materiais</h2>
+                            <p>Resumos, PDFs e trilhas de estudo organizadas por assunto.</p>
+                        </div>
+                        <a href="simulado.html" class="btn btn-secondary materials-page-cta"><i data-lucide="file-text"></i> Ir para Simulados</a>
                     </div>
 
-                    <div class="card" style="padding: 2rem; display: flex; align-items: flex-start; gap: 16px;">
-                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(16,185,129,0.12); color: #10b981; display: flex; align-items: center; justify-content: center; flex: 0 0 auto;">
-                            <i data-lucide="construction" style="width: 22px;"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold" style="margin-bottom: 6px;">Tela indisponível no momento</h3>
-                            <p class="text-muted" style="line-height: 1.6; margin-bottom: 14px;">
-                                Estamos preparando esta área para disponibilizar materiais oficiais e recomendações personalizadas.
-                                Em breve ela estará ativa para o público.
+                    <div class="materials-shell">
+                        <div class="materials-hero">
+                            <div class="materials-badge">
+                                <i data-lucide="sparkles" style="width: 16px;"></i>
+                                Em breve no N.E.V.A Pro
+                            </div>
+
+                            <h2>Uma biblioteca de estudos pensada para cada etapa da sua preparação.</h2>
+                            <p>
+                                Estamos finalizando a área de materiais com resumos, guias rápidos, listas temáticas e
+                                conteúdos organizados por disciplina para deixar sua rotina de estudos mais leve e direta.
                             </p>
-                            <a href="index.html" class="btn btn-primary">Voltar ao Dashboard</a>
+
+                            <div class="materials-actions">
+                                <a href="index.html" class="btn btn-primary">Voltar ao Dashboard</a>
+                                <a href="simulado.html" class="btn btn-secondary">Ir para Simulados</a>
+                            </div>
+
+                            <div class="materials-grid">
+                                <div class="mini-card">
+                                    <i data-lucide="book-open" style="width: 20px;"></i>
+                                    <strong>Resumos guiados</strong>
+                                    <span>Conteúdo direto ao ponto para revisão rápida antes das provas.</span>
+                                </div>
+                                <div class="mini-card">
+                                    <i data-lucide="file-text" style="width: 20px;"></i>
+                                    <strong>PDFs e apostilas</strong>
+                                    <span>Arquivos organizados por disciplina, tema e nível de dificuldade.</span>
+                                </div>
+                                <div class="mini-card">
+                                    <i data-lucide="target" style="width: 20px;"></i>
+                                    <strong>Trilhas inteligentes</strong>
+                                    <span>Sequências de estudo personalizadas conforme seu desempenho.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="materials-card">
+                            <div class="materials-icon">
+                                <i data-lucide="construction" style="width: 22px;"></i>
+                            </div>
+                            <div>
+                                <h3>Tela indisponível no momento</h3>
+                                <p>
+                                    Estamos preparando esta área para disponibilizar materiais oficiais e recomendações
+                                    personalizadas. Em breve ela estará ativa para o público.
+                                </p>
+                                <div class="materials-notes">
+                                    <span class="materials-note"><i data-lucide="shield-check" style="width: 14px;"></i> Conteúdo revisado</span>
+                                    <span class="materials-note"><i data-lucide="layout-grid" style="width: 14px;"></i> Organização por tema</span>
+                                    <span class="materials-note"><i data-lucide="zap" style="width: 14px;"></i> Acesso rápido</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -40,6 +338,9 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
-</html>
 
+</html>

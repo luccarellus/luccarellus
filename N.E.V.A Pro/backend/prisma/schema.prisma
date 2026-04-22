@@ -13,6 +13,8 @@ model users {
   name            String           @db.VarChar(255)
   email           String           @unique @db.VarChar(255)
   password_hash   String
+  auth_provider   String?          @db.VarChar(20)
+  provider_user_id String?         @db.VarChar(255)
   avatar_url      String?
   level           Int              @default(1)
   total_xp        Int              @default(0)
@@ -24,6 +26,7 @@ model users {
   xp_logs         xp_logs[]
   user_badges     user_badges[]
 
+  @@unique([auth_provider, provider_user_id])
   @@map("users")
 }
 

@@ -8,6 +8,7 @@ export class EnemApiService {
   private readonly localDataPath = path.join(process.cwd(), 'data', 'questions-data.json');
   private readonly timeoutMs = 12000;
   private readonly maxRetries = 2;
+  private readonly maxPageSize = 50;
 
   private getLocalData() {
     try {
@@ -42,7 +43,7 @@ export class EnemApiService {
   }
 
   private toLocalPayload(year: number, questions: any[], limit: number, offset: number) {
-    const safeLimit = Math.max(1, Number(limit || 20));
+    const safeLimit = Math.min(this.maxPageSize, Math.max(1, Number(limit || 20)));
     const safeOffset = Math.max(0, Number(offset || 0));
     const paged = questions.slice(safeOffset, safeOffset + safeLimit);
 
@@ -81,15 +82,17 @@ export class EnemApiService {
   }
 
   async getQuestions(year: number, limit: number = 20, offset: number = 0) {
+    const safeLimit = Math.min(this.maxPageSize, Math.max(1, Number(limit || 20)));
+    const safeOffset = Math.max(0, Number(offset || 0));
     try {
-      const response = await this.fetchWithRetry(`${this.baseUrl}/exams/${year}/questions?limit=${limit}&offset=${offset}`);
+      const response = await this.fetchWithRetry(`${this.baseUrl}/exams/${year}/questions?limit=${safeLimit}&offset=${safeOffset}`);
       return await response.json();
     } catch (error) {
       console.warn(`API externa falhou para questoes de ${year}, usando cache local.`);
       const local = this.getLocalData();
 
       if (local[year]?.questions) {
-        return this.toLocalPayload(year, local[year].questions, limit, offset);
+        return this.toLocalPayload(year, local[year].questions, safeLimit, safeOffset);
       }
 
       const allLocalQuestions = Object.keys(local)
@@ -104,10 +107,10 @@ export class EnemApiService {
 
       if (allLocalQuestions.length > 0) {
         console.warn(`Ano ${year} nao encontrado localmente. Usando cache combinado (${allLocalQuestions.length} questoes).`);
-        return this.toLocalPayload(year, allLocalQuestions, limit, offset);
+        return this.toLocalPayload(year, allLocalQuestions, safeLimit, safeOffset);
       }
 
-      return { metadata: { limit, offset, total: 0, hasMore: false }, questions: [] };
+      return { metadata: { limit: safeLimit, offset: safeOffset, total: 0, hasMore: false }, questions: [] };
     }
   }
 

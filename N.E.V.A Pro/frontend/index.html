@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM Pro | Dashboard</title>
+    <title>N.E.V.A Pro | Dashboard</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -24,16 +25,17 @@
                     <div
                         style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
                         <div>
-                            <h2
+                            <h2 id="dashboard-welcome-title"
                                 style="font-size: 1.875rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.5rem;">
                                 Bem-vindo, Estudante! 👋
                             </h2>
-                            <p id="enem-countdown" style="color: var(--text-secondary);">Carregando contagem regressiva do ENEM...</p>
+                            <p id="enem-countdown" style="color: var(--text-secondary);">Carregando contagem regressiva
+                                da Prova...</p>
                         </div>
                         <div class="card"
                             style="padding: 0.5rem 1rem; display: flex; align-items: center; border-radius: 12px;">
                             <i data-lucide="flame" style="color: #f97316; width: 20px; margin-right: 8px;"></i>
-                            <span class="font-bold text-sm">7 Dias de Streak</span>
+                            <span id="dashboard-streak" class="font-bold text-sm">0 Dias de Streak</span>
                         </div>
                     </div>
 
@@ -45,16 +47,16 @@
                                 <div style="padding: 6px; background: #fefce8; border-radius: 8px; color: #eab308;"><i
                                         data-lucide="zap" style="width: 16px;"></i></div>
                             </div>
-                            <div style="font-size: 1.5rem; font-weight: 800;">12</div>
+                            <div id="dashboard-level" style="font-size: 1.5rem; font-weight: 800;">1</div>
                             <p class="text-xs text-muted" style="margin-top: 5px;">Próximo nível em 450 XP</p>
                         </div>
                         <div class="card">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                                 <span class="text-sm font-bold text-muted">Total de XP</span>
-                                <div style="padding: 6px; background: #eff6ff; border-radius: 8px; color: #3b82f6;"><i
+                                <div style="padding: 6px; background: rgba(0, 207, 200, 0.1); border-radius: 8px; color: var(--primary);"><i
                                         data-lucide="trophy" style="width: 16px;"></i></div>
                             </div>
-                            <div style="font-size: 1.5rem; font-weight: 800;">12.450</div>
+                            <div id="dashboard-xp" style="font-size: 1.5rem; font-weight: 800;">0</div>
                             <p class="text-xs text-muted" style="margin-top: 5px;">+12% em relação a ontem</p>
                         </div>
                         <div class="card">
@@ -63,13 +65,13 @@
                                 <div style="padding: 6px; background: #ecfdf5; border-radius: 8px; color: #10b981;"><i
                                         data-lucide="check-circle-2" style="width: 16px;"></i></div>
                             </div>
-                            <div style="font-size: 1.5rem; font-weight: 800;">842</div>
+                            <div id="dashboard-questions" style="font-size: 1.5rem; font-weight: 800;">0</div>
                             <p class="text-xs text-muted" style="margin-top: 5px;">Média de 85% de acerto</p>
                         </div>
                         <div class="card">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                                 <span class="text-sm font-bold text-muted">Tempo de Estudo</span>
-                                <div style="padding: 6px; background: #f5f3ff; border-radius: 8px; color: #8b5cf6;"><i
+                                <div style="padding: 6px; background: rgba(0, 207, 200, 0.1); border-radius: 8px; color: var(--primary);"><i
                                         data-lucide="clock" style="width: 16px;"></i></div>
                             </div>
                             <div style="font-size: 1.5rem; font-weight: 800;">48h</div>
@@ -84,59 +86,59 @@
                             <div
                                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                                 <h3 class="font-bold">Progresso Semanal</h3>
-                                <a href="#" id="weekly-details-link" class="text-sm text-blue font-bold" style="text-decoration: none;">Ver
+                                <a href="#" id="weekly-details-link" class="text-sm text-brand font-bold"
+                                    style="text-decoration: none;">Ver
                                     detalhes <i data-lucide="arrow-up-right"
                                         style="width: 14px; vertical-align: middle;"></i></a>
                             </div>
-                            <div
-                                id="weekly-chart"
+                            <div id="weekly-chart"
                                 style="height: 200px; display: flex; align-items: flex-end; gap: 12px; padding: 0 10px;">
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="45"
-                                        style="width: 100%; background: #dbeafe; background: #dbeafe; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary-light); opacity: 0.3; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">seg</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="78"
-                                        style="width: 100%; background: #2563eb; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary); border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">ter</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="52"
-                                        style="width: 100%; background: #dbeafe; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary-light); opacity: 0.3; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">qua</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="90"
-                                        style="width: 100%; background: #2563eb; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary); border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">qui</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="65"
-                                        style="width: 100%; background: #dbeafe; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary-light); opacity: 0.3; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">sex</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="40"
-                                        style="width: 100%; background: #dbeafe; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary-light); opacity: 0.3; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">sáb</span>
                                 </div>
                                 <div
                                     style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                     <div class="progress-bar-fill" data-height="85"
-                                        style="width: 100%; background: #2563eb; border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
+                                        style="width: 100%; background: var(--primary); border-radius: 8px 8px 4px 4px; transition: height 1s ease; height: 0;">
                                     </div>
                                     <span class="text-xs text-muted">dom</span>
                                 </div>
@@ -154,7 +156,7 @@
                                         <p class="text-xs text-muted">Geometria Espacial</p>
                                     </div>
                                     <div style="text-align: right;">
-                                        <p class="text-xs font-bold text-blue">+50 XP</p>
+                                        <p class="text-xs font-bold text-brand">+50 XP</p>
                                         <p style="font-size: 10px; color: var(--text-muted);">2 min ago</p>
                                     </div>
                                 </div>
@@ -165,7 +167,7 @@
                                         <p class="text-xs text-muted">LINGUAGENS #4</p>
                                     </div>
                                     <div style="text-align: right;">
-                                        <p class="text-xs font-bold text-blue">+500 XP</p>
+                                        <p class="text-xs font-bold text-brand">+500 XP</p>
                                         <p style="font-size: 10px; color: var(--text-muted);">1h ago</p>
                                     </div>
                                 </div>
@@ -175,7 +177,7 @@
                                         <p class="text-xs text-muted">Agora em #12 no Global</p>
                                     </div>
                                     <div style="text-align: right;">
-                                        <p class="text-xs font-bold text-blue">Rank Up</p>
+                                        <p class="text-xs font-bold text-brand">Rank Up</p>
                                         <p style="font-size: 10px; color: var(--text-muted);">3h ago</p>
                                     </div>
                                 </div>

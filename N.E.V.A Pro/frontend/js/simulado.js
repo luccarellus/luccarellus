@@ -7,7 +7,11 @@ let currentYear = 2023;
 let currentDay = 1;
 let currentQuestionTotal = 0;
 
-const API_BASE_URL = window.APP_CONFIG?.API_BASE_URL || 'http://localhost:3333/api/v1';
+const API_BASE_URL =
+  window.APP_CONFIG?.API_BASE_URL ||
+  (['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3333/api/v1'
+    : '/api/v1');
 const QUESTIONS_PER_DISCIPLINE = 20;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -145,7 +149,7 @@ function renderQuestion() {
                     return `
                         <button class="alternative-btn ${isSelected ? 'selected' : ''}" data-letter="${letter}" onclick="selectAlternative('${letter}')">
                             <div class="letter-pill">${letter}</div>
-                            <div style="flex: 1; text-align: left;">${alt.text ? formatQuestionText(alt.text) : (fileUrl ? `<span class="img-wrap"><img src="${fileUrl}" style="max-height: 120px;" loading="lazy" onerror="this.parentElement.classList.add('img-failed'); this.remove();"></span>` : '')}</div>
+                            <div class="alternative-content">${alt.text ? formatQuestionText(alt.text) : (fileUrl ? `<span class="img-wrap"><img src="${fileUrl}" style="max-height: 120px;" loading="lazy" onerror="this.parentElement.classList.add('img-failed'); this.remove();"></span>` : '')}</div>
                         </button>
                     `;
                 }).join('')}

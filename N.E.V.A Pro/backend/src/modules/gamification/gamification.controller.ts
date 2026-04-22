@@ -1,11 +1,20 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common';
+import { GamificationService } from './gamification.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('Gamification')
 @Controller('gamification')
+@ApiBearerAuth()
 export class GamificationController {
+  constructor(private readonly gamificationService: GamificationService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('answer')
-  processAnswer(@Body() body: { isCorrect: boolean; consecutiveCorrect?: number }) {
+  @ApiOperation({ summary: 'Process a question answer and award XP' })
+  async processAnswer(@Request() req, @Body() body: { isCorrect: boolean; consecutiveCorrect?: number }) {
     const { isCorrect, consecutiveCorrect = 0 } = body;
+    const userId = req.user.userId;
 
     let xpEarned = 0;
     let reason = '';
@@ -29,6 +38,12 @@ export class GamificationController {
         reason = 'SERIE_BONUS';
         message = `🔥 Incrível! ${streak} acertos seguidos! Bônus de série!`;
       }
+
+      // Award XP in DB
+      await this.gamificationService.awardXp(userId, xpEarned, reason);
+      // Increment questions solved (assuming we add this to users table or a separate stats table)
+      // For now, let's just update the user record
+      await this.gamificationService.updateStreak(userId);
     } else {
       reason = 'QUESTION_WRONG';
       message = 'Resposta incorreta. Continue tentando!';
@@ -43,6 +58,7 @@ export class GamificationController {
   }
 
   @Get('xp-rules')
+  @ApiOperation({ summary: 'Get XP awarding rules' })
   getXpRules() {
     return {
       correctAnswer: 50,

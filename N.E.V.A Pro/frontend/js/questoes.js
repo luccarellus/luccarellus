@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = window.APP_CONFIG?.API_BASE_URL || 'http://localhost:3333/api/v1';
+const API_BASE_URL =
+  window.APP_CONFIG?.API_BASE_URL ||
+  (['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:3333/api/v1'
+    : '/api/v1');
     const QUESTION_TARGET = 20;
-    const PAGE_SIZE = 100;
-    const MAX_OFFSET = 600;
+    const PAGE_SIZE = 50;
+    const MAX_OFFSET = 500;
 
     let selectedYear = null;
     let selectedDiscipline = null;
@@ -139,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function startPractice() {
         mainContent.innerHTML = `
             <div style="text-align: center; padding: 5rem;">
-                <div class="logo-icon animate-pulse" style="margin: 0 auto 1.5rem;">E</div>
+                <img src="assets/logo.svg" class="animate-pulse" style="width: 60px; height: 60px; margin: 0 auto 1.5rem; display: block;">
                 <p class="font-bold">Buscando 20 questoes reais do ENEM...</p>
                 <p class="text-sm text-muted">Ano: ${selectedYear} | Disciplina: ${selectedDiscipline}</p>
             </div>
@@ -256,9 +260,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             const isSelected = selectedLetter === letter;
                             const imgUrl = alt.file ? (alt.file.startsWith('//') ? `https:${alt.file}` : alt.file) : '';
                             return `
-                                <button class="option-btn" data-letter="${letter}" style="text-align: left; padding: 1.25rem; border: 1px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}; border-radius: var(--radius-md); background: ${isSelected ? 'rgba(37, 99, 235, 0.06)' : 'white'}; cursor: pointer; transition: all 0.2s; display: flex; gap: 15px;">
-                                    <span class="opt-letter" style="font-weight: 800; color: var(--text-muted);">${letter}</span>
-                                    <span class="opt-text">${alt.text ? formatQuestionText(alt.text) : (imgUrl ? `<img src="${imgUrl}" style="max-height: 120px;">` : '')}</span>
+                                <button class="option-btn ${isSelected ? 'selected' : ''}" data-letter="${letter}" type="button">
+                                    <span class="opt-letter">${letter}</span>
+                                    <span class="opt-text">${alt.text ? formatQuestionText(alt.text) : (imgUrl ? `<img src="${imgUrl}" alt="Alternativa ${letter}">` : '')}</span>
                                 </button>
                             `;
                         }).join('')}
@@ -314,8 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.option-btn').forEach((button) => {
             const btnLetter = button.getAttribute('data-letter');
             const isSelected = btnLetter === letter;
-            button.style.borderColor = isSelected ? 'var(--primary)' : 'var(--border)';
-            button.style.background = isSelected ? 'rgba(37, 99, 235, 0.06)' : 'white';
+            button.classList.toggle('selected', isSelected);
         });
 
         const answeredEl = document.getElementById('answered-count');

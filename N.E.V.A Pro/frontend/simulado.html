@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM Pro | Simulado</title>
+    <title>N.E.V.A Pro | Simulado</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* =============================================
@@ -18,18 +19,33 @@
         .setup-container {
             max-width: 800px;
             margin: 0 auto;
-            background: var(--bg-card);
+            background:
+                radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 30%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 60%),
+                var(--bg-card);
             padding: 32px;
-            border-radius: 16px;
+            border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--purple));
         }
 
         .setup-title {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             margin-bottom: 24px;
         }
@@ -63,29 +79,33 @@
 
         .select-input {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
+            padding: 13px 16px;
+            border-radius: 14px;
             border: 1px solid var(--border);
-            background: var(--bg-main);
+            background: var(--bg-card);
             font-size: 1rem;
             color: var(--text-primary);
             transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .select-input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
             background: var(--bg-card);
         }
 
         /* ---------- Info Banner ---------- */
         .info-banner {
-            background: #f0f9ff;
-            border: 1px solid #bfdbfe;
-            padding: 16px;
-            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(16, 185, 129, 0.08)),
+                var(--bg-card);
+            border: 1px solid rgba(37, 99, 235, 0.16);
+            padding: 18px;
+            border-radius: 18px;
             margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
         }
 
         .info-banner__title {
@@ -93,7 +113,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 700;
-            color: #1e40af;
+            color: var(--primary);
             margin-bottom: 8px;
         }
 
@@ -102,14 +122,14 @@
         }
 
         .info-banner__body {
-            color: #1e3a8a;
+            color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.5;
         }
 
         .btn--full {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             font-size: 1.125rem;
         }
 
@@ -122,23 +142,35 @@
         #simulado-view {
             padding-bottom: 1rem;
             background:
-                radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
-                linear-gradient(180deg, rgba(37, 99, 235, 0.03), transparent 220px);
+                radial-gradient(circle at top left, rgba(0, 207, 200, 0.08), transparent 28%),
+                linear-gradient(180deg, rgba(0, 207, 200, 0.03), transparent 220px);
         }
 
         .simulado-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--bg-card);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.02), transparent),
+                var(--bg-card);
             padding: 16px 24px;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             margin-bottom: 24px;
             position: sticky;
             top: 16px;
             z-index: 100;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .simulado-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--purple));
         }
 
         .simulado-header__title {
@@ -159,16 +191,31 @@
             padding: 8px 16px;
             border-radius: 999px;
             border: 1px solid rgba(239, 68, 68, 0.22);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
         }
 
         /* ---------- Question Card ---------- */
         .question-card {
-            background: var(--bg-card);
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.04), transparent 32%),
+                var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 32px;
             margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--purple));
         }
 
         .question-header {
@@ -177,6 +224,7 @@
             align-items: flex-start;
             gap: 16px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .discipline-badge {
@@ -186,7 +234,7 @@
             border-radius: 999px;
             font-size: 0.875rem;
             font-weight: 700;
-            border: 1px solid rgba(37, 99, 235, 0.12);
+            border: 1px solid rgba(37, 99, 235, 0.14);
         }
 
         .question-context {
@@ -215,28 +263,36 @@
             display: flex;
             align-items: flex-start;
             width: 100%;
-            background: var(--bg-card);
+            background:
+                linear-gradient(180deg, rgba(37, 99, 235, 0.04), transparent),
+                var(--bg-card);
             border: 1px solid var(--border);
             padding: 16px 18px;
-            border-radius: 14px;
+            border-radius: 18px;
             cursor: pointer;
             text-align: left;
             transition: all 0.2s ease;
             font-size: 1rem;
             color: var(--text-primary);
             box-shadow: var(--shadow-sm);
+            min-height: 60px;
         }
 
         .alternative-btn:hover {
-            border-color: rgba(37, 99, 235, 0.35);
-            background: rgba(37, 99, 235, 0.04);
+            border-color: rgba(37, 99, 235, 0.24);
+            background:
+                linear-gradient(180deg, rgba(37, 99, 235, 0.06), transparent),
+                var(--bg-card);
             transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
         }
 
         .alternative-btn.selected {
-            border-color: var(--primary);
-            background: #eff6ff;
-            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.14);
+            border-color: rgba(37, 99, 235, 0.34);
+            background:
+                linear-gradient(180deg, rgba(37, 99, 235, 0.08), transparent),
+                var(--bg-card);
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12), 0 14px 30px rgba(37, 99, 235, 0.08);
         }
 
         .letter-pill {
@@ -244,20 +300,36 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            color: #475569;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--primary);
             font-weight: 700;
             font-size: 0.875rem;
             margin-right: 16px;
             transition: all 0.2s;
+            box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.08);
         }
 
         .alternative-btn.selected .letter-pill {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
+            box-shadow: none;
+        }
+
+        .alternative-content {
+            flex: 1;
+            line-height: 1.65;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .alternative-content img {
+            display: block;
+            max-width: 100%;
+            border-radius: 12px;
         }
 
         /* ---------- Pagination ---------- */
@@ -268,15 +340,17 @@
             margin-top: 32px;
             gap: 16px;
             padding: 18px 20px;
-            border-radius: 20px;
-            background: var(--bg-card);
+            border-radius: 24px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.02), transparent),
+                var(--bg-card);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
         }
 
         .progress-container {
             flex: 1;
-            margin: 0 32px;
+            margin: 0 20px;
         }
 
         .progress-title {
@@ -290,10 +364,11 @@
         }
 
         .progress-bar {
-            height: 8px;
+            height: 9px;
             background: var(--border);
             border-radius: 999px;
             overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
         }
 
         .progress-fill {
@@ -308,11 +383,25 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
-            background: var(--bg-card);
+            background:
+                radial-gradient(circle at top, rgba(37, 99, 235, 0.06), transparent 28%),
+                var(--bg-card);
             padding: 40px;
-            border-radius: 16px;
+            border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--purple));
         }
 
         .results-container__heading {
@@ -330,13 +419,14 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: #ecfdf5;
+            background: radial-gradient(circle at top, #ecfdf5, #d1fae5);
             border: 8px solid #10b981;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: 0 auto 24px;
+            box-shadow: 0 18px 40px rgba(16, 185, 129, 0.16);
         }
 
         .score-circle__number {
@@ -352,13 +442,14 @@
 
         .xp-badge {
             display: inline-block;
-            background: #fefce8;
-            border: 1px solid #fef08a;
-            color: #ca8a04;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.22);
+            color: #b45309;
             padding: 12px 24px;
             border-radius: 24px;
             font-weight: 700;
             margin-bottom: 24px;
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.08);
         }
 
         .results-grid {
@@ -370,10 +461,11 @@
         }
 
         .result-card {
-            background: var(--bg-main);
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent), var(--bg-main);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 16px;
             border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
 
         .result-card__label {
@@ -401,6 +493,7 @@
             gap: 16px;
             justify-content: center;
             margin-top: 40px;
+            flex-wrap: wrap;
         }
 
         /* ---------- Finish Modal ---------- */
@@ -416,6 +509,9 @@
         .finish-modal {
             width: 400px;
             text-align: center;
+            padding: 28px;
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
         }
 
         .finish-modal__title {
@@ -433,6 +529,82 @@
             display: flex;
             gap: 12px;
             justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .setup-container,
+            .results-container {
+                padding: 24px 18px;
+                border-radius: 20px;
+            }
+
+            .simulado-header {
+                padding: 14px 18px;
+                border-radius: 18px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .timer {
+                width: 100%;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            .question-card {
+                padding: 22px 18px;
+                border-radius: 20px;
+            }
+
+            .question-header {
+                margin-bottom: 16px;
+            }
+
+            .question-context {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+
+            .alternative-btn {
+                min-height: 54px;
+                padding: 14px 15px;
+            }
+
+            .pagination {
+                padding: 14px;
+                border-radius: 20px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pagination .btn {
+                width: 100%;
+            }
+
+            .progress-container {
+                margin: 0;
+                width: 100%;
+                order: -1;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-actions .btn {
+                width: 100%;
+            }
+
+            .finish-modal {
+                width: min(92vw, 420px);
+                padding: 22px 18px;
+            }
+
+            .finish-modal__actions .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -460,12 +632,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="select-year">Edição do ENEM</label>
+                            <label class="form-label" for="select-year">Ano da Prova</label>
                             <select id="select-year" class="select-input">
-                                <option value="2023">ENEM 2023</option>
-                                <option value="2022">ENEM 2022</option>
-                                <option value="2021">ENEM 2021</option>
-                                <option value="2020">ENEM 2020</option>
+                                <option value="2023">PROVA 2023</option>
+                                <option value="2022">PROVA 2022</option>
+                                <option value="2021">PROVA 2021</option>
+                                <option value="2020">PROVA 2020</option>
                             </select>
                         </div>
 
@@ -498,7 +670,7 @@
                 <section id="simulado-view" class="animate-fade">
                     <div class="simulado-header">
                         <div class="simulado-header__title" id="header-title">
-                            ENEM 2023 - Dia 1
+                            PROVA 2023 - Dia 1
                         </div>
                         <div class="timer" id="timer">
                             <i data-lucide="clock"></i>
