@@ -1086,7 +1086,7 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.message || 'Erro na autentica??o social');
+                    throw new Error(data.message || 'Erro na autenticação social');
                 }
 
                 localStorage.setItem('nevapro_session', JSON.stringify({
@@ -1096,7 +1096,7 @@
 
                 window.location.href = 'index.html';
             } catch (error) {
-                alert(error.message || 'N?o foi poss?vel concluir o login social.');
+                alert(error.message || 'Não foi possível concluir o login social.');
                 resetButtonLoading(buttonEl);
             }
         }
@@ -1131,7 +1131,7 @@
             }
 
             if (!window.google?.accounts?.id) {
-                alert('A biblioteca do Google ainda n?o carregou. Tente novamente em instantes.');
+                alert('A biblioteca do Google ainda não carregou. Tente novamente em instantes.');
                 return;
             }
 
@@ -1175,7 +1175,7 @@
             }
 
             if (!window.AppleID?.auth) {
-                alert('A biblioteca da Apple ainda n?o carregou. Tente novamente em instantes.');
+                alert('A biblioteca da Apple ainda não carregou. Tente novamente em instantes.');
                 return;
             }
 
@@ -1190,7 +1190,7 @@
                     response?.idToken;
 
                 if (!identityToken) {
-                    throw new Error('N?o foi poss?vel obter o token da Apple.');
+                    throw new Error('Não foi possível obter o token da Apple.');
                 }
 
                 await submitSocialLogin(
@@ -1207,7 +1207,7 @@
                     buttonEl,
                 );
             } catch (error) {
-                alert(error.message || 'N?o foi poss?vel concluir o login com Apple.');
+                alert(error.message || 'Não foi possível concluir o login com Apple.');
                 resetButtonLoading(buttonEl);
             }
         }
