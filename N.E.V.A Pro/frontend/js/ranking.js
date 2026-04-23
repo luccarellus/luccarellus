@@ -4,55 +4,110 @@ const API_BASE_URL =
     ? 'http://localhost:3333/api/v1'
     : '/api/v1');
 
+const FALLBACK_RANKING = [
+  { id: '1', username: 'Ana Carolina', xp: 18450, level: 18 },
+  { id: '2', username: 'Bruno Mello', xp: 15200, level: 15 },
+  { id: '3', username: 'Carlos Eduardo', xp: 12800, level: 12 },
+  { id: '4', username: 'Daniela Ferreira', xp: 11000, level: 11 },
+  { id: '5', username: 'Eduardo Lima', xp: 9800, level: 9 },
+  { id: '6', username: 'Fernanda Souza', xp: 8600, level: 8 },
+  { id: '7', username: 'Gabriel Nunes', xp: 7200, level: 7 },
+  { id: '8', username: 'Helena Costa', xp: 6100, level: 6 },
+  { id: '9', username: 'Igor Santos', xp: 5400, level: 5 },
+  { id: '10', username: 'Julia Pereira', xp: 4800, level: 4 },
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchRanking();
 });
 
+function normalizeRankingData(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.items)) return data.items;
+    if (Array.isArray(data?.data)) return data.data;
+    return [];
+}
+
+function getFallbackRanking() {
+    return FALLBACK_RANKING.map((user, index) => ({
+        ...user,
+        initials: user.username
+            .split(' ')
+            .map((part) => part[0])
+            .slice(0, 2)
+            .join('')
+            .toUpperCase(),
+        rank: index + 1,
+        accuracy: 80 - index,
+        questionsAnswered: 620 - index * 35,
+    }));
+}
+
 async function fetchRanking() {
+    const listContainer = document.getElementById('ranking-list');
+    if (listContainer) {
+        listContainer.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                Carregando ranking...
+            </div>
+        `;
+    }
+
     try {
         const response = await fetch(`${API_BASE_URL}/ranking`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
-        const rankingData = await response.json();
-        renderRanking(rankingData);
+
+        const rankingData = normalizeRankingData(await response.json());
+        renderRanking(rankingData.length > 0 ? rankingData : getFallbackRanking(), rankingData.length === 0 ? 'Mostrando ranking de demonstração.' : '');
     } catch (error) {
         console.error('Error fetching ranking:', error);
-        document.getElementById('ranking-list').innerHTML = `
-            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
-                Erro ao carregar o ranking. Tente novamente mais tarde.
-            </div>
-        `;
+        renderRanking(getFallbackRanking(), 'Nao foi possivel carregar o ranking agora. Mostrando dados de demonstracao.');
     }
 }
 
-function renderRanking(data) {
+function renderRanking(data, note = '') {
     const podiumContainer = document.getElementById('podium-container');
     const listContainer = document.getElementById('ranking-list');
-    
-    // Clear containers
+
+    if (!podiumContainer || !listContainer) return;
+
     podiumContainer.innerHTML = '';
     listContainer.innerHTML = '';
 
-    // Mock an ID for the current logged in user (in a real app this comes from auth)
-    const currentUserId = 4; // Mocking "Estudante" user ID
-    
-    if (data.length === 0) return;
+    if (note) {
+        listContainer.insertAdjacentHTML(
+            'beforebegin',
+            `
+                <div style="margin: 0 0 16px; padding: 12px 16px; border-radius: 14px; background: rgba(37, 99, 235, 0.08); color: var(--text-secondary); border: 1px solid rgba(37, 99, 235, 0.15); text-align: center; font-size: 0.9rem;">
+                    ${note}
+                </div>
+            `,
+        );
+    }
 
-    // ----- Render Podium (Top 3) -----
-    // Podium visual order: 2nd, 1st, 3rd
+    if (!Array.isArray(data) || data.length === 0) {
+        listContainer.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                Ranking indisponivel no momento.
+            </div>
+        `;
+        return;
+    }
+
+    const currentUserId = 4;
     const top3 = data.slice(0, 3);
     const podiumOrder = [];
     if (top3[1]) podiumOrder.push({ ...top3[1], rank: 2 });
     if (top3[0]) podiumOrder.push({ ...top3[0], rank: 1 });
     if (top3[2]) podiumOrder.push({ ...top3[2], rank: 3 });
 
-    podiumOrder.forEach(user => {
+    podiumOrder.forEach((user) => {
         const username = user.username || user.name || 'Estudante';
         const xp = user.xp ?? user.totalXp ?? 0;
         const initial = username.charAt(0).toUpperCase();
-        
+
         let crownHtml = '';
         if (user.rank === 1) {
             crownHtml = `<i data-lucide="crown" class="crown-icon"></i>`;
@@ -76,7 +131,6 @@ function renderRanking(data) {
         podiumContainer.insertAdjacentHTML('beforeend', podiumHtml);
     });
 
-    // ----- Render List (4th onwards) -----
     const remainingUsers = data.slice(3);
     remainingUsers.forEach((user, index) => {
         const rank = index + 4;
@@ -85,11 +139,10 @@ function renderRanking(data) {
         const initial = username.charAt(0).toUpperCase();
         const isCurrentUser = user.id === currentUserId;
 
-        // Mocking extra data for visual polish
         const trends = ['up', 'down', 'neutral'];
         const trend = trends[Math.floor(Math.random() * 3)];
         const trendVal = Math.floor(Math.random() * 5) + 1;
-        
+
         let trendHtml = '';
         if (trend === 'up') trendHtml = `<div class="rank-trend trend-up"><i data-lucide="chevron-up" style="width:12px;"></i>${trendVal}</div>`;
         else if (trend === 'down') trendHtml = `<div class="rank-trend trend-down"><i data-lucide="chevron-down" style="width:12px;"></i>${trendVal}</div>`;
@@ -105,8 +158,8 @@ function renderRanking(data) {
                 <div class="user-info">
                     <div class="avatar-small">${initial}</div>
                     <div class="user-details">
-                        <div style="display: flex; align-items: center;">
-                            <span class="name">${username} ${isCurrentUser ? '(Você)' : ''}</span>
+                        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                            <span class="name">${username}${isCurrentUser ? ' (Você)' : ''}</span>
                             <span class="division-badge ${divClass}">${division}</span>
                         </div>
                         <span class="level">Nível ${user.level || 10}</span>
@@ -120,8 +173,7 @@ function renderRanking(data) {
         `;
         listContainer.insertAdjacentHTML('beforeend', rowHtml);
     });
-    
-    // Re-initialize lucide icons for newly inserted HTML
+
     if (window.lucide) {
         window.lucide.createIcons();
     }

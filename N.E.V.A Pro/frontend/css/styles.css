@@ -932,6 +932,41 @@ html, body {
 .notification-dropdown.active {
     pointer-events: auto; opacity: 1; transform: translateY(0);
 }
+.profile-dropdown {
+    width: 280px;
+    right: 0;
+}
+.profile-dropdown-inner {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.profile-dropdown-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 0.9rem;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.profile-dropdown-item:hover {
+    background: rgba(0, 207, 200, 0.08);
+    transform: translateX(2px);
+}
+.profile-dropdown-item.destructive {
+    color: #ef4444;
+}
+.profile-dropdown-item.destructive:hover {
+    background: rgba(239, 68, 68, 0.08);
+}
 .notification-header {
     padding: 1rem; border-bottom: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;

@@ -6,7 +6,9 @@
     "dev": "npx serve ./",
     "start": "npx serve ./"
   },
-  "dependencies": {},
+  "dependencies": {
+    "enem-gamification-root": "file:.."
+  },
   "devDependencies": {
     "serve": "^14.2.1"
   }

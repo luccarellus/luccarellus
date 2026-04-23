@@ -23,7 +23,8 @@ export class UsersController {
   @Patch('me')
   @ApiOperation({ summary: 'Update current user profile' })
   async updateProfile(@Request() req, @Body() body: any) {
-    // Basic update for now, can be expanded
-    return this.userService.update(req.user.userId, body);
+    const updatedUser = await this.userService.update(req.user.userId, body);
+    const { password_hash, ...result } = updatedUser;
+    return result;
   }
 }

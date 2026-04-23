@@ -76,6 +76,55 @@ function handleLogout() {
     window.location.href = 'login.html';
 }
 
+function applyProfileAvatar() {
+    const avatarImg = document.getElementById('nav-user-avatar');
+    const avatarFallback = document.getElementById('nav-user-avatar-fallback');
+    const sessionRaw = localStorage.getItem('nevapro_session');
+    const session = window.USER_SESSION || (sessionRaw ? JSON.parse(sessionRaw) : null);
+    const avatarUrl = session?.user?.avatar_url || '';
+
+    if (!avatarImg || !avatarFallback) return;
+
+    if (avatarUrl) {
+        avatarImg.src = avatarUrl;
+        avatarImg.style.display = 'block';
+        avatarFallback.style.display = 'none';
+    } else {
+        avatarImg.removeAttribute('src');
+        avatarImg.style.display = 'none';
+        avatarFallback.style.display = 'flex';
+    }
+}
+
+async function saveProfileAvatarToServer(avatarUrl) {
+    const sessionRaw = localStorage.getItem('nevapro_session');
+    if (!sessionRaw) {
+        throw new Error('Sessão não encontrada.');
+    }
+
+    const session = JSON.parse(sessionRaw);
+    const response = await fetch(`${API_BASE_URL}/users/me`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ avatar_url: avatarUrl }),
+    });
+
+    if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.message || 'Não foi possível salvar a foto.');
+    }
+
+    const updatedUser = await response.json();
+    session.user = { ...(session.user || {}), ...updatedUser };
+    localStorage.setItem('nevapro_session', JSON.stringify(session));
+    window.USER_SESSION = session;
+    applyProfileAvatar();
+    return updatedUser;
+}
+
 function getDefaultSettings() {
     return {
         displayName: 'User Name',
@@ -162,6 +211,8 @@ function applySettingsToUI(settings) {
     } else {
         document.body.classList.remove('reduce-motion');
     }
+
+    applyProfileAvatar();
 }
 
 async function initLayout() {
@@ -193,7 +244,7 @@ async function initLayout() {
                         <i data-lucide="files" style="color: #059669"></i> Materiais
                     </a>
                     <a href="mural.html" class="nav-item ${window.location.pathname.includes('mural.html') ? 'active' : ''}">
-                        <i data-lucide="message-square" style="color: #8b5cf6"></i> Mural
+                        <i data-lucide="message-square" style="color: #8b5cf6"></i> Mural de recados
                     </a>
                     <a href="calendario.html" class="nav-item ${window.location.pathname.includes('calendario.html') ? 'active' : ''}">
                         <i data-lucide="calendar" style="color: #64748b"></i> Calendário
@@ -256,14 +307,29 @@ async function initLayout() {
                             </div>
                         </div>
                     </div>
-                    <div class="user-profile" style="display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border); padding-left: 15px;">
+                    <div class="user-profile" style="position: relative; display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border); padding-left: 15px;">
                         <div style="text-align: right; display: none; @media (min-width: 640px) { display: block; }">
                             <p class="font-bold text-sm" id="nav-username">User Name</p>
                             <p class="text-muted" style="font-size: 0.7rem;">Nível 15</p>
                         </div>
-                        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(to top right, #006d69, #00cfc8); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0, 207, 200, 0.3);">
-                            <i data-lucide="user" style="width: 20px;"></i>
+                        <button type="button" class="profile-trigger" id="btn-profile-menu" aria-haspopup="menu" aria-expanded="false" style="width: 40px; height: 40px; border-radius: 50%; border: none; padding: 0; overflow: hidden; background: linear-gradient(to top right, #006d69, #00cfc8); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0, 207, 200, 0.3); cursor: pointer;">
+                            <img id="nav-user-avatar" alt="Foto do perfil" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <span id="nav-user-avatar-fallback" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                                <i data-lucide="user" style="width: 20px;"></i>
+                            </span>
+                        </button>
+                        <div class="profile-dropdown notification-dropdown" id="profile-dropdown" role="menu" aria-label="Menu do perfil">
+                            <div class="notification-header">
+                                <span class="font-bold">Foto do perfil</span>
+                            </div>
+                            <div class="profile-dropdown-inner">
+                                <button type="button" class="profile-dropdown-item" id="profile-menu-photo-trigger">
+                                    <i data-lucide="image-plus" style="width: 16px;"></i>
+                                    Trocar foto
+                                </button>
+                            </div>
                         </div>
+                        <input type="file" id="profile-avatar-input" accept="image/*" hidden>
                     </div>
                 </div>
             </header>
@@ -415,6 +481,69 @@ function setupInteractiveFeatures() {
             if (!notificationDropdown.contains(e.target) && e.target !== btnNotifications) {
                 notificationDropdown.classList.remove('active');
             }
+        });
+    }
+
+    // Profile Menu Logic
+    const btnProfileMenu = document.getElementById('btn-profile-menu');
+    const profileDropdown = document.getElementById('profile-dropdown');
+    const profileAvatarInput = document.getElementById('profile-avatar-input');
+    const profileMenuPhoto = document.getElementById('profile-menu-photo');
+    const profileMenuPhotoTrigger = document.getElementById('profile-menu-photo-trigger');
+
+    function closeProfileDropdown() {
+        if (profileDropdown) profileDropdown.classList.remove('active');
+        if (btnProfileMenu) btnProfileMenu.setAttribute('aria-expanded', 'false');
+    }
+
+    if (btnProfileMenu && profileDropdown) {
+        btnProfileMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = profileDropdown.classList.toggle('active');
+            btnProfileMenu.setAttribute('aria-expanded', String(isActive));
+            if (notificationDropdown) {
+                notificationDropdown.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target) && e.target !== btnProfileMenu) {
+                closeProfileDropdown();
+            }
+        });
+    }
+
+    function openAvatarPicker() {
+        if (profileAvatarInput) {
+            profileAvatarInput.click();
+        }
+    }
+
+    if (profileMenuPhoto) {
+        profileMenuPhoto.addEventListener('click', openAvatarPicker);
+    }
+    if (profileMenuPhotoTrigger) {
+        profileMenuPhotoTrigger.addEventListener('click', openAvatarPicker);
+    }
+    if (profileAvatarInput) {
+        profileAvatarInput.addEventListener('change', () => {
+            const file = profileAvatarInput.files?.[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert('Escolha uma imagem válida para o perfil.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    await saveProfileAvatarToServer(String(reader.result || ''));
+                    closeProfileDropdown();
+                } catch (error) {
+                    alert(error.message || 'Não foi possível salvar a foto do perfil.');
+                }
+            };
+            reader.readAsDataURL(file);
         });
     }
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N.E.V.A Pro | Mural</title>
+    <title>N.E.V.A Pro | Mural de Recados</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/png" href="assets/logo.png">
     <!-- Lucide Icons CDN -->
@@ -12,7 +12,7 @@
     <style>
         .mural-grid {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
             gap: 24px;
             align-items: start;
             padding: 10px;
@@ -60,8 +60,9 @@
         }
 
         .mural-filters {
-            position: sticky;
-            top: 100px;
+            position: static;
+            top: auto;
+            align-self: start;
         }
 
         .filter-list {
@@ -72,7 +73,7 @@
 
         .filter-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             padding: 12px 16px;
             border-radius: 12px;
@@ -81,6 +82,37 @@
             transition: all 0.2s ease;
             margin-bottom: 4px;
             font-weight: 600;
+        }
+
+        .filter-item__copy {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .filter-item__label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .filter-item__desc {
+            font-size: 0.78rem;
+            line-height: 1.35;
+            color: var(--text-muted);
+        }
+
+        .filter-count {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(0, 207, 200, 0.08);
+            color: var(--primary);
         }
 
         .filter-item:hover {
@@ -93,6 +125,12 @@
             background: var(--primary);
             color: white;
             box-shadow: 0 10px 24px rgba(0, 207, 200, 0.25);
+        }
+
+        .filter-item.active .filter-item__desc,
+        .filter-item.active .filter-count {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .mural-feed {
@@ -274,6 +312,156 @@
             line-height: 1;
         }
 
+        .mural-category-detail {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(0, 207, 200, 0.08), rgba(15, 23, 42, 0.06));
+            border: 1px solid rgba(0, 207, 200, 0.14);
+        }
+
+        .mural-category-detail__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .mural-category-detail__title {
+            font-weight: 800;
+            font-size: 0.98rem;
+            color: var(--text-primary);
+        }
+
+        .mural-category-detail__subtitle {
+            font-size: 0.83rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .mural-category-detail__stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .mural-stat {
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        .mural-stat strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .mural-stat span {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        .mural-category-detail__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .mural-category-detail__actions .btn {
+            min-height: 40px;
+            padding-inline: 14px;
+            flex: 1 1 auto;
+        }
+
+        .post-menu-wrap {
+            position: relative;
+        }
+
+        .post-menu-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .post-menu-btn:hover {
+            transform: translateY(-1px);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .post-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 220px;
+            padding: 8px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            box-shadow: var(--shadow-xl);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-8px);
+            transition: all 0.18s ease;
+            z-index: 10;
+        }
+
+        .post-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .post-menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 0.85rem 0.9rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .post-menu-item:hover {
+            background: rgba(0, 207, 200, 0.08);
+            color: var(--primary);
+        }
+
+        .post-menu-item.destructive {
+            color: #ef4444;
+        }
+
+        .post-menu-item.destructive:hover {
+            background: rgba(239, 68, 68, 0.08);
+            color: #dc2626;
+        }
+
+        .post-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .sidebar-cta {
             margin-top: 4px;
         }
@@ -284,6 +472,50 @@
             }
             .mural-filters {
                 display: none;
+            }
+        }
+
+        @media (min-width: 993px) and (max-width: 1200px) {
+            .mural-grid {
+                gap: 18px;
+                padding: 8px;
+            }
+
+            .mural-filters .card {
+                padding: 14px !important;
+            }
+
+            .filter-item {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+
+            .filter-item__desc {
+                display: none;
+            }
+
+            .filter-item__label {
+                font-size: 0.9rem;
+            }
+
+            .mural-category-detail {
+                margin-top: 16px;
+                padding: 14px;
+            }
+
+            .mural-category-detail__subtitle {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                margin-bottom: 12px;
+            }
+
+            .mural-category-detail__stats {
+                grid-template-columns: 1fr;
+            }
+
+            .mural-category-detail__actions .btn {
+                width: 100%;
+                flex: 1 1 100%;
             }
         }
 
@@ -341,6 +573,27 @@
             .card-footer.actions-between .btn {
                 width: 100%;
             }
+
+            .filter-item__desc {
+                display: none;
+            }
+
+            .filter-item {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+
+            .mural-category-detail {
+                padding: 14px;
+            }
+
+            .mural-category-detail__stats {
+                grid-template-columns: 1fr;
+            }
+
+            .mural-category-detail__actions .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -358,10 +611,9 @@
                 <section class="animate-fade">
                     <div class="page-header mural-page-header">
                         <div>
-                            <h2 class="mural-page-title">Mural da Comunidade 📢</h2>
+                            <h2 class="mural-page-title">Mural de Recados 📢</h2>
                             <p>Fique por dentro das novidades, avisos oficiais e desafios da semana.</p>
                         </div>
-                        <button class="btn btn-primary mural-page-cta"><i data-lucide="megaphone"></i> Nova Publicação</button>
                     </div>
 
                     <div class="mural-grid">
@@ -370,12 +622,66 @@
                             <div class="card" style="padding: 16px;">
                                 <h4 class="font-bold" style="margin-bottom: 16px; font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted);">Categorias</h4>
                                 <ul class="filter-list">
-                                    <li class="filter-item active"><i data-lucide="layers" style="width: 18px;"></i> Tudo</li>
-                                    <li class="filter-item"><i data-lucide="megaphone" style="width: 18px;"></i> Avisos Oficiais</li>
-                                    <li class="filter-item"><i data-lucide="zap" style="width: 18px;"></i> Desafios</li>
-                                    <li class="filter-item"><i data-lucide="award" style="width: 18px;"></i> Conquistas</li>
-                                    <li class="filter-item"><i data-lucide="message-circle" style="width: 18px;"></i> Discussões</li>
+                                    <li class="filter-item active" data-filter="all">
+                                        <i data-lucide="layers" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Tudo</span><span class="filter-count">4</span></div>
+                                            <div class="filter-item__desc">Visão geral com todos os recados.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="official">
+                                        <i data-lucide="megaphone" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Avisos Oficiais</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Comunicados urgentes, inscrições e prazos.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="challenge">
+                                        <i data-lucide="zap" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Desafios</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Missões para ganhar XP e evoluir mais rápido.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="achievement">
+                                        <i data-lucide="award" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Conquistas</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Marcos recentes e celebrações da comunidade.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="discussion">
+                                        <i data-lucide="message-circle" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Discussões</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Perguntas, trocas e conversas entre estudantes.</div>
+                                        </div>
+                                    </li>
                                 </ul>
+                            </div>
+
+                            <div class="mural-category-detail" id="mural-category-detail">
+                                <div class="mural-category-detail__header">
+                                    <div class="mural-category-detail__title" id="category-detail-title">Tudo</div>
+                                    <span class="badge badge-info" id="category-detail-badge">Geral</span>
+                                </div>
+                                <div class="mural-category-detail__subtitle" id="category-detail-desc">
+                                    Acompanhe avisos, desafios, conquistas e discussões em um só lugar.
+                                </div>
+                                <div class="mural-category-detail__stats">
+                                    <div class="mural-stat">
+                                        <strong id="category-detail-count">4 recados</strong>
+                                        <span id="category-detail-count-desc">Disponíveis agora no mural</span>
+                                    </div>
+                                    <div class="mural-stat">
+                                        <strong id="category-detail-action-title">Abrir tudo</strong>
+                                        <span id="category-detail-action-desc">Veja o feed completo</span>
+                                    </div>
+                                </div>
+                                <div class="mural-category-detail__actions">
+                                    <button class="btn btn-primary btn-sm" id="category-detail-action">Ver recados</button>
+                                    <button class="btn btn-secondary btn-sm" id="category-detail-secondary">Atualizar feed</button>
+                                </div>
                             </div>
 
                             <div class="card" style="padding: 16px; margin-top: 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none;">
@@ -388,7 +694,7 @@
                         <!-- Main Feed -->
                         <div class="mural-feed">
                             <!-- Post 1: Announcement -->
-                            <article class="mural-card featured">
+                            <article class="mural-card featured" data-category="official">
                                 <div class="card-header">
                                     <div class="author-info">
                                         <div class="author-avatar" style="background: var(--primary); color: white;">N</div>
@@ -397,7 +703,20 @@
                                             <span>Há 2 horas • Oficial</span>
                                         </div>
                                     </div>
-                                    <span class="badge badge-info">Aviso</span>
+                                    <div class="post-top-actions">
+                                        <span class="badge badge-info">Aviso</span>
+                                        <div class="post-menu-wrap">
+                                            <button class="post-menu-btn" data-menu-trigger aria-label="Abrir opções do recado">
+                                                <i data-lucide="more-horizontal" style="width: 16px;"></i>
+                                            </button>
+                                            <div class="post-menu">
+                                                <button class="post-menu-item"><i data-lucide="bookmark" style="width: 16px;"></i> Salvar recado</button>
+                                                <button class="post-menu-item"><i data-lucide="link-2" style="width: 16px;"></i> Copiar link</button>
+                                                <button class="post-menu-item"><i data-lucide="bell-ring" style="width: 16px;"></i> Receber alertas</button>
+                                                <button class="post-menu-item destructive"><i data-lucide="eye-off" style="width: 16px;"></i> Ocultar publicação</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-content">
                                     <h3>Novo Simulado Nacional: Pré-ENEM 2026</h3>
@@ -415,7 +734,7 @@
                             </article>
 
                             <!-- Post 2: Challenge -->
-                            <article class="mural-card">
+                            <article class="mural-card" data-category="challenge">
                                 <div class="card-header">
                                     <div class="author-info">
                                         <div class="author-avatar" style="background: #f59e0b; color: white;"><i data-lucide="zap" style="width: 18px;"></i></div>
@@ -424,7 +743,19 @@
                                             <span>Expira em 3 dias</span>
                                         </div>
                                     </div>
-                                    <span class="badge badge-warning">Desafio</span>
+                                    <div class="post-top-actions">
+                                        <span class="badge badge-warning">Desafio</span>
+                                        <div class="post-menu-wrap">
+                                            <button class="post-menu-btn" data-menu-trigger aria-label="Abrir opções do desafio">
+                                                <i data-lucide="more-horizontal" style="width: 16px;"></i>
+                                            </button>
+                                            <div class="post-menu">
+                                                <button class="post-menu-item"><i data-lucide="target" style="width: 16px;"></i> Ver progresso</button>
+                                                <button class="post-menu-item"><i data-lucide="badge-check" style="width: 16px;"></i> Entrar no desafio</button>
+                                                <button class="post-menu-item"><i data-lucide="share-2" style="width: 16px;"></i> Compartilhar</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-content">
                                     <h3>Mestre da Matemática</h3>
@@ -447,7 +778,7 @@
                             </article>
 
                             <!-- Post 3: Achievement -->
-                            <article class="mural-card">
+                            <article class="mural-card" data-category="achievement">
                                 <div class="card-header">
                                     <div class="author-info">
                                         <div class="author-avatar">B</div>
@@ -456,7 +787,19 @@
                                             <span>Há 5 horas</span>
                                         </div>
                                     </div>
-                                    <span class="badge badge-success">Conquista</span>
+                                    <div class="post-top-actions">
+                                        <span class="badge badge-success">Conquista</span>
+                                        <div class="post-menu-wrap">
+                                            <button class="post-menu-btn" data-menu-trigger aria-label="Abrir opções da conquista">
+                                                <i data-lucide="more-horizontal" style="width: 16px;"></i>
+                                            </button>
+                                            <div class="post-menu">
+                                                <button class="post-menu-item"><i data-lucide="user" style="width: 16px;"></i> Ver perfil</button>
+                                                <button class="post-menu-item"><i data-lucide="thumbs-up" style="width: 16px;"></i> Parabenizar</button>
+                                                <button class="post-menu-item"><i data-lucide="share-2" style="width: 16px;"></i> Compartilhar</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-content">
                                     <h3>Nova Conquista: Inabalável! 🏆</h3>
@@ -465,6 +808,40 @@
                                 <div class="card-footer">
                                     <div class="footer-action"><i data-lucide="thumbs-up" style="width: 16px;"></i> 45</div>
                                     <div class="footer-action"><i data-lucide="award" style="width: 16px;"></i> Parabenizar</div>
+                                </div>
+                            </article>
+
+                            <!-- Post 4: Discussion -->
+                            <article class="mural-card" data-category="discussion">
+                                <div class="card-header">
+                                    <div class="author-info">
+                                        <div class="author-avatar" style="background: #8b5cf6; color: white;"><i data-lucide="message-circle" style="width: 18px;"></i></div>
+                                        <div class="author-details">
+                                            <h4>Comunidade N.E.V.A Pro</h4>
+                                            <span>Há 8 horas • Discussão</span>
+                                        </div>
+                                    </div>
+                                    <div class="post-top-actions">
+                                        <span class="badge badge-info">Discussão</span>
+                                        <div class="post-menu-wrap">
+                                            <button class="post-menu-btn" data-menu-trigger aria-label="Abrir opções da discussão">
+                                                <i data-lucide="more-horizontal" style="width: 16px;"></i>
+                                            </button>
+                                            <div class="post-menu">
+                                                <button class="post-menu-item"><i data-lucide="bookmark" style="width: 16px;"></i> Salvar tópico</button>
+                                                <button class="post-menu-item"><i data-lucide="reply" style="width: 16px;"></i> Responder</button>
+                                                <button class="post-menu-item"><i data-lucide="share-2" style="width: 16px;"></i> Compartilhar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Como organizar a última semana antes do ENEM?</h3>
+                                    <p>Compartilhe sua rotina, seus materiais favoritos e as estratégias que mais têm funcionado para você nessa reta final.</p>
+                                </div>
+                                <div class="card-footer actions-between">
+                                    <div class="footer-action"><i data-lucide="message-square" style="width: 16px;"></i> 26 respostas</div>
+                                    <button class="btn btn-sm" style="border: 1px solid var(--border);">Participar</button>
                                 </div>
                             </article>
                         </div>
@@ -476,7 +853,133 @@
 
     <script src="js/main.js"></script>
     <script>
+        function initMuralMenus() {
+            const triggers = document.querySelectorAll('[data-menu-trigger]');
+            const menus = document.querySelectorAll('.post-menu');
+            const filters = document.querySelectorAll('.filter-item[data-filter]');
+            const cards = document.querySelectorAll('.mural-card[data-category]');
+            const categoryDetail = {
+                all: {
+                    title: 'Tudo',
+                    badge: 'Geral',
+                    desc: 'Acompanhe avisos, desafios, conquistas e discussões em um só lugar.',
+                    count: '4 recados',
+                    countDesc: 'Disponíveis agora no mural',
+                    actionTitle: 'Abrir tudo',
+                    actionDesc: 'Veja o feed completo',
+                    action: 'Ver recados',
+                },
+                official: {
+                    title: 'Avisos Oficiais',
+                    badge: 'Oficial',
+                    desc: 'Aqui ficam inscrições, comunicados importantes, mudanças de agenda e novidades da plataforma.',
+                    count: '1 aviso',
+                    countDesc: 'Atualização do time NEVA',
+                    actionTitle: 'Priorizar avisos',
+                    actionDesc: 'Foque no que precisa de atenção agora',
+                    action: 'Abrir avisos',
+                },
+                challenge: {
+                    title: 'Desafios',
+                    badge: 'XP',
+                    desc: 'Missões ativas para ganhar XP extra, completar metas e subir mais rápido no ranking.',
+                    count: '1 desafio',
+                    countDesc: 'Reta final da semana',
+                    actionTitle: 'Continuar missão',
+                    actionDesc: 'Veja seu progresso e recompensas',
+                    action: 'Ir para desafios',
+                },
+                achievement: {
+                    title: 'Conquistas',
+                    badge: 'Badge',
+                    desc: 'Marcos recentes e celebrações da comunidade para manter a motivação lá em cima.',
+                    count: '1 conquista',
+                    countDesc: 'Novos destaques recentes',
+                    actionTitle: 'Celebrar progresso',
+                    actionDesc: 'Parabenize quem avançou hoje',
+                    action: 'Ver conquistas',
+                },
+                discussion: {
+                    title: 'Discussões',
+                    badge: 'Comunidade',
+                    desc: 'Espaço para tirar dúvidas, trocar ideias e descobrir como outros estudantes estão se organizando.',
+                    count: '1 tópico',
+                    countDesc: 'Conversa em andamento',
+                    actionTitle: 'Entrar na conversa',
+                    actionDesc: 'Leia as respostas e contribua',
+                    action: 'Participar',
+                },
+            };
+
+            const closeAllMenus = () => {
+                menus.forEach((menu) => menu.classList.remove('active'));
+            };
+
+            const applyFilter = (key) => {
+                const data = categoryDetail[key] || categoryDetail.all;
+
+                filters.forEach((item) => item.classList.toggle('active', item.dataset.filter === key));
+                cards.forEach((card) => {
+                    const match = key === 'all' || card.dataset.category === key;
+                    card.style.display = match ? '' : 'none';
+                });
+
+                const titleEl = document.getElementById('category-detail-title');
+                const badgeEl = document.getElementById('category-detail-badge');
+                const descEl = document.getElementById('category-detail-desc');
+                const countEl = document.getElementById('category-detail-count');
+                const countDescEl = document.getElementById('category-detail-count-desc');
+                const actionTitleEl = document.getElementById('category-detail-action-title');
+                const actionDescEl = document.getElementById('category-detail-action-desc');
+                const actionBtn = document.getElementById('category-detail-action');
+
+                if (titleEl) titleEl.textContent = data.title;
+                if (badgeEl) badgeEl.textContent = data.badge;
+                if (descEl) descEl.textContent = data.desc;
+                if (countEl) countEl.textContent = data.count;
+                if (countDescEl) countDescEl.textContent = data.countDesc;
+                if (actionTitleEl) actionTitleEl.textContent = data.actionTitle;
+                if (actionDescEl) actionDescEl.textContent = data.actionDesc;
+                if (actionBtn) actionBtn.textContent = data.action;
+            };
+
+            triggers.forEach((trigger) => {
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menu = trigger.parentElement?.querySelector('.post-menu');
+                    if (!menu) return;
+                    const willOpen = !menu.classList.contains('active');
+                    closeAllMenus();
+                    if (willOpen) menu.classList.add('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.post-menu-wrap')) {
+                    closeAllMenus();
+                }
+            });
+
+            filters.forEach((filter) => {
+                filter.addEventListener('click', () => {
+                    applyFilter(filter.dataset.filter || 'all');
+                });
+            });
+
+            document.getElementById('category-detail-action')?.addEventListener('click', () => {
+                const active = document.querySelector('.filter-item.active[data-filter]')?.dataset.filter || 'all';
+                applyFilter(active);
+            });
+
+            document.getElementById('category-detail-secondary')?.addEventListener('click', () => {
+                applyFilter('all');
+            });
+
+            applyFilter('all');
+        }
+
         lucide.createIcons();
+        initMuralMenus();
     </script>
 </body>
 

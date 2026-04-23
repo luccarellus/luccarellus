@@ -76,9 +76,19 @@ export class UserService {
   }
 
   async update(id: string, data: any) {
+    const allowedData: Record<string, any> = {};
+
+    if (typeof data?.name === 'string') {
+      allowedData.name = data.name.trim();
+    }
+
+    if (typeof data?.avatar_url === 'string') {
+      allowedData.avatar_url = data.avatar_url;
+    }
+
     return this.prisma.users.update({
       where: { id },
-      data,
+      data: allowedData,
     });
   }
 }
