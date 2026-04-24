@@ -1,0 +1,51 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment / Secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Build / Cache
+dist/
+build/
+coverage/
+.cache/
+.turbo/
+
+# Frontend generated artifacts
+frontend/.next/
+frontend/out/
+
+# Backend generated artifacts
+backend/dist/
+backend/coverage/
+
+# Runtime / temp files
+tmp/
+temp/
+*.pid
+
+
+.vercel
