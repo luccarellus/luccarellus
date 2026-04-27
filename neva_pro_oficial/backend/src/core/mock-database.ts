@@ -8,6 +8,7 @@ type MockState = {
   users: AnyRecord[];
   answers: AnyRecord[];
   xp_logs: AnyRecord[];
+  notifications: AnyRecord[];
   materials: AnyRecord[];
   mural: AnyRecord[];
   questions: AnyRecord[];
@@ -18,6 +19,7 @@ const DEFAULT_STATE: MockState = {
   users: [],
   answers: [],
   xp_logs: [],
+  notifications: [],
   materials: [
     {
       id: 'material-1',
@@ -230,6 +232,7 @@ export class LocalMockDatabase {
       users: this.createUsersModel(),
       answers: this.createAnswersModel(),
       xp_logs: this.createXpLogsModel(),
+      notifications: this.createNotificationsModel(),
       materials: this.createMaterialsModel(),
       mural: this.createMuralModel(),
       questions: this.createQuestionsModel(),
@@ -250,6 +253,7 @@ export class LocalMockDatabase {
           users: Array.isArray(parsed.users) ? parsed.users : [],
           answers: Array.isArray(parsed.answers) ? parsed.answers : [],
           xp_logs: Array.isArray(parsed.xp_logs) ? parsed.xp_logs : [],
+          notifications: Array.isArray(parsed.notifications) ? parsed.notifications : [],
           materials: Array.isArray(parsed.materials) ? parsed.materials : clone(DEFAULT_STATE.materials),
           mural: Array.isArray(parsed.mural) ? parsed.mural : clone(DEFAULT_STATE.mural),
           questions: Array.isArray(parsed.questions) ? parsed.questions : [],
@@ -334,6 +338,7 @@ export class LocalMockDatabase {
           ...data,
           email: normalizeString(data?.email),
           password_hash: data?.password_hash || data?.password || '',
+          is_admin: Boolean(data?.is_admin),
         };
         delete created.password;
         this.state.users.push(created);
@@ -397,6 +402,53 @@ export class LocalMockDatabase {
         this.state.xp_logs.push(created);
         this.persist();
         return clone(created);
+      },
+    };
+  }
+
+  private createNotificationsModel() {
+    return {
+      findMany: async ({ where, take, orderBy }: AnyRecord = {}) => {
+        const records = this.state.notifications.filter((entry) => matchesWhere(entry, where));
+        return clone(applyPagination(sortRecords(records, orderBy), take));
+      },
+      findFirst: async ({ where }: AnyRecord) => {
+        const record = this.state.notifications.find((entry) => matchesWhere(entry, where));
+        return record ? clone(record) : null;
+      },
+      create: async ({ data }: AnyRecord) => {
+        const created = {
+          id: this.generateId('notification'),
+          is_read: false,
+          read_at: null,
+          created_at: new Date().toISOString(),
+          ...data,
+        };
+        this.state.notifications.push(created);
+        this.persist();
+        return clone(created);
+      },
+      update: async ({ where, data }: AnyRecord) => {
+        const index = this.state.notifications.findIndex((entry) => matchesWhere(entry, where));
+        if (index === -1) throw new Error('Notification not found');
+        const current = this.state.notifications[index];
+        const next = { ...current, ...data, updated_at: new Date().toISOString() };
+        this.state.notifications[index] = next;
+        this.persist();
+        return clone(next);
+      },
+      updateMany: async ({ where, data }: AnyRecord) => {
+        let count = 0;
+        this.state.notifications = this.state.notifications.map((entry) => {
+          if (!matchesWhere(entry, where)) return entry;
+          count += 1;
+          return { ...entry, ...data, updated_at: new Date().toISOString() };
+        });
+        this.persist();
+        return { count };
+      },
+      count: async ({ where }: AnyRecord = {}) => {
+        return this.state.notifications.filter((entry) => matchesWhere(entry, where)).length;
       },
     };
   }

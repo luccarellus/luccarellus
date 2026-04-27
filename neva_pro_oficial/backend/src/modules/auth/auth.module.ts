@@ -14,8 +14,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret:
-          configService.get<string>('JWT_SECRET') || 'neva-pro-dev-secret',
+        secret: (() => {
+          const jwtSecret = configService.get<string>('JWT_SECRET');
+          if (!jwtSecret && process.env.NODE_ENV === 'production') {
+            throw new Error('JWT_SECRET is required in production.');
+          }
+          return jwtSecret || 'neva-pro-dev-secret';
+        })(),
         signOptions: { expiresIn: '1d' },
       }),
       inject: [ConfigService],

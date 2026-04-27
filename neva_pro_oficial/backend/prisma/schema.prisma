@@ -25,6 +25,7 @@ model users {
   answers         answers[]
   xp_logs         xp_logs[]
   user_badges     user_badges[]
+  notifications   notifications[]
 
   @@unique([auth_provider, provider_user_id])
   @@map("users")
@@ -120,6 +121,22 @@ model xp_logs {
   user       users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("xp_logs")
+}
+
+model notifications {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String    @db.Uuid
+  title      String    @db.VarChar(180)
+  content    String
+  type       String    @db.VarChar(50)
+  link       String?
+  is_read    Boolean   @default(false)
+  read_at    DateTime? @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  user       users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, is_read])
+  @@map("notifications")
 }
 
 model badges {

@@ -26,8 +26,6 @@ SUPABASE_URL=https://pykipbdkqxyvlfemygjh.supabase.co
 SUPABASE_ANON_KEY=SUA_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY=SUA_SUPABASE_SERVICE_ROLE_KEY
 JWT_SECRET=UMA_CHAVE_FORTE_E_UNICA
-GOOGLE_CLIENT_ID=SEU_GOOGLE_CLIENT_ID
-APPLE_CLIENT_ID=SEU_APPLE_CLIENT_ID
 NODE_ENV=production
 ```
 
@@ -68,28 +66,35 @@ Crie outro projeto apontando para:
 N.E.V.A Pro/frontend
 ```
 
-### Variável de ambiente do frontend
+### Configurando a Conexão com o Backend
 
-No projeto do frontend, adicione:
+No projeto do frontend, você não usa variáveis de ambiente padrão. Em vez disso, **você precisa editar o arquivo `frontend/vercel.json`**.
 
-```env
-BACKEND_API_URL=https://SEU-BACKEND.vercel.app/api/v1
+Abra o arquivo `frontend/vercel.json` e substitua a URL `<COLOQUE_A_URL_DO_SEU_BACKEND_AQUI>` pela URL que a Vercel gerou para o seu backend:
+
+```json
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://SEU-BACKEND-VERCEL.vercel.app/api/v1/:path*"
+    }
+  ],
 ```
 
 ### O que isso faz
 
-- o navegador chama `/api/v1`
-- a Vercel do frontend repassa para o backend
-- o backend responde usando o Supabase
+- o navegador chama `/api/v1` (usando a URL do frontend)
+- a Vercel do frontend repassa (rewrite) essa chamada para o backend
+- o backend responde acessando o Supabase
 
 ---
 
 ## 3) Ordem certa para publicar
 
-1. publique o **backend**
-2. copie a URL pública dele
-3. coloque essa URL em `BACKEND_API_URL`
-4. publique o **frontend**
+1. publique o **backend** na Vercel
+2. copie a URL pública que a Vercel gerou para o backend
+3. edite o arquivo `frontend/vercel.json` colocando essa URL
+4. publique o **frontend** na Vercel
 5. teste login, questões, ranking e simulados
 
 ---
@@ -104,4 +109,3 @@ BACKEND_API_URL=https://SEU-BACKEND.vercel.app/api/v1
 - [ ] `SUPABASE_SERVICE_ROLE_KEY` configurada
 - [ ] `JWT_SECRET` configurada
 - [ ] `BACKEND_API_URL` configurada no frontend
-- [ ] Google/Apple autorizados para a URL pública

@@ -6,13 +6,27 @@ import { AppModule } from './app.module';
 export async function createApp() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  const configuredOrigins = String(process.env.FRONTEND_ORIGIN || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  const defaultOrigins = [
+    /^http:\/\/localhost:\d+$/,
+    /^http:\/\/127\.0\.0\.1:\d+$/,
+    /^https:\/\/.*\.vercel\.app$/,
+  ];
+
   app.enableCors({
-    origin: [
-      /^http:\/\/localhost:\d+$/,
-      /^http:\/\/127\.0\.0\.1:\d+$/,
-      /^https:\/\/.*\.vercel\.app$/,
-    ],
+    origin: configuredOrigins.length > 0 ? configuredOrigins : defaultOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: false,
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin'],

@@ -43,24 +43,4 @@ export class AuthController {
 
     return this.authService.login(user);
   }
-
-  @Post('google')
-  @ApiOperation({ summary: 'Log in with Google' })
-  async googleLogin(@Body() body: any) {
-    if (!body?.credential) {
-      throw new UnauthorizedException('Missing Google credential');
-    }
-
-    return this.authService.loginWithGoogle(body.credential);
-  }
-
-  @Post('apple')
-  @ApiOperation({ summary: 'Log in with Apple' })
-  async appleLogin(@Body() body: any) {
-    if (!body?.identityToken) {
-      throw new UnauthorizedException('Missing Apple identity token');
-    }
-
-    return this.authService.loginWithApple(body.identityToken, body.user);
-  }
 }

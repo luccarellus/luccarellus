@@ -10,6 +10,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super();
 
+    if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL is required in production.');
+    }
+
     if (!process.env.DATABASE_URL) {
       this.enableMockMode();
     }
@@ -24,6 +28,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       await this.$connect();
       console.log('Successfully connected to database');
     } catch (error) {
+      if (process.env.NODE_ENV === 'production') {
+        throw error;
+      }
+
       console.warn('Could not connect to database. Some features may be unavailable.');
       this.enableMockMode();
     }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma.service';
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -41,27 +40,16 @@ export class UserService {
     });
   }
 
-  async findByProvider(auth_provider: string, provider_user_id: string) {
-    return this.prisma.users.findFirst({
-      where: {
-        auth_provider,
-        provider_user_id,
-      },
-    });
-  }
-
   async create(data: {
     name: string;
     email: string;
     password_hash?: string;
     avatar_url?: string;
-    auth_provider?: string | null;
-    provider_user_id?: string | null;
   }) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = data.password_hash
       ? await bcrypt.hash(data.password_hash, salt)
-      : await bcrypt.hash(crypto.randomBytes(32).toString('hex'), salt);
+      : await bcrypt.hash(`${Date.now()}-${Math.random().toString(16).slice(2)}`, salt);
 
     return this.prisma.users.create({
       data: {
