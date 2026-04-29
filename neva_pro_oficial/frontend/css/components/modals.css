@@ -1,0 +1,59 @@
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal-content {
+    background: var(--bg-card);
+    width: 100%; max-width: 800px; 
+    height: 90vh; max-height: 600px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    display: flex; flex-direction: column; overflow: hidden;
+    transform: scale(0.95) translateY(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+    .modal-content { flex-direction: row; }
+}
+
+.modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+.modal-sidebar {
+    width: 100%; border-bottom: 1px solid var(--border); padding: 1.5rem;
+    background: var(--bg-main);
+}
+@media (min-width: 768px) {
+    .modal-sidebar { width: 250px; border-bottom: none; border-right: 1px solid var(--border); }
+}
+
+.modal-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 15px; width: 100%; text-align: left;
+    background: transparent; border: none; border-radius: 8px;
+    color: var(--text-secondary); font-weight: 600; cursor: pointer;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+}
+.modal-nav-item:hover { background: rgba(0,0,0,0.03); color: var(--text-primary); }
+.modal-nav-item.active { background: rgba(47, 155, 152, 0.08); color: var(--primary); }
+
+.modal-body {
+    flex: 1; padding: 2rem; overflow-y: auto;
+}
+.modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem;
+}
+.modal-close {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-muted); transition: color 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--danger); }

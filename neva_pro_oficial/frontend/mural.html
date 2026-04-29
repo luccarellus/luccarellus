@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N.E.V.A Pro | Mural de Recados</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .mural-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .mural-page-title {
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .mural-grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+            padding: 12px;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at top right, rgba(0, 207, 200, 0.1), transparent 42%),
+                radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.08), transparent 45%),
+                rgba(15, 23, 42, 0.02);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+        }
+
+        .mural-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .section-card__head {
+            padding: 16px 16px 0;
+        }
+
+        .section-card__head h4 {
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .filter-list {
+            list-style: none;
+            padding: 0 12px 12px;
+            margin: 0;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 8px;
+            font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .filter-item:hover {
+            background: rgba(0, 207, 200, 0.05);
+            color: var(--primary);
+            transform: translateX(2px);
+        }
+
+        .filter-item.active {
+            background: linear-gradient(90deg, rgba(0, 207, 200, 0.18), rgba(139, 92, 246, 0.12));
+            color: var(--text-primary);
+            border-color: rgba(0, 207, 200, 0.16);
+            box-shadow: 0 10px 24px rgba(0, 207, 200, 0.12);
+        }
+
+        .filter-item__copy {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .filter-item__label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .filter-item__desc {
+            font-size: 0.8rem;
+            line-height: 1.35;
+            color: var(--text-muted);
+        }
+
+        .filter-count {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(0, 207, 200, 0.08);
+            color: var(--primary);
+        }
+
+        .mural-summary {
+            padding: 16px;
+            margin: 0 12px 12px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(0, 207, 200, 0.06), rgba(139, 92, 246, 0.04));
+            border: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .mural-summary__title {
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .mural-summary__desc {
+            color: var(--text-secondary);
+            font-size: 0.86rem;
+            line-height: 1.45;
+            margin-bottom: 12px;
+        }
+
+        .mural-summary__stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .summary-stat {
+            padding: 12px;
+            border-radius: 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .summary-stat strong {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .summary-stat span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .summary-actions .btn {
+            min-height: 40px;
+            padding-inline: 14px;
+            flex: 1 1 auto;
+        }
+
+        .mural-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .notice-card {
+            background: var(--bg-card);
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            padding: 24px 24px 22px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notice-card.featured {
+            background:
+                radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 34%),
+                linear-gradient(to bottom right, var(--bg-card), rgba(0, 207, 200, 0.02));
+        }
+
+        .notice-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--purple));
+        }
+
+        .notice-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .notice-source {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .notice-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: white;
+            background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+        }
+
+        .notice-details h4 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .notice-details span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .notice-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-info { background: rgba(0, 207, 200, 0.1); color: var(--primary); border: 1px solid rgba(0, 207, 200, 0.2); }
+        .badge-warning { background: rgba(245, 158, 11, 0.1); color: var(--accent); border: 1px solid rgba(245, 158, 11, 0.2); }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-neutral { background: rgba(148, 163, 184, 0.12); color: var(--text-secondary); border: 1px solid rgba(148, 163, 184, 0.18); }
+
+        .notice-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.25;
+            color: var(--text-primary);
+        }
+
+        .notice-copy {
+            color: var(--text-secondary);
+            line-height: 1.72;
+            margin-bottom: 18px;
+            max-width: 70ch;
+        }
+
+        .notice-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 18px;
+            align-items: center;
+            padding-top: 18px;
+            margin-top: 4px;
+            border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .notice-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1.45;
+        }
+
+        .notice-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .notice-actions .btn {
+            min-height: 42px;
+            padding-inline: 16px;
+            border-radius: 14px;
+        }
+
+        .empty-state {
+            display: none;
+            padding: 28px;
+            text-align: center;
+            border-radius: 22px;
+            border: 1px dashed var(--border);
+            color: var(--text-secondary);
+            background: rgba(15, 23, 42, 0.02);
+        }
+
+        @media (max-width: 1200px) {
+            .mural-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mural-page-header {
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .mural-grid {
+                padding: 0;
+                gap: 18px;
+            }
+
+            .section-card {
+                border-radius: 20px;
+            }
+
+            .mural-summary__stats {
+                grid-template-columns: 1fr;
+            }
+
+            .notice-card {
+                padding: 18px 18px 16px;
+                border-radius: 18px;
+            }
+
+            .notice-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .notice-badges {
+                justify-content: flex-start;
+            }
+
+            .summary-actions .btn,
+            .notice-actions .btn {
+                width: 100%;
+            }
+
+            .notice-actions {
+                gap: 10px;
+            }
+
+            .notice-meta {
+                gap: 10px 14px;
+                padding-top: 16px;
+            }
+
+            .filter-item__desc {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div id="sidebar-container"></div>
+
+        <div class="main-wrapper">
+            <div id="navbar-container"></div>
+
+            <main class="content">
+                <section class="animate-fade">
+                    <div class="page-header mural-page-header">
+                        <div>
+                            <h2 class="mural-page-title">Mural de Recados 📌</h2>
+                            <p>Comunicados oficiais, prazos e orientações importantes para a sua rotina.</p>
+                        </div>
+                    </div>
+
+                    <div class="mural-grid">
+                        <aside class="mural-sidebar">
+                            <div class="section-card">
+                                <div class="section-card__head">
+                                    <h4>Categorias</h4>
+                                </div>
+                                <ul class="filter-list">
+                                    <li class="filter-item active" data-filter="all">
+                                        <i data-lucide="layers" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Tudo</span><span class="filter-count">4</span></div>
+                                            <div class="filter-item__desc">Visão geral com todos os comunicados.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="official">
+                                        <i data-lucide="megaphone" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Avisos oficiais</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Inscrições, mudanças e prazos da plataforma.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="agenda">
+                                        <i data-lucide="calendar-days" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Agenda</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Simulados, aulas ao vivo e entregas da semana.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="study">
+                                        <i data-lucide="book-open" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Estudos</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Roteiros de revisão e orientações de estudo.</div>
+                                        </div>
+                                    </li>
+                                    <li class="filter-item" data-filter="support">
+                                        <i data-lucide="shield-check" style="width: 18px;"></i>
+                                        <div class="filter-item__copy">
+                                            <div class="filter-item__label"><span>Apoio</span><span class="filter-count">1</span></div>
+                                            <div class="filter-item__desc">Dicas rápidas, dúvidas frequentes e suporte.</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="mural-summary" id="mural-summary">
+                                <div class="mural-summary__title" id="category-detail-title">Tudo</div>
+                                <div class="mural-summary__desc" id="category-detail-desc">Acompanhe os recados institucionais e as orientações do projeto em um só lugar.</div>
+                                <div class="mural-summary__stats">
+                                    <div class="summary-stat">
+                                        <strong id="category-detail-count">4 recados</strong>
+                                        <span id="category-detail-count-desc">Publicações ativas</span>
+                                    </div>
+                                    <div class="summary-stat">
+                                        <strong id="category-detail-action-title">Canal oficial</strong>
+                                        <span id="category-detail-action-desc">Leitura rápida e objetiva</span>
+                                    </div>
+                                </div>
+                                <div class="summary-actions">
+                                    <button type="button" class="btn btn-primary btn-sm" id="category-detail-action">Abrir painel</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" id="category-detail-secondary">Ver tudo</button>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <div>
+                            <div class="mural-feed" id="mural-feed">
+                                <article class="notice-card featured" data-category="official">
+                                    <div class="notice-head">
+                                        <div class="notice-source">
+                                            <div class="notice-icon"><i data-lucide="megaphone" style="width: 18px;"></i></div>
+                                            <div class="notice-details">
+                                                <h4>Equipe N.E.V.A Pro</h4>
+                                                <span>Comunicado oficial • Há 2 horas</span>
+                                            </div>
+                                        </div>
+                                        <div class="notice-badges">
+                                            <span class="badge badge-info">Aviso</span>
+                                            <span class="badge badge-neutral">Urgente</span>
+                                        </div>
+                                    </div>
+                                    <div class="notice-title">Novo Simulado Nacional: Pré-ENEM 2026</div>
+                                    <div class="notice-copy">
+                                        As inscrições para o maior simulado do semestre já estão abertas. A proposta é acompanhar seu desempenho em uma trilha objetiva, com foco total em prova real e revisão guiada.
+                                    </div>
+                                    <div class="notice-actions">
+                                        <button class="btn btn-primary btn-sm">Ler comunicado</button>
+                                        <button class="btn btn-secondary btn-sm">Marcar como lido</button>
+                                    </div>
+                                    <div class="notice-meta">
+                                        <span class="notice-meta-item"><i data-lucide="calendar-clock" style="width: 14px;"></i> Inscrições abertas até sexta-feira</span>
+                                        <span class="notice-meta-item"><i data-lucide="badge-info" style="width: 14px;"></i> Canal administrativo</span>
+                                    </div>
+                                </article>
+
+                                <article class="notice-card" data-category="agenda">
+                                    <div class="notice-head">
+                                        <div class="notice-source">
+                                            <div class="notice-icon" style="background: linear-gradient(135deg, #f59e0b, #f97316);"><i data-lucide="calendar-days" style="width: 18px;"></i></div>
+                                            <div class="notice-details">
+                                                <h4>Agenda da Semana</h4>
+                                                <span>Atualização de cronograma</span>
+                                            </div>
+                                        </div>
+                                        <div class="notice-badges">
+                                            <span class="badge badge-warning">Prazo</span>
+                                        </div>
+                                    </div>
+                                    <div class="notice-title">Simulado, revisão e entrega de redação</div>
+                                    <div class="notice-copy">
+                                        Organize sua semana com os principais marcos: simulado global, revisão de conteúdos prioritários e janela de envio da redação.
+                                    </div>
+                                    <div class="notice-actions">
+                                        <button class="btn btn-primary btn-sm">Ver agenda</button>
+                                        <button class="btn btn-secondary btn-sm">Adicionar ao calendário</button>
+                                    </div>
+                                    <div class="notice-meta">
+                                        <span class="notice-meta-item"><i data-lucide="clock-3" style="width: 14px;"></i> Quarta a domingo</span>
+                                        <span class="notice-meta-item"><i data-lucide="check-circle-2" style="width: 14px;"></i> Prioridade alta</span>
+                                    </div>
+                                </article>
+
+                                <article class="notice-card" data-category="study">
+                                    <div class="notice-head">
+                                        <div class="notice-source">
+                                            <div class="notice-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"><i data-lucide="book-open" style="width: 18px;"></i></div>
+                                            <div class="notice-details">
+                                                <h4>Roteiro de Estudos</h4>
+                                                <span>Diretriz pedagógica</span>
+                                            </div>
+                                        </div>
+                                        <div class="notice-badges">
+                                            <span class="badge badge-success">Estudos</span>
+                                        </div>
+                                    </div>
+                                    <div class="notice-title">Como usar o Mural sem dispersar a rotina</div>
+                                    <div class="notice-copy">
+                                        Leia primeiro os avisos oficiais, depois confira a agenda semanal e só então siga para as revisões do dia. Assim o mural funciona como apoio à sua organização, não como distração.
+                                    </div>
+                                    <div class="notice-actions">
+                                        <button class="btn btn-primary btn-sm">Abrir roteiro</button>
+                                        <button class="btn btn-secondary btn-sm">Salvar lembrete</button>
+                                    </div>
+                                    <div class="notice-meta">
+                                        <span class="notice-meta-item"><i data-lucide="move-right" style="width: 14px;"></i> Rotina diária</span>
+                                        <span class="notice-meta-item"><i data-lucide="bookmark-check" style="width: 14px;"></i> Essencial para revisão</span>
+                                    </div>
+                                </article>
+
+                                <article class="notice-card" data-category="support">
+                                    <div class="notice-head">
+                                        <div class="notice-source">
+                                            <div class="notice-icon" style="background: linear-gradient(135deg, #14b8a6, #0f766e);"><i data-lucide="shield-check" style="width: 18px;"></i></div>
+                                            <div class="notice-details">
+                                                <h4>Central de Apoio</h4>
+                                                <span>Ajuda e orientações rápidas</span>
+                                            </div>
+                                        </div>
+                                        <div class="notice-badges">
+                                            <span class="badge badge-neutral">Ajuda</span>
+                                        </div>
+                                    </div>
+                                    <div class="notice-title">Dúvidas comuns sobre simulados e correções</div>
+                                    <div class="notice-copy">
+                                        Se algo falhar ao carregar questões ou resultados, confira primeiro sua conexão local e a atualização da página. O sistema sempre prioriza estabilidade e clareza.
+                                    </div>
+                                    <div class="notice-actions">
+                                        <button class="btn btn-primary btn-sm">Ver suporte</button>
+                                        <button class="btn btn-secondary btn-sm">Abrir FAQ</button>
+                                    </div>
+                                    <div class="notice-meta">
+                                        <span class="notice-meta-item"><i data-lucide="life-buoy" style="width: 14px;"></i> Suporte rápido</span>
+                                        <span class="notice-meta-item"><i data-lucide="eye" style="width: 14px;"></i> Leitura objetiva</span>
+                                    </div>
+                                </article>
+                            </div>
+
+                            <div class="empty-state" id="empty-state">
+                                Nenhum comunicado encontrado para esta categoria.
+                            </div>
+                        </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>

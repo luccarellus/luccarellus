@@ -8,6 +8,8 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UserService } from '../users/users.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,7 +21,7 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Log in a user' })
-  async login(@Body() body: any) {
+  async login(@Body() body: LoginDto) {
     const user = await this.authService.validateUser(body.email, body.password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -29,7 +31,7 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
-  async register(@Body() body: any) {
+  async register(@Body() body: RegisterDto) {
     const existingUser = await this.userService.findByEmail(body.email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');

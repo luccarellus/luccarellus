@@ -6,6 +6,23 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private isLikelySafeAvatar(value: string) {
+    const v = String(value || '').trim();
+    if (!v) return true;
+
+    // Prevent unbounded storage abuse (base64 data urls can get huge).
+    const maxLen = 220_000;
+    if (v.length > maxLen) return false;
+
+    if (v.startsWith('data:image/')) {
+      // Only allow common formats, base64 only.
+      return /^data:image\/(png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=]+$/i.test(v);
+    }
+
+    // Only allow https remote avatars.
+    return /^https:\/\/[^\s]+$/i.test(v);
+  }
+
   async findOne(id: string) {
     const user = await this.prisma.users.findUnique({
       where: { id },
@@ -71,7 +88,10 @@ export class UserService {
     }
 
     if (typeof data?.avatar_url === 'string') {
-      allowedData.avatar_url = data.avatar_url;
+      const avatar = data.avatar_url.trim();
+      if (this.isLikelySafeAvatar(avatar)) {
+        allowedData.avatar_url = avatar;
+      }
     }
 
     return this.prisma.users.update({

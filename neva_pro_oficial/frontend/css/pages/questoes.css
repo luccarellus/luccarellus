@@ -1,0 +1,241 @@
+/**
+ * Practice Questions Styles
+ */
+
+.practice-container {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.practice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--bg-secondary);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.question-card {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    padding: 2rem;
+}
+
+.question-text {
+    white-space: pre-wrap;
+    font-size: 1.05rem;
+}
+
+.question-image {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: block;
+}
+
+.alternatives-section {
+    margin-bottom: 2rem;
+}
+
+.intro-text {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    text-align: left;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.option-btn:hover {
+    border-color: var(--primary);
+    background: var(--bg-secondary);
+    transform: translateX(4px);
+}
+
+.option-btn.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 2px var(--primary);
+}
+
+.opt-letter {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    font-weight: bold;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.option-btn.selected .opt-letter {
+    background: var(--primary);
+    color: white;
+}
+
+.opt-text {
+    flex: 1;
+}
+
+.practice-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Results Styles */
+.results-container {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.results-card {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.results-icon {
+    margin: 0 auto 1.5rem;
+    background: var(--primary);
+    color: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.results-icon i {
+    width: 40px;
+    height: 40px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 2.5rem;
+}
+
+.result-box {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-box.correct { border-left: 4px solid #10b981; background: #10b98105; }
+.result-box.wrong { border-left: 4px solid #ef4444; background: #ef444405; }
+.result-box.accent { border-left: 4px solid var(--primary); background: var(--primary-light); }
+
+.result-box .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.result-box .value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.result-box.correct .value { color: #10b981; }
+.result-box.wrong .value { color: #ef4444; }
+
+.results-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Loading & Error States */
+.loading-state, .error-state {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--bg-secondary);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+}
+
+.clickable-card, .clickable-disc {
+    cursor: pointer;
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.clickable-card:hover, .clickable-disc:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--icon-color) 15%, transparent);
+    color: var(--icon-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.icon-circle i {
+    width: 30px;
+    height: 30px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

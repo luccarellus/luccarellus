@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import { isAdminByEmail } from '../../core/admin-access';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       user: {
         ...this.sanitizeUser(user),
-        is_admin: Boolean(user?.is_admin),
+        is_admin: isAdminByEmail(user?.email),
       },
     };
   }

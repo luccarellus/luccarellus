@@ -1,5 +1,19 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "user-c52dc6b1-dd06-4ec9-ac75-dc5fced977d5",
+      "level": 1,
+      "total_xp": 0,
+      "current_streak": 0,
+      "created_at": "2026-04-29T14:00:05.216Z",
+      "updated_at": "2026-04-29T14:00:05.216Z",
+      "last_activity_at": null,
+      "name": "Admin",
+      "email": "admin@neva.pro",
+      "password_hash": "$2b$10$XcvZBYMeStwhy2IQNQAtbe2Cw168SfsnCArJOlWF4kXe8WU.6CWcC",
+      "is_admin": false
+    }
+  ],
   "answers": [],
   "xp_logs": [],
   "notifications": [

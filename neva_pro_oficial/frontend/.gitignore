@@ -1,0 +1,20 @@
+# Node deps
+node_modules/
+
+# Next/Frontend cache and build artifacts
+.next/
+out/
+dist/
+build/
+coverage/
+.cache/
+
+# Local env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+

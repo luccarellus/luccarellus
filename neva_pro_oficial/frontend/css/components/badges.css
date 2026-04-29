@@ -1,0 +1,10 @@
+/* ── Badges / Tags ────────────────────────────────────── */
+.badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 99px;
+    font-size: 0.75rem; font-weight: 700;
+}
+.badge-brand   { background: #e0fdfc; color: var(--primary); }
+.badge-green  { background: #ecfdf5; color: var(--success); }
+.badge-yellow { background: #fefce8; color: #b45309; }
+.badge-purple { background: #f5f3ff; color: var(--purple); }

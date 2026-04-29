@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { DevSeedService } from './dev-seed.service';
 
 @Module({
   imports: [
@@ -16,10 +17,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       useFactory: async (configService: ConfigService) => ({
         secret: (() => {
           const jwtSecret = configService.get<string>('JWT_SECRET');
-          if (!jwtSecret && process.env.NODE_ENV === 'production') {
-            throw new Error('JWT_SECRET is required in production.');
+          if (!jwtSecret && process.env.NODE_ENV !== 'test') {
+            throw new Error('JWT_SECRET is required.');
           }
-          return jwtSecret || 'neva-pro-dev-secret';
+          return jwtSecret as string;
         })(),
         signOptions: { expiresIn: '1d' },
       }),
@@ -27,7 +28,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, DevSeedService],
   exports: [AuthService],
 })
 export class AuthModule {}
