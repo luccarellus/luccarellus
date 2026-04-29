@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -178,7 +179,7 @@
       margin-bottom: 16px;
       padding: 20px 22px;
       border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)), var(--admin-surface);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), var(--admin-surface);
       border: 1px solid var(--admin-border);
       box-shadow: var(--shadow-sm);
     }
@@ -256,7 +257,7 @@
       min-height: 128px;
       background:
         radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 35%),
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.012)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
         var(--admin-surface);
       border: 1px solid var(--admin-border);
       border-radius: 22px;
@@ -321,14 +322,58 @@
       font-weight: 800;
     }
 
-    .chip-ok { background: rgba(16, 185, 129, 0.12); color: var(--success); }
-    .chip-warn { background: rgba(245, 158, 11, 0.12); color: var(--accent); }
-    .chip-muted { background: rgba(148, 163, 184, 0.12); color: var(--text-secondary); }
-    .chip-info { background: rgba(0, 207, 200, 0.12); color: var(--primary); }
-    .chip-danger { background: var(--admin-danger); color: #f87171; }
+    .chip-ok {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--success);
+    }
 
-    .tab-panel { display: none; animation: fadeIn 0.2s ease; }
-    .tab-panel.active { display: block; }
+    .chip-warn {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--accent);
+    }
+
+    .chip-muted {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-secondary);
+    }
+
+    .chip-info {
+      background: rgba(0, 207, 200, 0.12);
+      color: var(--primary);
+    }
+
+    .chip-danger {
+      background: var(--admin-danger);
+      color: #f87171;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(0, 207, 200, 0.4);
+      box-shadow: 0 0 0 3px rgba(0, 207, 200, 0.10);
+    }
 
     .panel {
       background: var(--admin-surface);
@@ -347,7 +392,11 @@
       flex-wrap: wrap;
     }
 
-    .panel-head h2 { margin: 0 0 6px; font-size: 1.05rem; }
+    .panel-head h2 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
     .panel-head p {
       margin: 0;
       color: var(--text-secondary);
@@ -356,7 +405,9 @@
       max-width: 58ch;
     }
 
-    .panel-body { padding: 20px; }
+    .panel-body {
+      padding: 20px;
+    }
 
     .overview-grid {
       display: grid;
@@ -455,8 +506,15 @@
       align-items: center;
     }
 
-    .status-row strong { display: block; margin-bottom: 4px; font-size: 0.9rem; }
-    .status-row small { color: var(--text-muted); }
+    .status-row strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .status-row small {
+      color: var(--text-muted);
+    }
 
     .status-value {
       font-weight: 900;
@@ -513,7 +571,10 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .field { display: grid; gap: 7px; }
+    .field {
+      display: grid;
+      gap: 7px;
+    }
 
     .field label {
       font-size: 0.86rem;
@@ -547,7 +608,10 @@
       margin-top: 2px;
     }
 
-    .module-stack { display: grid; gap: 10px; }
+    .module-stack {
+      display: grid;
+      gap: 10px;
+    }
 
     .module-item {
       display: flex;
@@ -567,7 +631,11 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .module-item strong { display: block; line-height: 1.35; }
+    .module-item strong {
+      display: block;
+      line-height: 1.35;
+    }
+
     .module-item small {
       display: block;
       color: var(--text-muted);
@@ -626,25 +694,342 @@
       opacity: 0;
       transform: translateY(12px) scale(0.97);
       pointer-events: none;
-      transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 200;
       min-width: 220px;
       max-width: 340px;
     }
 
-    .admin-toast.show { opacity: 1; transform: translateY(0) scale(1); }
-    .admin-toast.toast-ok  { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.08); color: var(--success); }
-    .admin-toast.toast-err { border-color: rgba(239,68,68,0.4);  background: rgba(239,68,68,0.08); color: #f87171; }
-    .admin-toast.toast-warn{ border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); color: var(--accent); }
+    .admin-toast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
 
-    .toast-icon { width: 18px; height: 18px; flex-shrink: 0; }
+    .admin-toast.toast-ok {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--success);
+    }
+
+    .admin-toast.toast-err {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+    }
+
+    .admin-toast.toast-warn {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--accent);
+    }
+
+    .toast-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── BOTÃO DANGER ─────────────────────────── */
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      color: #f87171;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, transform 0.15s;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: rgba(239, 68, 68, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* ── MODAL DE CONFIRMAÇÃO ─────────────────── */
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(4, 10, 22, 0.72);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .confirm-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .confirm-modal {
+      width: 100%;
+      max-width: 400px;
+      margin: 16px;
+      padding: 28px 28px 24px;
+      border-radius: 24px;
+      background: var(--bg-card, rgba(14, 23, 42, 0.98));
+      border: 1px solid rgba(239, 68, 68, 0.22);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+      transform: scale(0.94) translateY(8px);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .confirm-overlay.open .confirm-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .confirm-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.24);
+      display: grid;
+      place-items: center;
+      color: #f87171;
+      margin-bottom: 16px;
+    }
+
+    .confirm-modal h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .confirm-modal p {
+      margin: 0 0 22px;
+      color: var(--text-secondary, #94a3b8);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* ── FORMULÁRIO EM MODO EDIÇÃO ─────────────── */
+    .module-form.editing {
+      border-color: rgba(0, 207, 200, 0.35) !important;
+      box-shadow: 0 0 0 3px rgba(0, 207, 200, 0.10), var(--shadow-sm) !important;
+    }
+
+    .edit-mode-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(0, 207, 200, 0.10);
+      border: 1px solid rgba(0, 207, 200, 0.25);
+      color: var(--primary, #00cfc8);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .module-form.editing .edit-mode-banner {
+      display: flex;
+    }
+
+    /* ── BUSCA NAS LISTAS ──────────────────────── */
+    .list-search-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .list-search {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border, rgba(148, 163, 184, 0.18));
+      background: var(--bg-card, rgba(15, 23, 42, 0.04));
+      color: var(--text-primary, #f1f5f9);
+      font: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .list-search:focus {
+      border-color: rgba(0, 207, 200, 0.4);
+    }
+
+    .list-search::placeholder {
+      color: var(--text-muted, #64748b);
+    }
+
+    .list-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted, #64748b);
+      white-space: nowrap;
+    }
+
+    /* ── LOGIN GATE ────────────────────────────── */
+    .login-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0, 207, 200, 0.08), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.07), transparent 28%),
+        var(--bg-primary, #08101f);
+    }
+
+    .login-gate.hidden {
+      display: none;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 370px;
+      margin: 16px;
+      padding: 34px 30px 28px;
+      border-radius: 28px;
+      background: var(--bg-card, rgba(10, 18, 35, 0.97));
+      border: 1px solid rgba(0, 207, 200, 0.18);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
+    }
+
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+
+    .login-brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+    }
+
+    .login-brand strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .login-brand small {
+      display: block;
+      color: var(--text-muted, #64748b);
+      font-size: 0.78rem;
+      margin-top: 2px;
+    }
+
+    .login-box h2 {
+      margin: 0 0 6px;
+      font-size: 1.3rem;
+    }
+
+    .login-box>p {
+      margin: 0 0 20px;
+      color: var(--text-secondary, #94a3b8);
+      font-size: 0.87rem;
+      line-height: 1.5;
+    }
+
+    .login-field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .login-field label {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--text-secondary, #94a3b8);
+    }
+
+    .login-field input {
+      padding: 12px 14px;
+      border-radius: 13px;
+      border: 1px solid var(--admin-border);
+      background: rgba(15, 23, 42, 0.5);
+      color: var(--text-primary, #f1f5f9);
+      font: inherit;
+      font-size: 0.93rem;
+      outline: none;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.18s;
+    }
+
+    .login-field input:focus {
+      border-color: rgba(0, 207, 200, 0.45);
+    }
+
+    .login-error {
+      display: none;
+      padding: 10px 14px;
+      border-radius: 11px;
+      margin-bottom: 14px;
+      background: rgba(248, 113, 113, 0.10);
+      border: 1px solid rgba(248, 113, 113, 0.28);
+      color: #f87171;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .login-error.show {
+      display: block;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(0, 207, 200, 0.92), rgba(14, 165, 233, 0.92));
+      color: #fff;
+      font: inherit;
+      font-size: 0.94rem;
+      font-weight: 700;
+      transition: opacity 0.18s, transform 0.15s;
+    }
+
+    .login-btn:hover {
+      opacity: 0.87;
+      transform: translateY(-1px);
+    }
+
+    .login-hint {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted, #64748b);
+    }
 
     @media (max-width: 1180px) {
-      .admin-shell { grid-template-columns: 1fr; }
-      .admin-sidebar { position: relative; height: auto; }
-      .admin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .admin-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        position: relative;
+        height: auto;
+      }
+
+      .admin-kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .overview-grid,
-      .module-grid { grid-template-columns: 1fr; }
+      .module-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Visual polish: keep the backoffice aligned with the student dashboard */
@@ -887,19 +1272,96 @@
     }
 
     @media (max-width: 768px) {
-      .admin-main { padding: 16px; }
-      .admin-topbar { padding: 18px; gap: 12px; }
-      .admin-top-actions .btn { width: 100%; }
-      .panel-head, .panel-body { padding-left: 14px; padding-right: 14px; }
-      .admin-top-meta { margin-top: 10px; }
-      .admin-kpis { grid-template-columns: 1fr; margin-bottom: 16px; }
-      .module-item { flex-direction: column; }
-      .stack-actions { justify-content: flex-start; }
-      .admin-toast { left: 16px; right: 16px; bottom: 16px; }
+      .admin-main {
+        padding: 16px;
+      }
+
+      .admin-topbar {
+        padding: 18px;
+        gap: 12px;
+      }
+
+      .admin-top-actions .btn {
+        width: 100%;
+      }
+
+      .panel-head,
+      .panel-body {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .admin-top-meta {
+        margin-top: 10px;
+      }
+
+      .admin-kpis {
+        grid-template-columns: 1fr;
+        margin-bottom: 16px;
+      }
+
+      .module-item {
+        flex-direction: column;
+      }
+
+      .stack-actions {
+        justify-content: flex-start;
+      }
+
+      .admin-toast {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+      }
     }
   </style>
 </head>
+
 <body class="admin-body">
+
+  <!-- ── LOGIN GATE ─────────────────────────────────── -->
+  <div class="login-gate hidden" id="login-gate">
+    <div class="login-box">
+      <div class="login-brand">
+        <img src="assets/logo.png" alt="N.E.V.A Pro">
+        <div>
+          <strong>N.E.V.A Pro</strong>
+          <small>Área restrita · Backoffice</small>
+        </div>
+      </div>
+      <h2>Acesso administrativo</h2>
+      <p>Digite suas credenciais de administrador para continuar.</p>
+      <div id="login-error" class="login-error">
+        <i data-lucide="alert-triangle" style="width:14px;display:inline;vertical-align:middle;margin-right:6px;"></i>
+        Usuário ou senha incorretos.
+      </div>
+      <div class="login-field">
+        <label for="login-user">Usuário</label>
+        <input id="login-user" type="text" placeholder="admin" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label for="login-pass">Senha</label>
+        <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="login-btn" id="login-btn">Entrar no painel</button>
+      <p class="login-hint">Apenas usuários cadastrados como admin têm acesso.</p>
+    </div>
+  </div>
+
+  <!-- ── MODAL CONFIRMAÇÃO EXCLUSÃO ─────────────────── -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-modal">
+      <div class="confirm-icon"><i data-lucide="trash-2" style="width:22px;"></i></div>
+      <h3 id="confirm-title">Excluir item?</h3>
+      <p id="confirm-desc">Esta ação não pode ser desfeita. O item será removido permanentemente.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirm-cancel">Cancelar</button>
+        <button class="btn btn-danger" id="confirm-ok"
+          style="min-height:40px;padding-inline:18px;border-radius:13px;">Excluir</button>
+      </div>
+    </div>
+  </div>
+
   <div class="admin-shell">
     <aside class="admin-sidebar">
       <div class="admin-brand">
@@ -917,10 +1379,14 @@
       </div>
 
       <nav class="admin-nav" id="admin-nav">
-        <button class="active" data-tab="overview"><i data-lucide="layout-dashboard" style="width: 18px;"></i> Panorama</button>
-        <button data-tab="simulations"><i data-lucide="file-spreadsheet" style="width: 18px;"></i> Simulados <span class="nav-badge" id="badge-simulations">0</span></button>
-        <button data-tab="materials"><i data-lucide="files" style="width: 18px;"></i> Materiais <span class="nav-badge" id="badge-materials">0</span></button>
-        <button data-tab="mural"><i data-lucide="megaphone" style="width: 18px;"></i> Mural <span class="nav-badge" id="badge-notices">0</span></button>
+        <button class="active" data-tab="overview"><i data-lucide="layout-dashboard" style="width: 18px;"></i>
+          Panorama</button>
+        <button data-tab="simulations"><i data-lucide="file-spreadsheet" style="width: 18px;"></i> Simulados <span
+            class="nav-badge" id="badge-simulations">0</span></button>
+        <button data-tab="materials"><i data-lucide="files" style="width: 18px;"></i> Materiais <span class="nav-badge"
+            id="badge-materials">0</span></button>
+        <button data-tab="mural"><i data-lucide="megaphone" style="width: 18px;"></i> Mural <span class="nav-badge"
+            id="badge-notices">0</span></button>
       </nav>
 
       <div class="admin-sidebar-footer">
@@ -931,9 +1397,11 @@
     <main class="admin-main">
       <div class="admin-topbar">
         <div class="admin-headline">
-          <div class="live-pill"><span class="dot"></span><span>LIVE</span><span id="live-clock">--:--:--</span><span>auto-refresh 15s</span></div>
+          <div class="live-pill"><span class="dot"></span><span>LIVE</span><span
+              id="live-clock">--:--:--</span><span>auto-refresh 15s</span></div>
           <h1>Painel de Operações</h1>
-          <p>Este é o painel editorial do projeto. Aqui você organiza simulados, materiais e recados do mural em uma interface mais limpa e funcional.</p>
+          <p>Este é o painel editorial do projeto. Aqui você organiza simulados, materiais e recados do mural em uma
+            interface mais limpa e funcional.</p>
           <div class="admin-top-meta">
             <span class="mini-chip">Simulados</span>
             <span class="mini-chip">Materiais</span>
@@ -941,9 +1409,12 @@
           </div>
         </div>
         <div class="admin-top-actions">
-          <button class="btn btn-primary" id="action-new-notice"><i data-lucide="megaphone" style="width: 16px;"></i> Novo recado</button>
-          <button class="btn btn-secondary" id="action-new-material"><i data-lucide="files" style="width: 16px;"></i> Enviar material</button>
-          <button class="btn btn-secondary" id="action-new-event"><i data-lucide="calendar-plus" style="width: 16px;"></i> Novo evento</button>
+          <button class="btn btn-primary" id="action-new-notice"><i data-lucide="megaphone" style="width: 16px;"></i>
+            Novo recado</button>
+          <button class="btn btn-secondary" id="action-new-material"><i data-lucide="files" style="width: 16px;"></i>
+            Enviar material</button>
+          <button class="btn btn-secondary" id="action-new-event"><i data-lucide="calendar-plus"
+              style="width: 16px;"></i> Novo evento</button>
         </div>
       </div>
 
@@ -1048,13 +1519,18 @@
             <div>
               <div class="section-eyebrow">Publicação</div>
               <h2>Simulados</h2>
-              <p>Organize simulados por data, tamanho e público. O que salvar aqui já fica pronto para o painel do aluno.</p>
+              <p>Organize simulados por data, tamanho e público. O que salvar aqui já fica pronto para o painel do
+                aluno.</p>
             </div>
             <span class="mini-chip chip-info">Agenda editorial</span>
           </div>
           <div class="panel-body">
             <div class="module-grid">
               <form class="module-form" id="simulation-form">
+                <div class="edit-mode-banner" id="simulation-edit-banner">
+                  <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
+                  <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
+                </div>
                 <div class="field">
                   <label for="simulation-title">Título do simulado</label>
                   <input id="simulation-title" type="text" placeholder="Ex: Simulado Nacional Pré-ENEM">
@@ -1084,7 +1560,13 @@
                   <button class="btn btn-secondary" type="button" id="clear-simulation">Limpar</button>
                 </div>
               </form>
-              <div class="module-stack" id="simulation-list"></div>
+              <div>
+                <div class="list-search-wrap">
+                  <input class="list-search" id="search-simulations" type="search" placeholder="Buscar simulado…">
+                  <span class="list-count" id="count-simulations"></span>
+                </div>
+                <div class="module-stack" id="simulation-list"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1103,6 +1585,10 @@
           <div class="panel-body">
             <div class="module-grid">
               <form class="module-form" id="material-form">
+                <div class="edit-mode-banner" id="material-edit-banner">
+                  <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
+                  <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
+                </div>
                 <div class="field">
                   <label for="material-title">Título</label>
                   <input id="material-title" type="text" placeholder="Ex: Lista de revisão de Matemática">
@@ -1138,7 +1624,13 @@
                   <button class="btn btn-secondary" type="button" id="clear-material">Limpar</button>
                 </div>
               </form>
-              <div class="module-stack" id="material-list"></div>
+              <div>
+                <div class="list-search-wrap">
+                  <input class="list-search" id="search-materials" type="search" placeholder="Buscar material…">
+                  <span class="list-count" id="count-materials"></span>
+                </div>
+                <div class="module-stack" id="material-list"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1157,6 +1649,10 @@
           <div class="panel-body">
             <div class="module-grid">
               <form class="module-form" id="notice-form">
+                <div class="edit-mode-banner" id="notice-edit-banner">
+                  <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
+                  <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
+                </div>
                 <div class="field">
                   <label for="notice-title">Título</label>
                   <input id="notice-title" type="text" placeholder="Ex: Simulado aberto para inscrição">
@@ -1176,14 +1672,21 @@
                 </div>
                 <div class="field">
                   <label for="notice-copy">Texto</label>
-                  <textarea id="notice-copy" placeholder="Escreva o comunicado de forma curta, clara e objetiva."></textarea>
+                  <textarea id="notice-copy"
+                    placeholder="Escreva o comunicado de forma curta, clara e objetiva."></textarea>
                 </div>
                 <div class="form-actions">
                   <button class="btn btn-primary" type="button" id="save-notice">Salvar recado</button>
                   <button class="btn btn-secondary" type="button" id="clear-notice">Limpar</button>
                 </div>
               </form>
-              <div class="module-stack" id="notice-list"></div>
+              <div>
+                <div class="list-search-wrap">
+                  <input class="list-search" id="search-notices" type="search" placeholder="Buscar recado…">
+                  <span class="list-count" id="count-notices"></span>
+                </div>
+                <div class="module-stack" id="notice-list"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1193,6 +1696,557 @@
 
   <div class="admin-toast" id="admin-toast"></div>
 
-  <script type="module" src="js/main.js"></script>
+  <script>
+    // ══════════════════════════════════════════════════
+    // FIX 1 — AUTENTICAÇÃO: verifica sessão antes de exibir
+    // Credenciais ficam aqui (trocar por chamada de backend real no futuro)
+    // ══════════════════════════════════════════════════
+    const ADMIN_CREDENTIALS = [
+      { user: 'admin', pass: 'neva2026' },
+    ];
+    const SESSION_KEY = 'nevapro_admin_session';
+
+    const isAuthenticated = () => sessionStorage.getItem(SESSION_KEY) === 'granted';
+
+    const loginGate = document.getElementById('login-gate');
+    const adminShell = document.querySelector('.admin-shell');
+
+    if (!isAuthenticated()) {
+      loginGate.classList.remove('hidden');
+      adminShell.style.display = 'none';
+    }
+
+    document.getElementById('login-btn')?.addEventListener('click', () => {
+      const user = document.getElementById('login-user').value.trim();
+      const pass = document.getElementById('login-pass').value;
+      const errEl = document.getElementById('login-error');
+      const match = ADMIN_CREDENTIALS.find(c => c.user === user && c.pass === pass);
+      if (match) {
+        sessionStorage.setItem(SESSION_KEY, 'granted');
+        loginGate.classList.add('hidden');
+        adminShell.style.display = '';
+        lucide.createIcons();
+        init();
+      } else {
+        errEl.classList.add('show');
+        document.getElementById('login-pass').value = '';
+        document.getElementById('login-pass').focus();
+      }
+    });
+    document.getElementById('login-pass')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-btn').click();
+    });
+    document.getElementById('login-user')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-pass').focus();
+    });
+
+    // ══════════════════════════════════════════════════
+    // FIX 3 — SANITIZAÇÃO: escapa HTML para evitar XSS
+    // ══════════════════════════════════════════════════
+    const esc = (str) => String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    // ══════════════════════════════════════════════════
+    // FIX 2 — MODAL DE CONFIRMAÇÃO para exclusões
+    // ══════════════════════════════════════════════════
+    const confirmOverlay = document.getElementById('confirm-overlay');
+    let _confirmResolve = null;
+
+    const confirmDelete = (title) => new Promise(resolve => {
+      _confirmResolve = resolve;
+      document.getElementById('confirm-title').textContent = `Excluir "${title}"?`;
+      confirmOverlay.classList.add('open');
+    });
+
+    document.getElementById('confirm-ok')?.addEventListener('click', () => {
+      confirmOverlay.classList.remove('open');
+      _confirmResolve?.(true);
+    });
+    document.getElementById('confirm-cancel')?.addEventListener('click', () => {
+      confirmOverlay.classList.remove('open');
+      _confirmResolve?.(false);
+    });
+    confirmOverlay?.addEventListener('click', e => {
+      if (e.target === confirmOverlay) {
+        confirmOverlay.classList.remove('open');
+        _confirmResolve?.(false);
+      }
+    });
+
+    // ══════════════════════════════════════════════════
+    // STORAGE
+    // ══════════════════════════════════════════════════
+    const STORAGE = {
+      notices: 'nevapro_admin_notices_v3',
+      materials: 'nevapro_admin_materials_v3',
+      simulations: 'nevapro_admin_simulations_v3',
+    };
+
+    const defaultState = {
+      notices: [
+        { title: 'Novo Simulado Nacional: Pré-ENEM 2026', category: 'official', tag: 'Aviso', body: 'As inscrições seguem abertas até sexta-feira.', createdAt: '2026-04-20T08:00:00.000Z', updatedAt: '2026-04-20T08:00:00.000Z' },
+        { title: 'Agenda semanal atualizada', category: 'agenda', tag: 'Prazo', body: 'Simulado global, revisão de conteúdos e redação já estão organizados.', createdAt: '2026-04-19T12:00:00.000Z', updatedAt: '2026-04-21T12:00:00.000Z' },
+        { title: 'Roteiro de estudos liberado', category: 'study', tag: 'Guia', body: 'Roteiro ajustado para reduzir dispersão e aumentar consistência diária.', createdAt: '2026-04-18T10:00:00.000Z', updatedAt: '2026-04-18T10:00:00.000Z' },
+      ],
+      materials: [
+        { title: 'Lista de revisão de Matemática', type: 'pdf', grade: 'enem', link: '#', description: 'Resumo dos tópicos mais cobrados com foco em exercícios.', createdAt: '2026-04-19T10:00:00.000Z', updatedAt: '2026-04-19T10:00:00.000Z' },
+        { title: 'Checklist da redação', type: 'lista', grade: '3ano', link: '#', description: 'Sequência de revisão para a semana de entrega.', createdAt: '2026-04-20T10:00:00.000Z', updatedAt: '2026-04-21T09:00:00.000Z' },
+        { title: 'Roteiro de Linguagens', type: 'resumo', grade: 'enem', link: '#', description: 'Guia para leitura, interpretação e análise de texto.', createdAt: '2026-04-18T15:00:00.000Z', updatedAt: '2026-04-18T15:00:00.000Z' },
+      ],
+      simulations: [
+        { title: 'Simulado Nacional Pré-ENEM', date: '2026-11-01', questions: 20, audience: 'all', note: 'Liberar para todos os alunos.', createdAt: '2026-04-20T09:00:00.000Z', updatedAt: '2026-04-22T09:00:00.000Z' },
+        { title: 'Simulado de Linguagens', date: '2026-05-04', questions: 15, audience: 'beta', note: 'Apenas grupo beta para validação.', createdAt: '2026-04-18T13:00:00.000Z', updatedAt: '2026-04-18T13:00:00.000Z' },
+        { title: 'Bloco de Ciências da Natureza', date: '2026-05-10', questions: 20, audience: 'premium', note: 'Organizado para turma avançada.', createdAt: '2026-04-19T16:00:00.000Z', updatedAt: '2026-04-20T16:00:00.000Z' },
+      ],
+    };
+
+    const clone = v => JSON.parse(JSON.stringify(v));
+    const readList = key => { try { const r = localStorage.getItem(key); if (!r) return clone(defaultState[key]); const p = JSON.parse(r); return Array.isArray(p) ? p : clone(defaultState[key]); } catch { return clone(defaultState[key]); } };
+    const writeList = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+    const nowIso = () => new Date().toISOString();
+    const normalize = item => ({ ...item, createdAt: item.createdAt || nowIso(), updatedAt: item.updatedAt || item.createdAt || nowIso() });
+
+    const state = {
+      notices: readList(STORAGE.notices).map(normalize),
+      materials: readList(STORAGE.materials).map(normalize),
+      simulations: readList(STORAGE.simulations).map(normalize),
+    };
+
+    // ── TOAST ─────────────────────────────────────────
+    const toastEl = document.getElementById('admin-toast');
+    let toastTimer;
+    const toast = (message, tone = 'ok') => {
+      if (!toastEl) return;
+      toastEl.className = `admin-toast show toast-${tone}`;
+      toastEl.innerHTML = `<span class="toast-icon"><i data-lucide="${tone === 'ok' ? 'circle-check-big' : tone === 'warn' ? 'triangle-alert' : 'info'}"></i></span><span>${esc(message)}</span>`;
+      lucide.createIcons();
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.className = 'admin-toast'; toastEl.innerHTML = ''; }, 2400);
+    };
+
+    // ── FORMATAÇÃO ────────────────────────────────────
+    const fmtDate = v => v ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short' }).format(new Date(`${v}T00:00:00`)) : 'Sem data';
+    const fmtDateTime = v => v ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(v)) : '—';
+
+    // ── ABAS ──────────────────────────────────────────
+    const tabButtons = Array.from(document.querySelectorAll('.admin-nav button[data-tab]'));
+    const panels = Array.from(document.querySelectorAll('.tab-panel[data-panel]'));
+    const setTab = tab => {
+      tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+      panels.forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    tabButtons.forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+
+    // ── EDIÇÃO ATUAL ──────────────────────────────────
+    const currentEditing = { notices: null, materials: null, simulations: null };
+
+    // FIX 4 — Destaque visual de modo edição
+    const setEditMode = (kind, active) => {
+      const form = document.getElementById(`${kind === 'notices' ? 'notice' : kind === 'materials' ? 'material' : 'simulation'}-form`);
+      const banner = document.getElementById(`${kind === 'notices' ? 'notice' : kind === 'materials' ? 'material' : 'simulation'}-edit-banner`);
+      form?.classList.toggle('editing', active);
+      if (banner) banner.style.display = active ? 'flex' : 'none';
+    };
+
+    // ── KPI / BADGES ──────────────────────────────────
+    const syncBadges = () => {
+      document.getElementById('kpi-simulations').textContent = state.simulations.length;
+      document.getElementById('kpi-materials').textContent = state.materials.length;
+      document.getElementById('kpi-notices').textContent = state.notices.length;
+      document.getElementById('badge-simulations').textContent = state.simulations.length;
+      document.getElementById('badge-materials').textContent = state.materials.length;
+      document.getElementById('badge-notices').textContent = state.notices.length;
+      const next = [...state.simulations].sort((a, b) => new Date(a.date) - new Date(b.date))
+        .find(s => new Date(`${s.date}T00:00:00`) >= new Date(new Date().toDateString()));
+      document.getElementById('kpi-next').textContent = next ? fmtDate(next.date) : '--';
+      document.getElementById('kpi-next-label').textContent = next ? next.title : 'Sem agendamento';
+    };
+
+    // FIX 7 — persist() re-renderiza apenas o módulo afetado
+    const persist = (only = null) => {
+      writeList(STORAGE.notices, state.notices);
+      writeList(STORAGE.materials, state.materials);
+      writeList(STORAGE.simulations, state.simulations);
+      syncBadges();
+      if (!only || only === 'overview') renderOverview();
+      if (!only || only === 'notices') renderNotices();
+      if (!only || only === 'materials') renderMaterials();
+      if (!only || only === 'simulations') renderSimulations();
+    };
+
+    // ── STATUS POR DATA ───────────────────────────────
+    const statusFromDate = d => {
+      const diff = Math.ceil((new Date(`${d}T00:00:00`) - new Date(new Date().toDateString())) / 86400000);
+      return diff < 0 ? 'chip-danger' : diff <= 7 ? 'chip-warn' : 'chip-ok';
+    };
+
+    // ── OVERVIEW ──────────────────────────────────────
+    const renderOverview = () => {
+      const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (6 - i)); return d; });
+      const series = days.map(day => {
+        const key = day.toDateString();
+        const total = [...state.notices, ...state.materials, ...state.simulations]
+          .filter(item => item.createdAt && new Date(item.createdAt).toDateString() === key).length;
+        return { label: new Intl.DateTimeFormat('pt-BR', { weekday: 'short' }).format(day).replace('.', ''), value: total };
+      });
+      const max = Math.max(1, ...series.map(i => i.value));
+      const volume = document.getElementById('volume-chart');
+      if (volume) volume.innerHTML = series.map(item => `
+      <div class="chart-col">
+        <div class="chart-value">${item.value}</div>
+        <div class="chart-bar" style="height:${Math.max(8, (item.value / max) * 100)}%;"></div>
+        <div class="chart-label">${esc(item.label)}</div>
+      </div>`).join('');
+
+      const dist = document.getElementById('distribution-list');
+      const distData = [
+        { label: 'Simulados', value: state.simulations.length, tone: 'chip-info' },
+        { label: 'Materiais', value: state.materials.length, tone: 'chip-ok' },
+        { label: 'Recados', value: state.notices.length, tone: 'chip-warn' },
+      ];
+      const total = Math.max(1, distData.reduce((a, i) => a + i.value, 0));
+      if (dist) dist.innerHTML = distData.map(item => `
+      <div class="status-row">
+        <div style="flex:1;"><strong>${esc(item.label)}</strong><small>${item.value} itens</small></div>
+        <div class="status-value">${Math.round((item.value / total) * 100)}%</div>
+      </div>`).join('');
+
+      const recent = [
+        ...state.simulations.map(i => ({ ...i, kind: 'Simulado', time: i.updatedAt, desc: `${i.questions} questões · ${fmtDate(i.date)}` })),
+        ...state.materials.map(i => ({ ...i, kind: 'Material', time: i.updatedAt, desc: `${i.type.toUpperCase()} · ${i.grade}` })),
+        ...state.notices.map(i => ({ ...i, kind: 'Recado', time: i.updatedAt, desc: i.tag })),
+      ].sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 5);
+
+      const activity = document.getElementById('activity-list');
+      if (activity) activity.innerHTML = recent.length
+        ? recent.map(item => `<div class="activity-item"><div class="activity-bullet"></div><div><strong>${esc(item.kind)}: ${esc(item.title)}</strong><small>${fmtDateTime(item.time)}</small><p>${esc(item.desc)}</p></div></div>`).join('')
+        : '<div class="info-card"><p style="margin:0;">Nada recente ainda.</p></div>';
+
+      const nextContent = document.getElementById('next-content-list');
+      const nextItems = [...state.simulations].sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+      if (nextContent) nextContent.innerHTML = nextItems.length
+        ? nextItems.map(item => `<div class="status-row"><div><strong>${esc(item.title)}</strong><small>${fmtDate(item.date)} · ${item.audience === 'all' ? 'Todos' : item.audience === 'premium' ? 'Turma' : 'Beta'}</small></div><div class="status-value">${item.questions}q</div></div>`).join('')
+        : '<div class="info-card"><p style="margin:0;">Nenhum simulado agendado.</p></div>';
+    };
+
+    // FIX 5 — BUSCA: filtra itens da lista visivelmente
+    const applySearch = (kind) => {
+      const map = { simulations: 'simulations', materials: 'materials', notices: 'notices' };
+      const searchEl = document.getElementById(`search-${map[kind]}`);
+      const countEl = document.getElementById(`count-${map[kind]}`);
+      const listEl = document.getElementById(`${kind === 'simulations' ? 'simulation' : kind === 'materials' ? 'material' : 'notice'}-list`);
+      if (!searchEl || !listEl) return;
+      const q = searchEl.value.toLowerCase().trim();
+      const items = listEl.querySelectorAll('.module-item');
+      let visible = 0;
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (countEl) countEl.textContent = `${visible} item${visible !== 1 ? 's' : ''}`;
+    };
+
+    const wireSearch = () => {
+      ['simulations', 'materials', 'notices'].forEach(kind => {
+        document.getElementById(`search-${kind}`)?.addEventListener('input', () => applySearch(kind));
+      });
+    };
+
+    // ── RENDERIZAÇÕES ─────────────────────────────────
+    // FIX 6 — botão excluir usa btn-danger; FIX 3 — dados sanitizados com esc()
+    const renderNotices = () => {
+      const list = document.getElementById('notice-list');
+      if (!list) return;
+      list.innerHTML = state.notices.map((item, idx) => `
+      <article class="module-item">
+        <div>
+          <strong>${esc(item.title)}</strong>
+          <small>${esc(item.body)}</small>
+          <small><span class="mini-chip chip-muted">${esc(item.tag)}</span>
+            <span style="margin-left:8px;">${item.category === 'official' ? 'Aviso oficial' : item.category === 'agenda' ? 'Agenda' : item.category === 'study' ? 'Estudos' : 'Apoio'}</span>
+          </small>
+        </div>
+        <div class="stack-actions">
+          <button class="btn btn-secondary btn-sm" data-edit-notice="${idx}">Editar</button>
+          <button class="btn btn-danger btn-sm" data-delete-notice="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+        </div>
+      </article>`).join('') || '<div class="info-card">Nenhum recado criado ainda.</div>';
+      applySearch('notices');
+      const countEl = document.getElementById('count-notices');
+      if (countEl) countEl.textContent = `${state.notices.length} item${state.notices.length !== 1 ? 's' : ''}`;
+    };
+
+    const renderMaterials = () => {
+      const list = document.getElementById('material-list');
+      if (!list) return;
+      list.innerHTML = state.materials.map((item, idx) => `
+      <article class="module-item">
+        <div>
+          <strong>${esc(item.title)}</strong>
+          <small>${esc(item.type.toUpperCase())} · ${esc(item.grade)}</small>
+          <small>${esc(item.description)}</small>
+        </div>
+        <div class="stack-actions">
+          <button class="btn btn-secondary btn-sm" data-edit-material="${idx}">Editar</button>
+          <button class="btn btn-danger btn-sm" data-delete-material="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+        </div>
+      </article>`).join('') || '<div class="info-card">Nenhum material criado ainda.</div>';
+      applySearch('materials');
+      const countEl = document.getElementById('count-materials');
+      if (countEl) countEl.textContent = `${state.materials.length} item${state.materials.length !== 1 ? 's' : ''}`;
+    };
+
+    const renderSimulations = () => {
+      const list = document.getElementById('simulation-list');
+      if (!list) return;
+      list.innerHTML = state.simulations.map((item, idx) => `
+      <article class="module-item">
+        <div>
+          <strong>${esc(item.title)}</strong>
+          <small>${item.questions} questões · ${fmtDate(item.date)}</small>
+          <small>${esc(item.note)}</small>
+        </div>
+        <div class="stack-actions">
+          <span class="mini-chip ${statusFromDate(item.date)}">${esc(item.audience)}</span>
+          <button class="btn btn-secondary btn-sm" data-edit-simulation="${idx}">Editar</button>
+          <button class="btn btn-danger btn-sm" data-delete-simulation="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+        </div>
+      </article>`).join('') || '<div class="info-card">Nenhum simulado criado ainda.</div>';
+      applySearch('simulations');
+      const countEl = document.getElementById('count-simulations');
+      if (countEl) countEl.textContent = `${state.simulations.length} item${state.simulations.length !== 1 ? 's' : ''}`;
+    };
+
+    // ── RESET DE FORMULÁRIOS ──────────────────────────
+    const resetForms = (kind) => {
+      if (kind === 'notice') {
+        document.getElementById('notice-form')?.reset();
+        currentEditing.notices = null;
+        document.getElementById('save-notice').textContent = 'Salvar recado';
+        setEditMode('notices', false);
+      }
+      if (kind === 'material') {
+        document.getElementById('material-form')?.reset();
+        currentEditing.materials = null;
+        document.getElementById('save-material').textContent = 'Salvar material';
+        setEditMode('materials', false);
+      }
+      if (kind === 'simulation') {
+        document.getElementById('simulation-form')?.reset();
+        document.getElementById('simulation-questions').value = '20';
+        currentEditing.simulations = null;
+        document.getElementById('save-simulation').textContent = 'Salvar simulado';
+        setEditMode('simulations', false);
+      }
+    };
+
+    // FIX 8 — Validação de URL no campo de link do material
+    const isValidUrl = v => { if (!v || v === '#') return true; try { new URL(v); return true; } catch { return v.startsWith('/') || v.startsWith('./'); } };
+
+    // ── SALVAR / ATUALIZAR ────────────────────────────
+    document.getElementById('save-notice')?.addEventListener('click', () => {
+      const title = document.getElementById('notice-title').value.trim();
+      const category = document.getElementById('notice-category').value;
+      const tag = document.getElementById('notice-tag').value.trim() || 'Aviso';
+      const body = document.getElementById('notice-copy').value.trim();
+      if (!title || !body) return toast('Preencha título e texto do recado.', 'warn');
+      const payload = { title, category, tag, body, createdAt: nowIso(), updatedAt: nowIso() };
+      if (currentEditing.notices !== null) {
+        const idx = currentEditing.notices;
+        state.notices[idx] = { ...state.notices[idx], ...payload, createdAt: state.notices[idx].createdAt || payload.createdAt };
+        toast('Recado atualizado.');
+      } else {
+        state.notices.unshift(payload);
+        toast('Recado salvo.');
+      }
+      currentEditing.notices = null;
+      persist('notices');
+      resetForms('notice');
+    });
+
+    document.getElementById('save-material')?.addEventListener('click', () => {
+      const title = document.getElementById('material-title').value.trim();
+      const type = document.getElementById('material-type').value;
+      const grade = document.getElementById('material-grade').value;
+      const link = document.getElementById('material-link').value.trim();
+      const description = document.getElementById('material-description').value.trim();
+      if (!title || !description) return toast('Preencha título e descrição do material.', 'warn');
+      if (link && !isValidUrl(link)) return toast('O link informado não parece uma URL válida.', 'warn');
+      const payload = { title, type, grade, link, description, createdAt: nowIso(), updatedAt: nowIso() };
+      if (currentEditing.materials !== null) {
+        const idx = currentEditing.materials;
+        state.materials[idx] = { ...state.materials[idx], ...payload, createdAt: state.materials[idx].createdAt || payload.createdAt };
+        toast('Material atualizado.');
+      } else {
+        state.materials.unshift(payload);
+        toast('Material salvo.');
+      }
+      currentEditing.materials = null;
+      persist('materials');
+      resetForms('material');
+    });
+
+    document.getElementById('save-simulation')?.addEventListener('click', () => {
+      const title = document.getElementById('simulation-title').value.trim();
+      const date = document.getElementById('simulation-date').value;
+      const questions = Number(document.getElementById('simulation-questions').value || 20);
+      const audience = document.getElementById('simulation-audience').value;
+      const note = document.getElementById('simulation-note').value.trim();
+      if (!title || !date) return toast('Preencha título e data do simulado.', 'warn');
+      const payload = { title, date, questions, audience, note, createdAt: nowIso(), updatedAt: nowIso() };
+      if (currentEditing.simulations !== null) {
+        const idx = currentEditing.simulations;
+        state.simulations[idx] = { ...state.simulations[idx], ...payload, createdAt: state.simulations[idx].createdAt || payload.createdAt };
+        toast('Simulado atualizado.');
+      } else {
+        state.simulations.unshift(payload);
+        toast('Simulado salvo.');
+      }
+      currentEditing.simulations = null;
+      persist('simulations');
+      resetForms('simulation');
+    });
+
+    document.getElementById('clear-notice')?.addEventListener('click', () => resetForms('notice'));
+    document.getElementById('clear-material')?.addEventListener('click', () => resetForms('material'));
+    document.getElementById('clear-simulation')?.addEventListener('click', () => resetForms('simulation'));
+
+    // ── EDITAR / EXCLUIR COM CONFIRMAÇÃO ─────────────
+    document.getElementById('notice-list')?.addEventListener('click', async e => {
+      const editBtn = e.target.closest('[data-edit-notice]');
+      const deleteBtn = e.target.closest('[data-delete-notice]');
+      if (editBtn) {
+        const idx = Number(editBtn.dataset.editNotice);
+        const item = state.notices[idx];
+        if (!item) return;
+        document.getElementById('notice-title').value = item.title;
+        document.getElementById('notice-category').value = item.category;
+        document.getElementById('notice-tag').value = item.tag;
+        document.getElementById('notice-copy').value = item.body;
+        currentEditing.notices = idx;
+        document.getElementById('save-notice').textContent = 'Atualizar recado';
+        setEditMode('notices', true);
+        setTab('mural');
+        document.getElementById('notice-title').focus();
+        toast('Recado carregado para edição.');
+      }
+      if (deleteBtn) {
+        const idx = Number(deleteBtn.dataset.deleteNotice);
+        const ok = await confirmDelete(state.notices[idx]?.title || 'este recado');
+        if (!ok) return;
+        state.notices.splice(idx, 1);
+        persist('notices');
+        toast('Recado removido.', 'warn');
+      }
+    });
+
+    document.getElementById('material-list')?.addEventListener('click', async e => {
+      const editBtn = e.target.closest('[data-edit-material]');
+      const deleteBtn = e.target.closest('[data-delete-material]');
+      if (editBtn) {
+        const idx = Number(editBtn.dataset.editMaterial);
+        const item = state.materials[idx];
+        if (!item) return;
+        document.getElementById('material-title').value = item.title;
+        document.getElementById('material-type').value = item.type;
+        document.getElementById('material-grade').value = item.grade;
+        document.getElementById('material-link').value = item.link || '';
+        document.getElementById('material-description').value = item.description;
+        currentEditing.materials = idx;
+        document.getElementById('save-material').textContent = 'Atualizar material';
+        setEditMode('materials', true);
+        setTab('materials');
+        document.getElementById('material-title').focus();
+        toast('Material carregado para edição.');
+      }
+      if (deleteBtn) {
+        const idx = Number(deleteBtn.dataset.deleteMaterial);
+        const ok = await confirmDelete(state.materials[idx]?.title || 'este material');
+        if (!ok) return;
+        state.materials.splice(idx, 1);
+        persist('materials');
+        toast('Material removido.', 'warn');
+      }
+    });
+
+    document.getElementById('simulation-list')?.addEventListener('click', async e => {
+      const editBtn = e.target.closest('[data-edit-simulation]');
+      const deleteBtn = e.target.closest('[data-delete-simulation]');
+      if (editBtn) {
+        const idx = Number(editBtn.dataset.editSimulation);
+        const item = state.simulations[idx];
+        if (!item) return;
+        document.getElementById('simulation-title').value = item.title;
+        document.getElementById('simulation-date').value = item.date;
+        document.getElementById('simulation-questions').value = item.questions;
+        document.getElementById('simulation-audience').value = item.audience;
+        document.getElementById('simulation-note').value = item.note;
+        currentEditing.simulations = idx;
+        document.getElementById('save-simulation').textContent = 'Atualizar simulado';
+        setEditMode('simulations', true);
+        setTab('simulations');
+        document.getElementById('simulation-title').focus();
+        toast('Simulado carregado para edição.');
+      }
+      if (deleteBtn) {
+        const idx = Number(deleteBtn.dataset.deleteSimulation);
+        const ok = await confirmDelete(state.simulations[idx]?.title || 'este simulado');
+        if (!ok) return;
+        state.simulations.splice(idx, 1);
+        persist('simulations');
+        toast('Simulado removido.', 'warn');
+      }
+    });
+
+    // ── AÇÕES DO TOPBAR ───────────────────────────────
+    document.getElementById('action-new-notice')?.addEventListener('click', () => { resetForms('notice'); setTab('mural'); document.getElementById('notice-title').focus(); });
+    document.getElementById('action-new-material')?.addEventListener('click', () => { resetForms('material'); setTab('materials'); document.getElementById('material-title').focus(); });
+    document.getElementById('action-new-event')?.addEventListener('click', () => { resetForms('simulation'); setTab('simulations'); document.getElementById('simulation-title').focus(); });
+
+    // ── EXPORT JSON ───────────────────────────────────
+    document.getElementById('export-json')?.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'neva-backoffice.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast('JSON exportado.');
+    });
+
+    // ── RELÓGIO ───────────────────────────────────────
+    const updateClock = () => {
+      const el = document.getElementById('live-clock');
+      if (el) el.textContent = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+    };
+
+    // ── INIT ──────────────────────────────────────────
+    const init = () => {
+      syncBadges();
+      renderOverview();
+      renderNotices();
+      renderMaterials();
+      renderSimulations();
+      wireSearch();
+      updateClock();
+      setInterval(updateClock, 1000);
+      setInterval(() => { syncBadges(); renderOverview(); }, 15000);
+      lucide.createIcons();
+    };
+
+    // Só inicializa se já autenticado (sessão ativa)
+    if (isAuthenticated()) {
+      adminShell.style.display = '';
+      init();
+    }
+  </script>
 </body>
+
 </html>
