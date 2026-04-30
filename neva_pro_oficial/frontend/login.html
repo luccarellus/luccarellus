@@ -1,7 +1,28 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('nevapro_settings_v1');
+                var theme = 'dark'; // default to dark
+                if (stored) {
+                    var settings = JSON.parse(stored);
+                    if (settings.theme === 'light') {
+                        theme = 'light';
+                    } else if (settings.theme === 'dark') {
+                        theme = 'dark';
+                    } else if (settings.theme === 'system') {
+                        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    }
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>N.E.V.A Pro | Login</title>

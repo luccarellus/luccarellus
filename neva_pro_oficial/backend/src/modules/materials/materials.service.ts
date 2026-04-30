@@ -20,4 +20,26 @@ export class MaterialsService {
       where: { id },
     });
   }
+
+  async create(data: { title: string; content_url: string; type: string; subject?: string }) {
+    return this.prisma.materials.create({
+      data: {
+        ...data,
+        type: data.type as any,
+      },
+    });
+  }
+
+  async update(id: string, data: any) {
+    return this.prisma.materials.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    return this.prisma.materials.delete({
+      where: { id },
+    });
+  }
 }

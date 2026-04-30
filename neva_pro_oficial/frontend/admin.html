@@ -8,37 +8,24 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    :root {
-      --admin-bg: #08101f;
-      --admin-surface: rgba(10, 18, 35, 0.88);
-      --admin-surface-2: rgba(14, 23, 42, 0.94);
-      --admin-border: rgba(148, 163, 184, 0.12);
-      --admin-border-strong: rgba(0, 207, 200, 0.18);
-      --admin-accent: rgba(0, 207, 200, 0.18);
-      --admin-accent-2: rgba(14, 165, 233, 0.16);
-      --admin-danger: rgba(248, 113, 113, 0.16);
-      --admin-warning: rgba(245, 158, 11, 0.16);
-      --admin-success: rgba(16, 185, 129, 0.16);
-    }
 
+  <style>
+    /* ── CORPO ──────────────────────────────────── */
     body.admin-body {
       margin: 0;
       min-height: 100vh;
       color: var(--text-primary);
-      background:
-        radial-gradient(circle at top left, rgba(14, 165, 233, 0.09), transparent 26%),
-        radial-gradient(circle at 86% 18%, rgba(0, 207, 200, 0.08), transparent 18%),
-        radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.08), transparent 28%),
-        var(--bg-primary);
+      background: var(--bg-main);
     }
 
+    /* ── SHELL ──────────────────────────────────── */
     .admin-shell {
       display: grid;
-      grid-template-columns: 268px minmax(0, 1fr);
+      grid-template-columns: 280px minmax(0, 1fr);
       min-height: 100vh;
     }
 
+    /* ── SIDEBAR ─────────────────────────────────── */
     .admin-sidebar {
       position: sticky;
       top: 0;
@@ -48,35 +35,49 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      background: linear-gradient(180deg, rgba(10, 18, 35, 0.98), rgba(10, 18, 35, 0.94));
-      border-right: 1px solid var(--admin-border);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      box-shadow: none;
     }
 
     .admin-brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--admin-border);
+      padding: 4px 4px 18px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
     }
 
     .admin-brand img {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 14px;
-      object-fit: cover;
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+      object-fit: contain;
+      padding: 7px;
+      background: var(--gradient-primary);
+      box-shadow: 0 12px 24px rgba(0, 207, 200, 0.14);
     }
 
-    .admin-brand small {
+    .admin-brand strong {
       display: block;
-      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .admin-brand small,
+    .admin-note small,
+    .admin-headline p,
+    .kpi-label,
+    .chart-head small,
+    .info-card p {
+      color: var(--text-secondary);
+      display: block;
       margin-top: 2px;
       font-size: 0.8rem;
       letter-spacing: 0.02em;
     }
 
+    /* ── CHIP ADMIN ──────────────────────────────── */
     .admin-chip {
       display: inline-flex;
       align-items: center;
@@ -84,20 +85,21 @@
       width: fit-content;
       padding: 6px 10px;
       border-radius: 999px;
-      color: var(--primary);
-      background: var(--admin-accent);
-      border: 1px solid var(--admin-border-strong);
+      color: var(--primary-dark);
+      background: rgba(0, 207, 200, 0.10);
+      border: 1px solid rgba(0, 207, 200, 0.24);
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
+    /* ── NOTA SIDEBAR ────────────────────────────── */
     .admin-note {
       padding: 14px 15px;
-      border-radius: 18px;
-      background: rgba(0, 207, 200, 0.08);
-      border: 1px dashed rgba(0, 207, 200, 0.22);
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
     }
 
     .admin-note strong {
@@ -106,15 +108,13 @@
       font-size: 0.92rem;
     }
 
-    .admin-note small {
-      color: var(--text-secondary);
-      line-height: 1.5;
-      display: block;
-    }
-
+    /* ── NAV ─────────────────────────────────────── */
     .admin-nav {
       display: grid;
       gap: 8px;
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
     }
 
     .admin-nav button {
@@ -123,7 +123,7 @@
       gap: 12px;
       width: 100%;
       padding: 13px 14px;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-secondary);
@@ -137,14 +137,14 @@
     .admin-nav button:hover {
       background: rgba(0, 207, 200, 0.07);
       color: var(--text-primary);
-      transform: translateX(2px);
+      transform: none;
     }
 
     .admin-nav button.active {
-      color: var(--text-primary);
-      border-color: var(--admin-border-strong);
-      background: linear-gradient(90deg, rgba(0, 207, 200, 0.16), rgba(14, 165, 233, 0.11));
-      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+      color: var(--primary-dark);
+      border-color: rgba(0, 207, 200, 0.18);
+      background: rgba(0, 207, 200, 0.10);
+      box-shadow: none;
     }
 
     .nav-badge {
@@ -152,52 +152,55 @@
       min-width: 22px;
       padding: 2px 7px;
       border-radius: 999px;
-      background: rgba(0, 207, 200, 0.18);
-      color: var(--primary);
+      background: rgba(0, 207, 200, 0.14);
+      color: var(--primary-dark);
       text-align: center;
       font-size: 0.7rem;
       font-weight: 800;
     }
 
+    /* ── RODAPÉ SIDEBAR ──────────────────────────── */
     .admin-sidebar-footer {
       margin-top: auto;
       display: grid;
       gap: 10px;
     }
 
-    .admin-main {
-      min-width: 0;
-      padding: 28px;
+    .admin-sidebar-footer .btn {
+      width: 100%;
     }
 
+    /* ── MAIN ────────────────────────────────────── */
+    .admin-main {
+      min-width: 0;
+      padding: 28px 32px;
+    }
+
+    /* ── TOPBAR ──────────────────────────────────── */
     .admin-topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+      align-items: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
       gap: 18px;
       flex-wrap: wrap;
       margin-bottom: 16px;
-      padding: 20px 22px;
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)), var(--admin-surface);
-      border: 1px solid var(--admin-border);
+      padding: 24px;
+      border-radius: 22px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       box-shadow: var(--shadow-sm);
     }
 
     .admin-headline {
-      max-width: 72ch;
+      max-width: 680px;
     }
 
     .admin-headline h1 {
       margin: 4px 0 6px;
-      font-size: 1.75rem;
+      font-size: 1.9rem;
       line-height: 1.08;
-    }
-
-    .admin-headline p {
-      margin: 0;
-      color: var(--text-secondary);
-      line-height: 1.55;
+      color: var(--text-primary);
+      letter-spacing: 0;
     }
 
     .admin-top-meta {
@@ -214,27 +217,34 @@
     }
 
     .admin-top-actions {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
       gap: 10px;
+      width: 100%;
     }
 
     .admin-top-actions .btn {
       min-height: 44px;
       padding-inline: 16px;
+      width: 100%;
+      justify-content: center;
+      white-space: nowrap;
     }
 
+    /* ── PILL LIVE ───────────────────────────────── */
     .live-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid var(--admin-border);
-      background: rgba(7, 17, 33, 0.92);
+      border: 1px solid var(--border);
+      background: #f8fafc;
       font-size: 0.8rem;
       color: var(--text-secondary);
       white-space: nowrap;
+      margin-bottom: 10px;
     }
 
     .live-pill .dot {
@@ -245,32 +255,31 @@
       box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.12);
     }
 
+    /* ── KPIs ────────────────────────────────────── */
     .admin-kpis {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 18px;
     }
 
     .kpi-card {
       padding: 18px;
       min-height: 128px;
-      background:
-        radial-gradient(circle at top right, rgba(0, 207, 200, 0.08), transparent 35%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
-        var(--admin-surface);
-      border: 1px solid var(--admin-border);
-      border-radius: 22px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     }
 
     .kpi-card:hover {
-      border-color: var(--admin-border-strong);
+      border-color: rgba(0, 207, 200, 0.24);
+      box-shadow: var(--shadow-md);
       transform: translateY(-1px);
-      transition: transform 0.18s ease, border-color 0.18s ease;
     }
 
     .kpi-top {
@@ -282,13 +291,13 @@
 
     .kpi-value {
       margin: 0 0 6px;
-      font-size: 1.85rem;
+      font-size: 1.8rem;
       font-weight: 900;
       line-height: 1;
+      color: var(--text-primary);
     }
 
     .kpi-label {
-      color: var(--text-secondary);
       font-size: 0.86rem;
       line-height: 1.45;
     }
@@ -299,9 +308,9 @@
       border-radius: 14px;
       display: grid;
       place-items: center;
-      color: white;
-      background: linear-gradient(135deg, rgba(0, 207, 200, 0.95), rgba(14, 165, 233, 0.95));
-      box-shadow: 0 12px 24px rgba(0, 207, 200, 0.18);
+      color: var(--primary);
+      background: rgba(0, 207, 200, 0.12);
+      box-shadow: none;
       flex-shrink: 0;
     }
 
@@ -312,6 +321,7 @@
       margin-top: 14px;
     }
 
+    /* ── MINI CHIPS ──────────────────────────────── */
     .mini-chip {
       display: inline-flex;
       align-items: center;
@@ -343,10 +353,11 @@
     }
 
     .chip-danger {
-      background: var(--admin-danger);
+      background: rgba(239, 68, 68, 0.12);
       color: #f87171;
     }
 
+    /* ── TAB PANELS ──────────────────────────────── */
     .tab-panel {
       display: none;
       animation: fadeIn 0.2s ease;
@@ -368,23 +379,29 @@
       }
     }
 
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: rgba(0, 207, 200, 0.4);
-      box-shadow: 0 0 0 3px rgba(0, 207, 200, 0.10);
+    /* ── PANELS ──────────────────────────────────── */
+    .panel,
+    .chart-card,
+    .info-card,
+    .module-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
 
     .panel {
-      background: var(--admin-surface);
-      border: 1px solid var(--admin-border);
-      border-radius: 26px;
-      box-shadow: var(--shadow-sm);
+      border-radius: 22px;
       overflow: hidden;
     }
 
+    .chart-card,
+    .info-card,
+    .module-form {
+      border-radius: 18px;
+    }
+
     .panel-head {
-      padding: 18px 20px 0;
+      padding: 20px 22px 0;
       display: flex;
       justify-content: space-between;
       gap: 12px;
@@ -392,9 +409,12 @@
       flex-wrap: wrap;
     }
 
-    .panel-head h2 {
+    .panel-head h2,
+    .chart-head h3,
+    .info-card h3 {
       margin: 0 0 6px;
       font-size: 1.05rem;
+      color: var(--text-primary);
     }
 
     .panel-head p {
@@ -406,9 +426,10 @@
     }
 
     .panel-body {
-      padding: 20px;
+      padding: 22px;
     }
 
+    /* ── OVERVIEW ────────────────────────────────── */
     .overview-grid {
       display: grid;
       grid-template-columns: 1.25fr 0.85fr;
@@ -420,11 +441,11 @@
       gap: 14px;
     }
 
-    .chart-card,
+    .chart-card {
+      padding: 18px;
+    }
+
     .info-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
       padding: 18px;
     }
 
@@ -436,19 +457,13 @@
       margin-bottom: 14px;
     }
 
-    .chart-head h3,
-    .info-card h3 {
-      margin: 0 0 6px;
-      font-size: 0.98rem;
-    }
-
     .chart-head small,
     .info-card p {
-      color: var(--text-secondary);
       font-size: 0.86rem;
       line-height: 1.5;
     }
 
+    /* ── GRÁFICO DE BARRAS ───────────────────────── */
     .chart-bars {
       display: flex;
       align-items: flex-end;
@@ -469,10 +484,10 @@
     .chart-bar {
       width: 100%;
       border-radius: 10px 10px 4px 4px;
-      background: linear-gradient(180deg, rgba(0, 207, 200, 0.92), rgba(14, 165, 233, 0.6));
+      background: linear-gradient(180deg, var(--primary), rgba(0, 207, 200, 0.42));
       min-height: 4px;
       transition: height 0.45s ease;
-      box-shadow: 0 10px 24px rgba(0, 207, 200, 0.12);
+      box-shadow: none;
     }
 
     .chart-label {
@@ -490,16 +505,22 @@
       font-weight: 900;
     }
 
+    /* ── STATUS / ATIVIDADE ──────────────────────── */
     .status-grid {
       display: grid;
       gap: 10px;
     }
 
-    .status-row {
-      background: rgba(15, 23, 42, 0.04);
+    .status-row,
+    .activity-item,
+    .module-item {
+      background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 12px 14px;
+    }
+
+    .status-row {
       display: flex;
       justify-content: space-between;
       gap: 12px;
@@ -531,10 +552,6 @@
       display: flex;
       gap: 12px;
       align-items: flex-start;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.04);
     }
 
     .activity-bullet {
@@ -554,6 +571,7 @@
       line-height: 1.45;
     }
 
+    /* ── MÓDULOS ─────────────────────────────────── */
     .module-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
@@ -565,12 +583,14 @@
       display: grid;
       gap: 12px;
       padding: 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--shadow-sm);
     }
 
+    .module-form.editing {
+      border-color: rgba(0, 207, 200, 0.35) !important;
+      box-shadow: 0 0 0 3px rgba(0, 207, 200, 0.10), var(--shadow-sm) !important;
+    }
+
+    /* ── CAMPOS ──────────────────────────────────── */
     .field {
       display: grid;
       gap: 7px;
@@ -586,18 +606,26 @@
     .field select,
     .field textarea {
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.03);
+      background: #ffffff;
       color: var(--text-primary);
       border-radius: 14px;
       padding: 12px 14px;
       outline: none;
       font: inherit;
       width: 100%;
+      box-sizing: border-box;
     }
 
     .field textarea {
       min-height: 120px;
       resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(0, 207, 200, 0.10);
     }
 
     .form-actions {
@@ -608,6 +636,7 @@
       margin-top: 2px;
     }
 
+    /* ── LISTA DE MÓDULOS ────────────────────────── */
     .module-stack {
       display: grid;
       gap: 10px;
@@ -620,14 +649,12 @@
       align-items: flex-start;
       padding: 16px;
       border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.04);
       transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
     .module-item:hover {
       transform: translateY(-1px);
-      border-color: rgba(0, 207, 200, 0.18);
+      border-color: rgba(0, 207, 200, 0.22);
       box-shadow: var(--shadow-sm);
     }
 
@@ -657,6 +684,7 @@
       font-size: 0.82rem;
     }
 
+    /* ── EYEBROW ─────────────────────────────────── */
     .section-eyebrow {
       display: inline-flex;
       align-items: center;
@@ -676,6 +704,7 @@
       background: linear-gradient(90deg, rgba(0, 207, 200, 0.8), rgba(14, 165, 233, 0.3));
     }
 
+    /* ── TOAST ───────────────────────────────────── */
     .admin-toast {
       position: fixed;
       right: 24px;
@@ -723,13 +752,7 @@
       color: var(--accent);
     }
 
-    .toast-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    /* ── BOTÃO DANGER ─────────────────────────── */
+    /* ── BOTÃO DANGER ─────────────────────────────── */
     .btn-danger {
       background: rgba(239, 68, 68, 0.12);
       border: 1px solid rgba(239, 68, 68, 0.28);
@@ -746,7 +769,7 @@
       transform: translateY(-1px);
     }
 
-    /* ── MODAL DE CONFIRMAÇÃO ─────────────────── */
+    /* ── MODAL DE CONFIRMAÇÃO ─────────────────────── */
     .confirm-overlay {
       position: fixed;
       inset: 0;
@@ -813,12 +836,7 @@
       justify-content: flex-end;
     }
 
-    /* ── FORMULÁRIO EM MODO EDIÇÃO ─────────────── */
-    .module-form.editing {
-      border-color: rgba(0, 207, 200, 0.35) !important;
-      box-shadow: 0 0 0 3px rgba(0, 207, 200, 0.10), var(--shadow-sm) !important;
-    }
-
+    /* ── MODO EDIÇÃO ──────────────────────────────── */
     .edit-mode-banner {
       display: none;
       align-items: center;
@@ -836,7 +854,7 @@
       display: flex;
     }
 
-    /* ── BUSCA NAS LISTAS ──────────────────────── */
+    /* ── BUSCA ───────────────────────────────────── */
     .list-search-wrap {
       display: flex;
       gap: 10px;
@@ -872,7 +890,7 @@
       white-space: nowrap;
     }
 
-    /* ── LOGIN GATE ────────────────────────────── */
+    /* ── LOGIN GATE ──────────────────────────────── */
     .login-gate {
       position: fixed;
       inset: 0;
@@ -907,7 +925,7 @@
       gap: 12px;
       margin-bottom: 24px;
       padding-bottom: 20px;
-      border-bottom: 1px solid var(--admin-border);
+      border-bottom: 1px solid var(--border, rgba(148, 163, 184, 0.18));
     }
 
     .login-brand img {
@@ -955,7 +973,7 @@
     .login-field input {
       padding: 12px 14px;
       border-radius: 13px;
-      border: 1px solid var(--admin-border);
+      border: 1px solid var(--border, rgba(148, 163, 184, 0.18));
       background: rgba(15, 23, 42, 0.5);
       color: var(--text-primary, #f1f5f9);
       font: inherit;
@@ -1012,6 +1030,7 @@
       color: var(--text-muted, #64748b);
     }
 
+    /* ── RESPONSIVO ──────────────────────────────── */
     @media (max-width: 1180px) {
       .admin-shell {
         grid-template-columns: 1fr;
@@ -1030,238 +1049,7 @@
       .module-grid {
         grid-template-columns: 1fr;
       }
-    }
 
-    /* Visual polish: keep the backoffice aligned with the student dashboard */
-    body.admin-body {
-      color: var(--text-primary);
-      background: var(--bg-main);
-    }
-
-    .admin-shell {
-      grid-template-columns: 280px minmax(0, 1fr);
-    }
-
-    .admin-sidebar {
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .admin-brand {
-      padding: 4px 4px 18px;
-      color: var(--text-primary);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .admin-brand img {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      object-fit: contain;
-      padding: 7px;
-      background: var(--gradient-primary);
-      box-shadow: 0 12px 24px rgba(0, 207, 200, 0.14);
-    }
-
-    .admin-brand small,
-    .admin-note small,
-    .admin-headline p,
-    .kpi-label,
-    .chart-head small,
-    .info-card p {
-      color: var(--text-secondary);
-    }
-
-    .admin-chip {
-      color: var(--primary-dark);
-      background: rgba(0, 207, 200, 0.10);
-      border-color: rgba(0, 207, 200, 0.24);
-    }
-
-    .admin-note {
-      border-radius: 16px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-    }
-
-    .admin-nav {
-      padding: 0;
-      background: transparent;
-      border-radius: 0;
-    }
-
-    .admin-nav button {
-      color: var(--text-secondary);
-      border-radius: 14px;
-      padding: 13px 14px;
-    }
-
-    .admin-nav button:hover {
-      background: rgba(0, 207, 200, 0.07);
-      color: var(--text-primary);
-      transform: none;
-    }
-
-    .admin-nav button.active {
-      color: var(--primary-dark);
-      background: rgba(0, 207, 200, 0.10);
-      border-color: rgba(0, 207, 200, 0.18);
-      box-shadow: none;
-    }
-
-    .nav-badge {
-      background: rgba(0, 207, 200, 0.14);
-      color: var(--primary-dark);
-    }
-
-    .admin-sidebar-footer .btn {
-      width: 100%;
-    }
-
-    .admin-main {
-      padding: 28px 32px;
-    }
-
-    .admin-topbar {
-      align-items: center;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 380px;
-      padding: 24px;
-      border-radius: 22px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .admin-headline {
-      max-width: 680px;
-    }
-
-    .admin-headline h1 {
-      color: var(--text-primary);
-      font-size: 1.9rem;
-      letter-spacing: 0;
-    }
-
-    .live-pill {
-      background: #f8fafc;
-      border-color: var(--border);
-      color: var(--text-secondary);
-    }
-
-    .admin-top-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: stretch;
-      justify-content: stretch;
-      max-width: none;
-      width: 100%;
-    }
-
-    .admin-top-actions .btn {
-      width: 100%;
-      justify-content: center;
-      white-space: nowrap;
-    }
-
-    .admin-kpis {
-      gap: 16px;
-    }
-
-    .kpi-card {
-      min-height: 128px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .kpi-card:hover {
-      border-color: rgba(0, 207, 200, 0.24);
-      box-shadow: var(--shadow-md);
-    }
-
-    .kpi-value {
-      color: var(--text-primary);
-      font-size: 1.8rem;
-    }
-
-    .kpi-icon {
-      color: var(--primary);
-      background: rgba(0, 207, 200, 0.12);
-      box-shadow: none;
-    }
-
-    .panel,
-    .chart-card,
-    .info-card,
-    .module-form {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .panel {
-      border-radius: 22px;
-    }
-
-    .chart-card,
-    .info-card,
-    .module-form {
-      border-radius: 18px;
-    }
-
-    .panel-head {
-      padding: 20px 22px 0;
-    }
-
-    .panel-head h2,
-    .chart-head h3,
-    .info-card h3 {
-      color: var(--text-primary);
-    }
-
-    .panel-body {
-      padding: 22px;
-    }
-
-    .status-row,
-    .activity-item,
-    .module-item {
-      background: #f8fafc;
-      border-color: var(--border);
-    }
-
-    .module-item:hover {
-      border-color: rgba(0, 207, 200, 0.22);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      background: #ffffff;
-      border-color: var(--border);
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(0, 207, 200, 0.10);
-    }
-
-    .chart-bar {
-      background: linear-gradient(180deg, var(--primary), rgba(0, 207, 200, 0.42));
-      box-shadow: none;
-    }
-
-    .admin-toast {
-      background: var(--bg-card);
-    }
-
-    @media (max-width: 1180px) {
       .admin-topbar {
         grid-template-columns: 1fr;
       }
@@ -1319,8 +1107,10 @@
 
 <body class="admin-body">
 
-  <!-- ── LOGIN GATE ─────────────────────────────────── -->
-  <div class="login-gate hidden" id="login-gate">
+  <!-- ── LOGIN GATE ────────────────────────────────────────────────────── -->
+  <!-- CORREÇÃO 7: login-gate começa visível (sem classe "hidden") -->
+  <!-- CORREÇÃO 7: admin-shell começa com display:none -->
+  <div class="login-gate" id="login-gate">
     <div class="login-box">
       <div class="login-brand">
         <img src="assets/logo.png" alt="N.E.V.A Pro">
@@ -1348,7 +1138,7 @@
     </div>
   </div>
 
-  <!-- ── MODAL CONFIRMAÇÃO EXCLUSÃO ─────────────────── -->
+  <!-- ── MODAL CONFIRMAÇÃO EXCLUSÃO ────────────────────────────────────── -->
   <div class="confirm-overlay" id="confirm-overlay">
     <div class="confirm-modal">
       <div class="confirm-icon"><i data-lucide="trash-2" style="width:22px;"></i></div>
@@ -1362,7 +1152,8 @@
     </div>
   </div>
 
-  <div class="admin-shell">
+  <!-- CORREÇÃO 7: id="admin-shell" adicionado; display:none para ocultar antes do login -->
+  <div class="admin-shell" id="admin-shell" style="display:none;">
     <aside class="admin-sidebar">
       <div class="admin-brand">
         <img src="assets/logo.png" alt="N.E.V.A Pro">
@@ -1390,6 +1181,13 @@
       </nav>
 
       <div class="admin-sidebar-footer">
+        <!-- CORREÇÃO 8: botão export-json adicionado aqui -->
+        <button class="btn btn-secondary" id="export-json">
+          <i data-lucide="download" style="width:16px;"></i> Exportar JSON
+        </button>
+        <button class="btn btn-secondary" id="logout-btn">
+          <i data-lucide="log-out" style="width:16px;"></i> Sair
+        </button>
         <a href="index.html" class="btn btn-secondary" style="text-decoration:none;">Voltar ao painel do aluno</a>
       </div>
     </aside>
@@ -1526,7 +1324,8 @@
           </div>
           <div class="panel-body">
             <div class="module-grid">
-              <form class="module-form" id="simulation-form">
+              <!-- CORREÇÃO 10: <form> substituído por <div> pois os botões são type="button" gerenciados por JS -->
+              <div class="module-form" id="simulation-form">
                 <div class="edit-mode-banner" id="simulation-edit-banner">
                   <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
                   <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
@@ -1559,7 +1358,7 @@
                   <button class="btn btn-primary" type="button" id="save-simulation">Salvar simulado</button>
                   <button class="btn btn-secondary" type="button" id="clear-simulation">Limpar</button>
                 </div>
-              </form>
+              </div>
               <div>
                 <div class="list-search-wrap">
                   <input class="list-search" id="search-simulations" type="search" placeholder="Buscar simulado…">
@@ -1584,7 +1383,7 @@
           </div>
           <div class="panel-body">
             <div class="module-grid">
-              <form class="module-form" id="material-form">
+              <div class="module-form" id="material-form">
                 <div class="edit-mode-banner" id="material-edit-banner">
                   <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
                   <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
@@ -1623,7 +1422,7 @@
                   <button class="btn btn-primary" type="button" id="save-material">Salvar material</button>
                   <button class="btn btn-secondary" type="button" id="clear-material">Limpar</button>
                 </div>
-              </form>
+              </div>
               <div>
                 <div class="list-search-wrap">
                   <input class="list-search" id="search-materials" type="search" placeholder="Buscar material…">
@@ -1648,7 +1447,7 @@
           </div>
           <div class="panel-body">
             <div class="module-grid">
-              <form class="module-form" id="notice-form">
+              <div class="module-form" id="notice-form">
                 <div class="edit-mode-banner" id="notice-edit-banner">
                   <i data-lucide="pencil" style="width:15px;flex-shrink:0;"></i>
                   <span>Modo edição — altere os campos e clique em <strong>Atualizar</strong></span>
@@ -1679,7 +1478,7 @@
                   <button class="btn btn-primary" type="button" id="save-notice">Salvar recado</button>
                   <button class="btn btn-secondary" type="button" id="clear-notice">Limpar</button>
                 </div>
-              </form>
+              </div>
               <div>
                 <div class="list-search-wrap">
                   <input class="list-search" id="search-notices" type="search" placeholder="Buscar recado…">
@@ -1696,164 +1495,189 @@
 
   <div class="admin-toast" id="admin-toast"></div>
 
+  <!--
+    CORREÇÃO 2: script type="module" removido (conflitava com JS inline)
+    CORREÇÃO 3 e 4: todo o JavaScript está agora dentro do <body>, antes do </body>
+    CORREÇÃO 6: funções auxiliares definidas (esc, fmtDate, fmtDateTime, nowIso,
+                isAuthenticated, toast, confirmDelete, readList, writeList, state, STORAGE)
+  -->
   <script>
-    // ══════════════════════════════════════════════════
-    // FIX 1 — AUTENTICAÇÃO: verifica sessão antes de exibir
-    // Credenciais ficam aqui (trocar por chamada de backend real no futuro)
-    // ══════════════════════════════════════════════════
-    const ADMIN_CREDENTIALS = [
-      { user: 'admin', pass: 'neva2026' },
-    ];
-    const SESSION_KEY = 'nevapro_admin_session';
+    'use strict';
 
-    const isAuthenticated = () => sessionStorage.getItem(SESSION_KEY) === 'granted';
+    // ── CREDENCIAIS ──────────────────────────────────────────────────────────
+    // Altere aqui as credenciais de acesso ao backoffice
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'neva2024';
 
+    // ── AUTENTICAÇÃO ─────────────────────────────────────────────────────────
+    function isAuthenticated() {
+      return sessionStorage.getItem('neva_admin_auth') === 'true';
+    }
+
+    function doLogin(user, pass) {
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        sessionStorage.setItem('neva_admin_auth', 'true');
+        return true;
+      }
+      return false;
+    }
+
+    function doLogout() {
+      sessionStorage.removeItem('neva_admin_auth');
+    }
+
+    // ── ARMAZENAMENTO ────────────────────────────────────────────────────────
+    const STORAGE = {
+      notices: 'neva_notices',
+      materials: 'neva_materials',
+      simulations: 'neva_simulations',
+    };
+
+    function readList(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+    }
+
+    function writeList(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    // ── ESTADO GLOBAL ────────────────────────────────────────────────────────
+    const state = {
+      notices: readList(STORAGE.notices),
+      materials: readList(STORAGE.materials),
+      simulations: readList(STORAGE.simulations),
+    };
+
+    // ── UTILITÁRIOS ──────────────────────────────────────────────────────────
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function fmtDate(d) {
+      if (!d) return '—';
+      const [y, m, day] = d.split('-');
+      return `${day}/${m}/${y}`;
+    }
+
+    function fmtDateTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      return d.toLocaleDateString('pt-BR') + ' ' +
+        d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function isValidUrl(v) {
+      if (!v || v === '#') return true;
+      try { new URL(v); return true; } catch { return v.startsWith('/') || v.startsWith('./'); }
+    }
+
+    // ── TOAST ────────────────────────────────────────────────────────────────
+    let toastTimer;
+    function toast(msg, type = 'ok') {
+      const el = document.getElementById('admin-toast');
+      if (!el) return;
+      const iconName = type === 'ok' ? 'check-circle' : type === 'warn' ? 'alert-triangle' : 'x-circle';
+      el.innerHTML = `<i data-lucide="${iconName}" style="width:18px;height:18px;flex-shrink:0;"></i> ${esc(msg)}`;
+      el.className = `admin-toast show toast-${type}`;
+      lucide.createIcons({ nodes: [el] });
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    // ── MODAL DE CONFIRMAÇÃO ─────────────────────────────────────────────────
+    function confirmDelete(name) {
+      return new Promise(resolve => {
+        const overlay = document.getElementById('confirm-overlay');
+        const desc = document.getElementById('confirm-desc');
+        const okBtn = document.getElementById('confirm-ok');
+        const cancelBtn = document.getElementById('confirm-cancel');
+        if (desc) desc.textContent = `Tem certeza que deseja excluir "${name}"? Esta ação não pode ser desfeita.`;
+        overlay?.classList.add('open');
+        const cleanup = (result) => {
+          overlay?.classList.remove('open');
+          okBtn?.removeEventListener('click', onOk);
+          cancelBtn?.removeEventListener('click', onCancel);
+          resolve(result);
+        };
+        const onOk = () => cleanup(true);
+        const onCancel = () => cleanup(false);
+        okBtn?.addEventListener('click', onOk);
+        cancelBtn?.addEventListener('click', onCancel);
+      });
+    }
+
+    // ── GATE DE LOGIN ────────────────────────────────────────────────────────
     const loginGate = document.getElementById('login-gate');
-    const adminShell = document.querySelector('.admin-shell');
+    const adminShell = document.getElementById('admin-shell');
 
-    if (!isAuthenticated()) {
-      loginGate.classList.remove('hidden');
-      adminShell.style.display = 'none';
+    function showLogin() {
+      loginGate?.classList.remove('hidden');
+      if (adminShell) adminShell.style.display = 'none';
+    }
+
+    function showAdmin() {
+      loginGate?.classList.add('hidden');
+      if (adminShell) adminShell.style.display = '';
     }
 
     document.getElementById('login-btn')?.addEventListener('click', () => {
-      const user = document.getElementById('login-user').value.trim();
-      const pass = document.getElementById('login-pass').value;
+      const user = document.getElementById('login-user')?.value.trim();
+      const pass = document.getElementById('login-pass')?.value;
       const errEl = document.getElementById('login-error');
-      const match = ADMIN_CREDENTIALS.find(c => c.user === user && c.pass === pass);
-      if (match) {
-        sessionStorage.setItem(SESSION_KEY, 'granted');
-        loginGate.classList.add('hidden');
-        adminShell.style.display = '';
-        lucide.createIcons();
+      if (doLogin(user, pass)) {
+        errEl?.classList.remove('show');
+        showAdmin();
         init();
       } else {
-        errEl.classList.add('show');
-        document.getElementById('login-pass').value = '';
-        document.getElementById('login-pass').focus();
+        errEl?.classList.add('show');
       }
     });
+
     document.getElementById('login-pass')?.addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('login-btn').click();
+      if (e.key === 'Enter') document.getElementById('login-btn')?.click();
     });
+
     document.getElementById('login-user')?.addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('login-pass').focus();
+      if (e.key === 'Enter') document.getElementById('login-pass')?.focus();
     });
 
-    // ══════════════════════════════════════════════════
-    // FIX 3 — SANITIZAÇÃO: escapa HTML para evitar XSS
-    // ══════════════════════════════════════════════════
-    const esc = (str) => String(str ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-
-    // ══════════════════════════════════════════════════
-    // FIX 2 — MODAL DE CONFIRMAÇÃO para exclusões
-    // ══════════════════════════════════════════════════
-    const confirmOverlay = document.getElementById('confirm-overlay');
-    let _confirmResolve = null;
-
-    const confirmDelete = (title) => new Promise(resolve => {
-      _confirmResolve = resolve;
-      document.getElementById('confirm-title').textContent = `Excluir "${title}"?`;
-      confirmOverlay.classList.add('open');
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      doLogout();
+      showLogin();
     });
 
-    document.getElementById('confirm-ok')?.addEventListener('click', () => {
-      confirmOverlay.classList.remove('open');
-      _confirmResolve?.(true);
-    });
-    document.getElementById('confirm-cancel')?.addEventListener('click', () => {
-      confirmOverlay.classList.remove('open');
-      _confirmResolve?.(false);
-    });
-    confirmOverlay?.addEventListener('click', e => {
-      if (e.target === confirmOverlay) {
-        confirmOverlay.classList.remove('open');
-        _confirmResolve?.(false);
-      }
-    });
-
-    // ══════════════════════════════════════════════════
-    // STORAGE
-    // ══════════════════════════════════════════════════
-    const STORAGE = {
-      notices: 'nevapro_admin_notices_v3',
-      materials: 'nevapro_admin_materials_v3',
-      simulations: 'nevapro_admin_simulations_v3',
-    };
-
-    const defaultState = {
-      notices: [
-        { title: 'Novo Simulado Nacional: Pré-ENEM 2026', category: 'official', tag: 'Aviso', body: 'As inscrições seguem abertas até sexta-feira.', createdAt: '2026-04-20T08:00:00.000Z', updatedAt: '2026-04-20T08:00:00.000Z' },
-        { title: 'Agenda semanal atualizada', category: 'agenda', tag: 'Prazo', body: 'Simulado global, revisão de conteúdos e redação já estão organizados.', createdAt: '2026-04-19T12:00:00.000Z', updatedAt: '2026-04-21T12:00:00.000Z' },
-        { title: 'Roteiro de estudos liberado', category: 'study', tag: 'Guia', body: 'Roteiro ajustado para reduzir dispersão e aumentar consistência diária.', createdAt: '2026-04-18T10:00:00.000Z', updatedAt: '2026-04-18T10:00:00.000Z' },
-      ],
-      materials: [
-        { title: 'Lista de revisão de Matemática', type: 'pdf', grade: 'enem', link: '#', description: 'Resumo dos tópicos mais cobrados com foco em exercícios.', createdAt: '2026-04-19T10:00:00.000Z', updatedAt: '2026-04-19T10:00:00.000Z' },
-        { title: 'Checklist da redação', type: 'lista', grade: '3ano', link: '#', description: 'Sequência de revisão para a semana de entrega.', createdAt: '2026-04-20T10:00:00.000Z', updatedAt: '2026-04-21T09:00:00.000Z' },
-        { title: 'Roteiro de Linguagens', type: 'resumo', grade: 'enem', link: '#', description: 'Guia para leitura, interpretação e análise de texto.', createdAt: '2026-04-18T15:00:00.000Z', updatedAt: '2026-04-18T15:00:00.000Z' },
-      ],
-      simulations: [
-        { title: 'Simulado Nacional Pré-ENEM', date: '2026-11-01', questions: 20, audience: 'all', note: 'Liberar para todos os alunos.', createdAt: '2026-04-20T09:00:00.000Z', updatedAt: '2026-04-22T09:00:00.000Z' },
-        { title: 'Simulado de Linguagens', date: '2026-05-04', questions: 15, audience: 'beta', note: 'Apenas grupo beta para validação.', createdAt: '2026-04-18T13:00:00.000Z', updatedAt: '2026-04-18T13:00:00.000Z' },
-        { title: 'Bloco de Ciências da Natureza', date: '2026-05-10', questions: 20, audience: 'premium', note: 'Organizado para turma avançada.', createdAt: '2026-04-19T16:00:00.000Z', updatedAt: '2026-04-20T16:00:00.000Z' },
-      ],
-    };
-
-    const clone = v => JSON.parse(JSON.stringify(v));
-    const readList = key => { try { const r = localStorage.getItem(key); if (!r) return clone(defaultState[key]); const p = JSON.parse(r); return Array.isArray(p) ? p : clone(defaultState[key]); } catch { return clone(defaultState[key]); } };
-    const writeList = (key, val) => localStorage.setItem(key, JSON.stringify(val));
-    const nowIso = () => new Date().toISOString();
-    const normalize = item => ({ ...item, createdAt: item.createdAt || nowIso(), updatedAt: item.updatedAt || item.createdAt || nowIso() });
-
-    const state = {
-      notices: readList(STORAGE.notices).map(normalize),
-      materials: readList(STORAGE.materials).map(normalize),
-      simulations: readList(STORAGE.simulations).map(normalize),
-    };
-
-    // ── TOAST ─────────────────────────────────────────
-    const toastEl = document.getElementById('admin-toast');
-    let toastTimer;
-    const toast = (message, tone = 'ok') => {
-      if (!toastEl) return;
-      toastEl.className = `admin-toast show toast-${tone}`;
-      toastEl.innerHTML = `<span class="toast-icon"><i data-lucide="${tone === 'ok' ? 'circle-check-big' : tone === 'warn' ? 'triangle-alert' : 'info'}"></i></span><span>${esc(message)}</span>`;
-      lucide.createIcons();
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => { toastEl.className = 'admin-toast'; toastEl.innerHTML = ''; }, 2400);
-    };
-
-    // ── FORMATAÇÃO ────────────────────────────────────
-    const fmtDate = v => v ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short' }).format(new Date(`${v}T00:00:00`)) : 'Sem data';
-    const fmtDateTime = v => v ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(v)) : '—';
-
-    // ── ABAS ──────────────────────────────────────────
+    // ── ABAS ─────────────────────────────────────────────────────────────────
     const tabButtons = Array.from(document.querySelectorAll('.admin-nav button[data-tab]'));
     const panels = Array.from(document.querySelectorAll('.tab-panel[data-panel]'));
+
     const setTab = tab => {
       tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
       panels.forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
     tabButtons.forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
 
-    // ── EDIÇÃO ATUAL ──────────────────────────────────
+    // ── MODO EDIÇÃO ──────────────────────────────────────────────────────────
     const currentEditing = { notices: null, materials: null, simulations: null };
 
-    // FIX 4 — Destaque visual de modo edição
     const setEditMode = (kind, active) => {
-      const form = document.getElementById(`${kind === 'notices' ? 'notice' : kind === 'materials' ? 'material' : 'simulation'}-form`);
-      const banner = document.getElementById(`${kind === 'notices' ? 'notice' : kind === 'materials' ? 'material' : 'simulation'}-edit-banner`);
+      const prefix = kind === 'notices' ? 'notice' : kind === 'materials' ? 'material' : 'simulation';
+      const form = document.getElementById(`${prefix}-form`);
+      const banner = document.getElementById(`${prefix}-edit-banner`);
       form?.classList.toggle('editing', active);
       if (banner) banner.style.display = active ? 'flex' : 'none';
     };
 
-    // ── KPI / BADGES ──────────────────────────────────
+    // ── KPI / BADGES ─────────────────────────────────────────────────────────
     const syncBadges = () => {
       document.getElementById('kpi-simulations').textContent = state.simulations.length;
       document.getElementById('kpi-materials').textContent = state.materials.length;
@@ -1861,13 +1685,14 @@
       document.getElementById('badge-simulations').textContent = state.simulations.length;
       document.getElementById('badge-materials').textContent = state.materials.length;
       document.getElementById('badge-notices').textContent = state.notices.length;
-      const next = [...state.simulations].sort((a, b) => new Date(a.date) - new Date(b.date))
+      const next = [...state.simulations]
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
         .find(s => new Date(`${s.date}T00:00:00`) >= new Date(new Date().toDateString()));
       document.getElementById('kpi-next').textContent = next ? fmtDate(next.date) : '--';
       document.getElementById('kpi-next-label').textContent = next ? next.title : 'Sem agendamento';
     };
 
-    // FIX 7 — persist() re-renderiza apenas o módulo afetado
+    // ── PERSIST ──────────────────────────────────────────────────────────────
     const persist = (only = null) => {
       writeList(STORAGE.notices, state.notices);
       writeList(STORAGE.materials, state.materials);
@@ -1879,15 +1704,17 @@
       if (!only || only === 'simulations') renderSimulations();
     };
 
-    // ── STATUS POR DATA ───────────────────────────────
+    // ── STATUS POR DATA ───────────────────────────────────────────────────────
     const statusFromDate = d => {
       const diff = Math.ceil((new Date(`${d}T00:00:00`) - new Date(new Date().toDateString())) / 86400000);
       return diff < 0 ? 'chip-danger' : diff <= 7 ? 'chip-warn' : 'chip-ok';
     };
 
-    // ── OVERVIEW ──────────────────────────────────────
+    // ── OVERVIEW ─────────────────────────────────────────────────────────────
     const renderOverview = () => {
-      const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (6 - i)); return d; });
+      const days = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - (6 - i)); return d;
+      });
       const series = days.map(day => {
         const key = day.toDateString();
         const total = [...state.notices, ...state.materials, ...state.simulations]
@@ -1897,11 +1724,11 @@
       const max = Math.max(1, ...series.map(i => i.value));
       const volume = document.getElementById('volume-chart');
       if (volume) volume.innerHTML = series.map(item => `
-      <div class="chart-col">
-        <div class="chart-value">${item.value}</div>
-        <div class="chart-bar" style="height:${Math.max(8, (item.value / max) * 100)}%;"></div>
-        <div class="chart-label">${esc(item.label)}</div>
-      </div>`).join('');
+        <div class="chart-col">
+          <div class="chart-value">${item.value}</div>
+          <div class="chart-bar" style="height:${Math.max(8, (item.value / max) * 100)}%;"></div>
+          <div class="chart-label">${esc(item.label)}</div>
+        </div>`).join('');
 
       const dist = document.getElementById('distribution-list');
       const distData = [
@@ -1911,10 +1738,10 @@
       ];
       const total = Math.max(1, distData.reduce((a, i) => a + i.value, 0));
       if (dist) dist.innerHTML = distData.map(item => `
-      <div class="status-row">
-        <div style="flex:1;"><strong>${esc(item.label)}</strong><small>${item.value} itens</small></div>
-        <div class="status-value">${Math.round((item.value / total) * 100)}%</div>
-      </div>`).join('');
+        <div class="status-row">
+          <div style="flex:1;"><strong>${esc(item.label)}</strong><small>${item.value} itens</small></div>
+          <div class="status-value">${Math.round((item.value / total) * 100)}%</div>
+        </div>`).join('');
 
       const recent = [
         ...state.simulations.map(i => ({ ...i, kind: 'Simulado', time: i.updatedAt, desc: `${i.questions} questões · ${fmtDate(i.date)}` })),
@@ -1923,30 +1750,47 @@
       ].sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 5);
 
       const activity = document.getElementById('activity-list');
+      // CORREÇÃO 5: strings multi-linha corrigidas para template literals
       if (activity) activity.innerHTML = recent.length
-        ? recent.map(item => `<div class="activity-item"><div class="activity-bullet"></div><div><strong>${esc(item.kind)}: ${esc(item.title)}</strong><small>${fmtDateTime(item.time)}</small><p>${esc(item.desc)}</p></div></div>`).join('')
-        : '<div class="info-card"><p style="margin:0;">Nada recente ainda.</p></div>';
+        ? recent.map(item => `
+          <div class="activity-item">
+            <div class="activity-bullet"></div>
+            <div>
+              <strong>${esc(item.kind)}: ${esc(item.title)}</strong>
+              <small>${fmtDateTime(item.time)}</small>
+              <p>${esc(item.desc)}</p>
+            </div>
+          </div>`).join('')
+        : `<div class="info-card"><p style="margin:0;">Nada recente ainda.</p></div>`;
 
       const nextContent = document.getElementById('next-content-list');
       const nextItems = [...state.simulations].sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+      // CORREÇÃO 5: strings multi-linha corrigidas para template literals
       if (nextContent) nextContent.innerHTML = nextItems.length
-        ? nextItems.map(item => `<div class="status-row"><div><strong>${esc(item.title)}</strong><small>${fmtDate(item.date)} · ${item.audience === 'all' ? 'Todos' : item.audience === 'premium' ? 'Turma' : 'Beta'}</small></div><div class="status-value">${item.questions}q</div></div>`).join('')
-        : '<div class="info-card"><p style="margin:0;">Nenhum simulado agendado.</p></div>';
+        ? nextItems.map(item => `
+          <div class="status-row">
+            <div>
+              <strong>${esc(item.title)}</strong>
+              <small>${fmtDate(item.date)} · ${item.audience === 'all' ? 'Todos' : item.audience === 'premium' ? 'Turma' : 'Beta'}</small>
+            </div>
+            <div class="status-value">${item.questions}q</div>
+          </div>`).join('')
+        : `<div class="info-card"><p style="margin:0;">Nenhum simulado agendado.</p></div>`;
     };
 
-    // FIX 5 — BUSCA: filtra itens da lista visivelmente
+    // ── BUSCA ─────────────────────────────────────────────────────────────────
     const applySearch = (kind) => {
       const map = { simulations: 'simulations', materials: 'materials', notices: 'notices' };
       const searchEl = document.getElementById(`search-${map[kind]}`);
       const countEl = document.getElementById(`count-${map[kind]}`);
-      const listEl = document.getElementById(`${kind === 'simulations' ? 'simulation' : kind === 'materials' ? 'material' : 'notice'}-list`);
+      const prefix = kind === 'simulations' ? 'simulation' : kind === 'materials' ? 'material' : 'notice';
+      const listEl = document.getElementById(`${prefix}-list`);
       if (!searchEl || !listEl) return;
       const q = searchEl.value.toLowerCase().trim();
       const items = listEl.querySelectorAll('.module-item');
       let visible = 0;
       items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        const show = !q || text.includes(q);
+        const show = !q || item.textContent.toLowerCase().includes(q);
         item.style.display = show ? '' : 'none';
         if (show) visible++;
       });
@@ -1959,25 +1803,26 @@
       });
     };
 
-    // ── RENDERIZAÇÕES ─────────────────────────────────
-    // FIX 6 — botão excluir usa btn-danger; FIX 3 — dados sanitizados com esc()
+    // ── RENDERIZAÇÕES ─────────────────────────────────────────────────────────
     const renderNotices = () => {
       const list = document.getElementById('notice-list');
       if (!list) return;
       list.innerHTML = state.notices.map((item, idx) => `
-      <article class="module-item">
-        <div>
-          <strong>${esc(item.title)}</strong>
-          <small>${esc(item.body)}</small>
-          <small><span class="mini-chip chip-muted">${esc(item.tag)}</span>
-            <span style="margin-left:8px;">${item.category === 'official' ? 'Aviso oficial' : item.category === 'agenda' ? 'Agenda' : item.category === 'study' ? 'Estudos' : 'Apoio'}</span>
-          </small>
-        </div>
-        <div class="stack-actions">
-          <button class="btn btn-secondary btn-sm" data-edit-notice="${idx}">Editar</button>
-          <button class="btn btn-danger btn-sm" data-delete-notice="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
-        </div>
-      </article>`).join('') || '<div class="info-card">Nenhum recado criado ainda.</div>';
+        <article class="module-item">
+          <div>
+            <strong>${esc(item.title)}</strong>
+            <small>${esc(item.body)}</small>
+            <small>
+              <span class="mini-chip chip-muted">${esc(item.tag)}</span>
+              <span style="margin-left:8px;">${item.category === 'official' ? 'Aviso oficial' : item.category === 'agenda' ? 'Agenda' : item.category === 'study' ? 'Estudos' : 'Apoio'}</span>
+            </small>
+          </div>
+          <div class="stack-actions">
+            <button class="btn btn-secondary btn-sm" data-edit-notice="${idx}">Editar</button>
+            <button class="btn btn-danger btn-sm" data-delete-notice="${idx}"
+              style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+          </div>
+        </article>`).join('') || '<div class="info-card">Nenhum recado criado ainda.</div>';
       applySearch('notices');
       const countEl = document.getElementById('count-notices');
       if (countEl) countEl.textContent = `${state.notices.length} item${state.notices.length !== 1 ? 's' : ''}`;
@@ -1987,17 +1832,18 @@
       const list = document.getElementById('material-list');
       if (!list) return;
       list.innerHTML = state.materials.map((item, idx) => `
-      <article class="module-item">
-        <div>
-          <strong>${esc(item.title)}</strong>
-          <small>${esc(item.type.toUpperCase())} · ${esc(item.grade)}</small>
-          <small>${esc(item.description)}</small>
-        </div>
-        <div class="stack-actions">
-          <button class="btn btn-secondary btn-sm" data-edit-material="${idx}">Editar</button>
-          <button class="btn btn-danger btn-sm" data-delete-material="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
-        </div>
-      </article>`).join('') || '<div class="info-card">Nenhum material criado ainda.</div>';
+        <article class="module-item">
+          <div>
+            <strong>${esc(item.title)}</strong>
+            <small>${esc(item.type.toUpperCase())} · ${esc(item.grade)}</small>
+            <small>${esc(item.description)}</small>
+          </div>
+          <div class="stack-actions">
+            <button class="btn btn-secondary btn-sm" data-edit-material="${idx}">Editar</button>
+            <button class="btn btn-danger btn-sm" data-delete-material="${idx}"
+              style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+          </div>
+        </article>`).join('') || '<div class="info-card">Nenhum material criado ainda.</div>';
       applySearch('materials');
       const countEl = document.getElementById('count-materials');
       if (countEl) countEl.textContent = `${state.materials.length} item${state.materials.length !== 1 ? 's' : ''}`;
@@ -2007,50 +1853,58 @@
       const list = document.getElementById('simulation-list');
       if (!list) return;
       list.innerHTML = state.simulations.map((item, idx) => `
-      <article class="module-item">
-        <div>
-          <strong>${esc(item.title)}</strong>
-          <small>${item.questions} questões · ${fmtDate(item.date)}</small>
-          <small>${esc(item.note)}</small>
-        </div>
-        <div class="stack-actions">
-          <span class="mini-chip ${statusFromDate(item.date)}">${esc(item.audience)}</span>
-          <button class="btn btn-secondary btn-sm" data-edit-simulation="${idx}">Editar</button>
-          <button class="btn btn-danger btn-sm" data-delete-simulation="${idx}" style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
-        </div>
-      </article>`).join('') || '<div class="info-card">Nenhum simulado criado ainda.</div>';
+        <article class="module-item">
+          <div>
+            <strong>${esc(item.title)}</strong>
+            <small>${item.questions} questões · ${fmtDate(item.date)}</small>
+            <small>${esc(item.note)}</small>
+          </div>
+          <div class="stack-actions">
+            <span class="mini-chip ${statusFromDate(item.date)}">${esc(item.audience)}</span>
+            <button class="btn btn-secondary btn-sm" data-edit-simulation="${idx}">Editar</button>
+            <button class="btn btn-danger btn-sm" data-delete-simulation="${idx}"
+              style="min-height:36px;padding-inline:12px;border-radius:12px;font-size:0.82rem;">Excluir</button>
+          </div>
+        </article>`).join('') || '<div class="info-card">Nenhum simulado criado ainda.</div>';
       applySearch('simulations');
       const countEl = document.getElementById('count-simulations');
       if (countEl) countEl.textContent = `${state.simulations.length} item${state.simulations.length !== 1 ? 's' : ''}`;
     };
 
-    // ── RESET DE FORMULÁRIOS ──────────────────────────
+    // ── RESET DE FORMULÁRIOS ──────────────────────────────────────────────────
     const resetForms = (kind) => {
       if (kind === 'notice') {
-        document.getElementById('notice-form')?.reset();
+        document.getElementById('notice-title').value = '';
+        document.getElementById('notice-category').value = 'official';
+        document.getElementById('notice-tag').value = '';
+        document.getElementById('notice-copy').value = '';
         currentEditing.notices = null;
         document.getElementById('save-notice').textContent = 'Salvar recado';
         setEditMode('notices', false);
       }
       if (kind === 'material') {
-        document.getElementById('material-form')?.reset();
+        document.getElementById('material-title').value = '';
+        document.getElementById('material-type').value = 'pdf';
+        document.getElementById('material-grade').value = 'enem';
+        document.getElementById('material-link').value = '';
+        document.getElementById('material-description').value = '';
         currentEditing.materials = null;
         document.getElementById('save-material').textContent = 'Salvar material';
         setEditMode('materials', false);
       }
       if (kind === 'simulation') {
-        document.getElementById('simulation-form')?.reset();
+        document.getElementById('simulation-title').value = '';
+        document.getElementById('simulation-date').value = '';
         document.getElementById('simulation-questions').value = '20';
+        document.getElementById('simulation-audience').value = 'all';
+        document.getElementById('simulation-note').value = '';
         currentEditing.simulations = null;
         document.getElementById('save-simulation').textContent = 'Salvar simulado';
         setEditMode('simulations', false);
       }
     };
 
-    // FIX 8 — Validação de URL no campo de link do material
-    const isValidUrl = v => { if (!v || v === '#') return true; try { new URL(v); return true; } catch { return v.startsWith('/') || v.startsWith('./'); } };
-
-    // ── SALVAR / ATUALIZAR ────────────────────────────
+    // ── SALVAR / ATUALIZAR ────────────────────────────────────────────────────
     document.getElementById('save-notice')?.addEventListener('click', () => {
       const title = document.getElementById('notice-title').value.trim();
       const category = document.getElementById('notice-category').value;
@@ -2118,7 +1972,7 @@
     document.getElementById('clear-material')?.addEventListener('click', () => resetForms('material'));
     document.getElementById('clear-simulation')?.addEventListener('click', () => resetForms('simulation'));
 
-    // ── EDITAR / EXCLUIR COM CONFIRMAÇÃO ─────────────
+    // ── EDITAR / EXCLUIR ──────────────────────────────────────────────────────
     document.getElementById('notice-list')?.addEventListener('click', async e => {
       const editBtn = e.target.closest('[data-edit-notice]');
       const deleteBtn = e.target.closest('[data-delete-notice]');
@@ -2205,12 +2059,19 @@
       }
     });
 
-    // ── AÇÕES DO TOPBAR ───────────────────────────────
-    document.getElementById('action-new-notice')?.addEventListener('click', () => { resetForms('notice'); setTab('mural'); document.getElementById('notice-title').focus(); });
-    document.getElementById('action-new-material')?.addEventListener('click', () => { resetForms('material'); setTab('materials'); document.getElementById('material-title').focus(); });
-    document.getElementById('action-new-event')?.addEventListener('click', () => { resetForms('simulation'); setTab('simulations'); document.getElementById('simulation-title').focus(); });
+    // ── AÇÕES DO TOPBAR ───────────────────────────────────────────────────────
+    document.getElementById('action-new-notice')?.addEventListener('click', () => {
+      resetForms('notice'); setTab('mural'); document.getElementById('notice-title').focus();
+    });
+    document.getElementById('action-new-material')?.addEventListener('click', () => {
+      resetForms('material'); setTab('materials'); document.getElementById('material-title').focus();
+    });
+    document.getElementById('action-new-event')?.addEventListener('click', () => {
+      resetForms('simulation'); setTab('simulations'); document.getElementById('simulation-title').focus();
+    });
 
-    // ── EXPORT JSON ───────────────────────────────────
+    // ── EXPORT JSON ───────────────────────────────────────────────────────────
+    // CORREÇÃO 8: botão export-json agora existe no HTML e o listener funciona
     document.getElementById('export-json')?.addEventListener('click', () => {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
@@ -2221,13 +2082,13 @@
       toast('JSON exportado.');
     });
 
-    // ── RELÓGIO ───────────────────────────────────────
+    // ── RELÓGIO ───────────────────────────────────────────────────────────────
     const updateClock = () => {
       const el = document.getElementById('live-clock');
       if (el) el.textContent = new Date().toLocaleTimeString('pt-BR', { hour12: false });
     };
 
-    // ── INIT ──────────────────────────────────────────
+    // ── INIT ──────────────────────────────────────────────────────────────────
     const init = () => {
       syncBadges();
       renderOverview();
@@ -2241,10 +2102,13 @@
       lucide.createIcons();
     };
 
-    // Só inicializa se já autenticado (sessão ativa)
+    // ── BOOT ──────────────────────────────────────────────────────────────────
+    // CORREÇÃO 7: se já autenticado, mostra o painel direto; senão, exibe login
     if (isAuthenticated()) {
-      adminShell.style.display = '';
+      showAdmin();
       init();
+    } else {
+      showLogin();
     }
   </script>
 </body>
